@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 
     let DEPLOYMENT_ID = ""
     switch (chatSettings.model) {
-      case "gpt-3.5-turbo":
+      case "gpt-4o-mini":
         DEPLOYMENT_ID = profile.azure_openai_35_turbo_id || ""
         break
       case "gpt-4-turbo-preview":
@@ -36,6 +36,11 @@ export async function POST(request: Request) {
     }
 
     if (!ENDPOINT || !KEY || !DEPLOYMENT_ID) {
+      console.error({
+        ENDPOINT: ENDPOINT,
+        KEY: KEY,
+        DEPLOYMENT_ID: DEPLOYMENT_ID
+      })
       return new Response(
         JSON.stringify({ message: "Azure resources not found" }),
         {
