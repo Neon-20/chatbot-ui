@@ -6,7 +6,8 @@ import {
   IconBolt,
   IconCirclePlus,
   IconPlayerStopFilled,
-  IconSend
+  IconSend,
+  IconDownload
 } from "@tabler/icons-react"
 import Image from "next/image"
 import { FC, useContext, useEffect, useRef, useState } from "react"
@@ -20,6 +21,8 @@ import { useChatHandler } from "./chat-hooks/use-chat-handler"
 import { useChatHistoryHandler } from "./chat-hooks/use-chat-history"
 import { usePromptAndCommand } from "./chat-hooks/use-prompt-and-command"
 import { useSelectFileHandler } from "./chat-hooks/use-select-file-handler"
+import { suggestion } from "@/lib/suggestion"
+import SuggestionCarousel from "./suggestion-carousel"
 
 interface ChatInputProps {}
 
@@ -167,6 +170,12 @@ export const ChatInput: FC<ChatInputProps> = ({}) => {
       <div className="flex flex-col flex-wrap justify-center gap-2">
         <ChatFilesDisplay />
 
+        <SuggestionCarousel
+          suggestion={suggestion}
+          handleSendMessage={handleSendMessage}
+          chatMessages={chatMessages}
+        />
+
         {selectedTools &&
           selectedTools.map((tool, index) => (
             <div
@@ -252,6 +261,14 @@ export const ChatInput: FC<ChatInputProps> = ({}) => {
           onCompositionStart={() => setIsTyping(true)}
           onCompositionEnd={() => setIsTyping(false)}
         />
+
+        <div className="absolute bottom-[14px] right-14 cursor-pointer hover:opacity-50">
+          <IconDownload
+            className="hover:bg-background animate-pulse rounded bg-transparent p-1"
+            size={30}
+            onClick={() => setIsPromptPickerOpen(!isPromptPickerOpen)}
+          />
+        </div>
 
         <div className="absolute bottom-[14px] right-3 cursor-pointer hover:opacity-50">
           {isGenerating ? (
