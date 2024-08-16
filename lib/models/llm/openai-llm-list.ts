@@ -32,23 +32,6 @@ const GPT4oMini: LLM = {
     outputCost: 15
   }
 }
-
-// GPT-4 Turbo (UPDATED 1/25/24)
-const GPT4Turbo: LLM = {
-  modelId: "gpt-4-turbo-preview",
-  modelName: "GPT-4 Turbo",
-  provider: "openai",
-  hostedId: "gpt-4-turbo-preview",
-  platformLink: OPENAI_PLATORM_LINK,
-  imageInput: true,
-  pricing: {
-    currency: "USD",
-    unit: "1M tokens",
-    inputCost: 10,
-    outputCost: 30
-  }
-}
-
 // GPT-4 Vision (UPDATED 12/18/23)
 const GPT4Vision: LLM = {
   modelId: "gpt-4-vision-preview",

@@ -130,7 +130,7 @@ export const WorkspaceSwitcher: FC<WorkspaceSwitcherProps> = ({}) => {
         <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
       </PopoverTrigger>
 
-      <PopoverContent className="p-2">
+      <PopoverContent className="max-h-[70vh] overflow-y-auto p-2">
         <div className="space-y-2">
           <Button
             className="flex w-full items-center space-x-2"
