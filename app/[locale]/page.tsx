@@ -1,6 +1,8 @@
 "use client"
 
 import { ChatbotUISVG } from "@/components/icons/chatbotui-svg"
+import { AnimatedTooltip } from "@/components/ui/animated-tooltip"
+import { people } from "@/lib/people"
 import { IconArrowRight } from "@tabler/icons-react"
 import { useTheme } from "next-themes"
 import Link from "next/link"
@@ -10,6 +12,10 @@ export default function HomePage() {
 
   return (
     <div className="flex size-full flex-col items-center justify-center">
+      <div className="mb-10 flex w-full flex-row items-center justify-center">
+        <AnimatedTooltip items={people} />
+      </div>
+
       <div>
         <ChatbotUISVG theme={theme === "dark" ? "dark" : "light"} scale={0.3} />
       </div>

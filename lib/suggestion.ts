@@ -1,9 +1,7 @@
 export const suggestion = [
-  "what is xyz",
-  "how to xyz",
-  "how does xyz work",
-  "what is the purpose of xyz",
-  "what is the use of xyz",
-  "what is the meaning of xyz",
-  "what is the definition of xyz"
+  "What is alter Domus?",
+  "How does alter Domus Do Business?",
+  "alter Domus deals in which sector of business?",
+  "Where are the branches of alter Domus?",
+  "Where is alter Domus head office located?"
 ]
