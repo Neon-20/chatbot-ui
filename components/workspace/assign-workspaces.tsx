@@ -71,7 +71,7 @@ export const AssignWorkspaces: FC<AssignWorkspaces> = ({
 
       <DropdownMenuContent
         style={{ width: triggerRef.current?.offsetWidth }}
-        className="space-y-2 overflow-auto p-2"
+        className="space-y-2 p-2"
         align="start"
       >
         <Input
@@ -81,41 +81,42 @@ export const AssignWorkspaces: FC<AssignWorkspaces> = ({
           onChange={e => setSearch(e.target.value)}
           onKeyDown={e => e.stopPropagation()}
         />
+        <div className="max-h-[50vh] space-y-2 overflow-y-auto p-2">
+          {selectedWorkspaces
+            .filter(workspace =>
+              workspace.name.toLowerCase().includes(search.toLowerCase())
+            )
+            .map(workspace => (
+              <WorkspaceItem
+                key={workspace.id}
+                selectedWorkspaces={selectedWorkspaces}
+                workspace={workspace}
+                selected={selectedWorkspaces.some(
+                  selectedWorkspace => selectedWorkspace.id === workspace.id
+                )}
+                onSelect={handleWorkspaceSelect}
+              />
+            ))}
 
-        {selectedWorkspaces
-          .filter(workspace =>
-            workspace.name.toLowerCase().includes(search.toLowerCase())
-          )
-          .map(workspace => (
-            <WorkspaceItem
-              key={workspace.id}
-              selectedWorkspaces={selectedWorkspaces}
-              workspace={workspace}
-              selected={selectedWorkspaces.some(
-                selectedWorkspace => selectedWorkspace.id === workspace.id
-              )}
-              onSelect={handleWorkspaceSelect}
-            />
-          ))}
-
-        {workspaces
-          .filter(
-            workspace =>
-              !selectedWorkspaces.some(
-                selectedWorkspace => selectedWorkspace.id === workspace.id
-              ) && workspace.name.toLowerCase().includes(search.toLowerCase())
-          )
-          .map(workspace => (
-            <WorkspaceItem
-              key={workspace.id}
-              selectedWorkspaces={selectedWorkspaces}
-              workspace={workspace}
-              selected={selectedWorkspaces.some(
-                selectedWorkspace => selectedWorkspace.id === workspace.id
-              )}
-              onSelect={handleWorkspaceSelect}
-            />
-          ))}
+          {workspaces
+            .filter(
+              workspace =>
+                !selectedWorkspaces.some(
+                  selectedWorkspace => selectedWorkspace.id === workspace.id
+                ) && workspace.name.toLowerCase().includes(search.toLowerCase())
+            )
+            .map(workspace => (
+              <WorkspaceItem
+                key={workspace.id}
+                selectedWorkspaces={selectedWorkspaces}
+                workspace={workspace}
+                selected={selectedWorkspaces.some(
+                  selectedWorkspace => selectedWorkspace.id === workspace.id
+                )}
+                onSelect={handleWorkspaceSelect}
+              />
+            ))}
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   )
