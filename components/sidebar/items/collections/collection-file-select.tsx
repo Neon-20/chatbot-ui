@@ -81,39 +81,43 @@ export const CollectionFileSelect: FC<CollectionFileSelectProps> = ({
           onChange={e => setSearch(e.target.value)}
           onKeyDown={e => e.stopPropagation()}
         />
+        <div className="max-h-[55vh] space-y-3 overflow-auto p-3">
+          {selectedCollectionFiles
+            .filter(file =>
+              file.name.toLowerCase().includes(search.toLowerCase())
+            )
+            .map(file => (
+              <CollectionFileItem
+                key={file.id}
+                file={file}
+                selected={selectedCollectionFiles.some(
+                  selectedCollectionFile =>
+                    selectedCollectionFile.id === file.id
+                )}
+                onSelect={handleFileSelect}
+              />
+            ))}
 
-        {selectedCollectionFiles
-          .filter(file =>
-            file.name.toLowerCase().includes(search.toLowerCase())
-          )
-          .map(file => (
-            <CollectionFileItem
-              key={file.id}
-              file={file}
-              selected={selectedCollectionFiles.some(
-                selectedCollectionFile => selectedCollectionFile.id === file.id
-              )}
-              onSelect={handleFileSelect}
-            />
-          ))}
-
-        {files
-          .filter(
-            file =>
-              !selectedCollectionFiles.some(
-                selectedCollectionFile => selectedCollectionFile.id === file.id
-              ) && file.name.toLowerCase().includes(search.toLowerCase())
-          )
-          .map(file => (
-            <CollectionFileItem
-              key={file.id}
-              file={file}
-              selected={selectedCollectionFiles.some(
-                selectedCollectionFile => selectedCollectionFile.id === file.id
-              )}
-              onSelect={handleFileSelect}
-            />
-          ))}
+          {files
+            .filter(
+              file =>
+                !selectedCollectionFiles.some(
+                  selectedCollectionFile =>
+                    selectedCollectionFile.id === file.id
+                ) && file.name.toLowerCase().includes(search.toLowerCase())
+            )
+            .map(file => (
+              <CollectionFileItem
+                key={file.id}
+                file={file}
+                selected={selectedCollectionFiles.some(
+                  selectedCollectionFile =>
+                    selectedCollectionFile.id === file.id
+                )}
+                onSelect={handleFileSelect}
+              />
+            ))}
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   )

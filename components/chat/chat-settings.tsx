@@ -35,7 +35,6 @@ export const ChatSettings: FC<ChatSettingsProps> = ({}) => {
 
     setChatSettings({
       ...chatSettings,
-      model: "gpt-4o-mini",
       temperature: Math.min(
         chatSettings.temperature,
         CHAT_SETTING_LIMITS[chatSettings.model]?.MAX_TEMPERATURE || 1
