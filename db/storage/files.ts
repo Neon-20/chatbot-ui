@@ -9,9 +9,7 @@ export const uploadFile = async (
     file_id: string
   }
 ) => {
-  const SIZE_LIMIT = parseInt(
-    process.env.NEXT_PUBLIC_USER_FILE_SIZE_LIMIT || "10000000"
-  )
+  const SIZE_LIMIT = parseInt(process.env.NEXT_PUBLIC_USER_FILE_SIZE_LIMIT!)
 
   if (file.size > SIZE_LIMIT) {
     throw new Error(
