@@ -60,6 +60,7 @@ export const CreateFile: FC<CreateFileProps> = ({ isOpen, onOpenChange }) => {
 
             <Input
               type="file"
+              className={`bg-primary text-primary-foreground hover:bg-primary/90 text-sm text-black file:rounded-2xl file:border file:border-black file:text-black hover:file:cursor-pointer`}
               onChange={handleSelectedFile}
               accept={ACCEPTED_FILE_TYPES}
             />
