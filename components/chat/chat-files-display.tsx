@@ -73,7 +73,7 @@ export const ChatFilesDisplay: FC<ChatFilesDisplayProps> = ({}) => {
   }
 
   return showFilesDisplay && combinedMessageFiles.length > 0 ? (
-    <>
+    <div className="max-w-full">
       {showPreview && selectedImage && (
         <FilePreview
           type="image"
@@ -223,7 +223,7 @@ export const ChatFilesDisplay: FC<ChatFilesDisplayProps> = ({}) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   ) : (
     combinedMessageFiles.length > 0 && (
       <div className="flex w-full items-center justify-center space-x-2">
