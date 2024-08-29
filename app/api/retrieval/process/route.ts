@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     const formData = await req.formData()
 
     const file_id = formData.get("file_id") as string
-    const embeddingsProvider = formData.get("embeddingsProvider") as string
+    let embeddingsProvider = formData.get("embeddingsProvider") as string
 
     const { data: fileMetadata, error: metadataError } = await supabaseAdmin
       .from("files")
@@ -115,14 +115,37 @@ export async function POST(req: Request) {
     }
 
     if (embeddingsProvider === "openai") {
-      const response = await openai.embeddings.create({
-        model: "text-embedding-3-small",
-        input: chunks.map(chunk => chunk.content)
-      })
+      try {
+        const response = await openai.embeddings.create({
+          model: "text-embedding-3-small",
+          input: chunks.map(chunk => chunk.content)
+        })
 
-      embeddings = response.data.map((item: any) => {
-        return item.embedding
-      })
+        embeddings = response.data.map((item: any) => {
+          return item.embedding
+        })
+      } catch (error: any) {
+        if (error.status === 429) {
+          console.warn("Rate limit exceeded, falling back to local embeddings")
+          embeddingsProvider = "local"
+          const embeddingPromises = chunks.map(async chunk => {
+            try {
+              return await generateLocalEmbedding(chunk.content)
+            } catch (error) {
+              console.error(
+                `Error generating embedding for chunk: ${chunk}`,
+                error
+              )
+
+              return null
+            }
+          })
+
+          embeddings = await Promise.all(embeddingPromises)
+        } else {
+          throw error
+        }
+      }
     } else if (embeddingsProvider === "local") {
       const embeddingPromises = chunks.map(async chunk => {
         try {
