@@ -6,12 +6,6 @@ import {
   SheetTitle,
   SheetTrigger
 } from "@/components/ui/sheet"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
-} from "@/components/ui/tooltip"
 import { useEffect, useState } from "react"
 import {
   Select,
@@ -33,11 +27,16 @@ import { supabase } from "@/lib/supabase/browser-client"
 import { Button } from "./ui/button"
 import { IconCrown } from "@tabler/icons-react"
 import { getAllProfiles } from "@/db/profile"
+import { Input } from "./ui/input"
 
 type Role = "user" | "developer" | "admin"
 
 const AdminRolesPage = () => {
   const [profileList, setProfileList] = useState<TablesUpdate<"profiles">[]>([])
+  const [inputValue, setInputValue] = useState("")
+  const [filteredProfileList, setFilteredProfileList] = useState<
+    TablesUpdate<"profiles">[]
+  >([])
 
   useEffect(() => {
     async function fetchProfiles() {
@@ -46,6 +45,16 @@ const AdminRolesPage = () => {
     }
     fetchProfiles()
   }, [])
+
+  useEffect(() => {
+    setFilteredProfileList(
+      profileList.filter(
+        user =>
+          user.username?.toLowerCase().includes(inputValue.toLowerCase()) ||
+          user.display_name?.toLowerCase().includes(inputValue.toLowerCase())
+      )
+    )
+  }, [inputValue, profileList])
 
   const handleRoleChange = async (username: string, newRole: Role) => {
     try {
@@ -79,15 +88,21 @@ const AdminRolesPage = () => {
           <SheetTitle>Admin Role Management</SheetTitle>
         </SheetHeader>
         <div>
+          <Input
+            value={inputValue}
+            onChange={e => setInputValue(e.target.value)}
+            placeholder="Search users..."
+            className="m-2"
+          />
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Display Name</TableHead>
+                <TableHead>Name</TableHead>
                 <TableHead>Role</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {profileList.map(user => (
+              {filteredProfileList.map(user => (
                 <TableRow key={user.id}>
                   <TableCell>{user.username}</TableCell>
                   <TableCell>
