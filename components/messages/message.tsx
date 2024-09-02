@@ -23,6 +23,7 @@ import { TextareaAutosize } from "../ui/textarea-autosize"
 import { WithTooltip } from "../ui/with-tooltip"
 import { MessageActions } from "./message-actions"
 import { MessageMarkdown } from "./message-markdown"
+import { Skeleton } from "../ui/skeleton"
 
 const ICON_SIZE = 32
 
@@ -275,7 +276,11 @@ export const Message: FC<MessageProps> = ({
                 switch (toolInUse) {
                   case "none":
                     return (
-                      <IconCircleFilled className="animate-pulse" size={20} />
+                      <div className="space-y-3">
+                        <IconCircleFilled className="animate-pulse" size={20} />
+                        <Skeleton className="h-4 w-full bg-gray-500" />
+                        <Skeleton className="h-4 w-1/2 bg-gray-500" />
+                      </div>
                     )
                   case "retrieval":
                     return (
