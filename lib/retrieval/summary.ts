@@ -4,7 +4,6 @@ import { checkApiKey, getServerProfile } from "../server/server-chat-helpers"
 import { ChatCompletionCreateParamsBase } from "openai/resources/chat/completions.mjs"
 
 export async function genSummary(text: string | undefined) {
-  console.error(text, "text")
   if (!text) {
     return "No data provided"
   }
@@ -42,7 +41,6 @@ export async function genSummary(text: string | undefined) {
       { role: "user", content: text }
     ]
   })
-  console.log(response.choices[0].message.content)
   if (typeof response.choices[0].message.content == "string") {
     return response.choices[0].message.content
   }
