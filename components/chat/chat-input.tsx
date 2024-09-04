@@ -23,6 +23,7 @@ import { usePromptAndCommand } from "./chat-hooks/use-prompt-and-command"
 import { useSelectFileHandler } from "./chat-hooks/use-select-file-handler"
 import { suggestion } from "@/lib/suggestion"
 import SuggestionCarousel from "./suggestion-carousel"
+import { getAppInsights } from "@/lib/appInsights"
 
 interface ChatInputProps {}
 
@@ -285,7 +286,8 @@ export const ChatInput: FC<ChatInputProps> = ({}) => {
               )}
               onClick={() => {
                 if (!userInput) return
-
+                const appInsights = getAppInsights()
+                appInsights.trackEvent({ name: "Chat buttonClicked" })
                 handleSendMessage(userInput, chatMessages, false)
               }}
               size={30}
