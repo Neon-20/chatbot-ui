@@ -12,6 +12,9 @@ import {
   SheetTitle,
   SheetTrigger
 } from "@/components/ui/sheet"
+import { WithTooltip } from "./ui/with-tooltip"
+import { IconCheck, IconCopy } from "@tabler/icons-react"
+import { MESSAGE_ICON_SIZE } from "./messages/message-actions"
 
 export function SummarySheet({
   children,
@@ -23,6 +26,7 @@ export function SummarySheet({
   const [summaries, setSummaries] = useState<string[]>([])
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [showCheckmark, setShowCheckmark] = useState(false)
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -62,6 +66,12 @@ export function SummarySheet({
     fetchContent()
   }, [file.id])
 
+  const handleCopy = (summary: string) => {
+    setShowCheckmark(true)
+    navigator.clipboard.writeText(summary)
+    setTimeout(() => setShowCheckmark(false), 1000)
+  }
+
   return (
     <Sheet>
       <SheetTrigger>{children}</SheetTrigger>
@@ -76,11 +86,29 @@ export function SummarySheet({
         ) : (
           summaries.map((summary, index) => (
             <React.Fragment key={index}>
-              {summaries.length > 1 && (
-                <div className="my-4 text-4xl font-extrabold leading-none tracking-tight">
-                  Part {index + 1}
-                </div>
-              )}
+              <div className="flex justify-between">
+                {summaries.length > 1 && (
+                  <div className="my-4 text-4xl font-extrabold leading-none tracking-tight">
+                    Part {index + 1}
+                  </div>
+                )}
+                <WithTooltip
+                  delayDuration={1000}
+                  side="bottom"
+                  display={<div>Copy</div>}
+                  trigger={
+                    showCheckmark ? (
+                      <IconCheck size={MESSAGE_ICON_SIZE} />
+                    ) : (
+                      <IconCopy
+                        className="cursor-pointer hover:opacity-50"
+                        size={MESSAGE_ICON_SIZE}
+                        onClick={() => handleCopy(summary)}
+                      />
+                    )
+                  }
+                />
+              </div>
               <Separator className="my-4" />
               <MessageMarkdown content={summary} />
             </React.Fragment>
