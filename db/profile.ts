@@ -69,3 +69,13 @@ export const deleteProfile = async (profileId: string) => {
 
   return true
 }
+
+export const getAllProfiles = async () => {
+  const { data: profiles, error } = await supabase.from("profiles").select("*")
+
+  if (!profiles) {
+    throw new Error(error.message)
+  }
+
+  return profiles
+}

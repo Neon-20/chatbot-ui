@@ -21,6 +21,7 @@ import { Button } from "../ui/button"
 import { FilePreview } from "../ui/file-preview"
 import { WithTooltip } from "../ui/with-tooltip"
 import { ChatRetrievalSettings } from "./chat-retrieval-settings"
+import { SummarySheet } from "../summary"
 
 interface ChatFilesDisplayProps {}
 
@@ -73,7 +74,7 @@ export const ChatFilesDisplay: FC<ChatFilesDisplayProps> = ({}) => {
   }
 
   return showFilesDisplay && combinedMessageFiles.length > 0 ? (
-    <>
+    <div className="max-w-full">
       {showPreview && selectedImage && (
         <FilePreview
           type="image"
@@ -173,57 +174,55 @@ export const ChatFilesDisplay: FC<ChatFilesDisplayProps> = ({}) => {
                   </div>
                 </div>
               ) : (
-                <div
-                  key={file.id}
-                  className="relative flex h-[64px] cursor-pointer items-center space-x-4 rounded-xl border-2 px-4 py-3 hover:opacity-50"
-                  onClick={() => getLinkAndView(file)}
-                >
-                  <div className="rounded bg-blue-500 p-2">
-                    {(() => {
-                      let fileExtension = file.type.includes("/")
-                        ? file.type.split("/")[1]
-                        : file.type
+                <SummarySheet file={file} key={file.id}>
+                  <div className="relative flex h-[64px] cursor-pointer items-center space-x-4 rounded-xl border-2 px-4 py-3 hover:opacity-50">
+                    <div className="rounded bg-blue-500 p-2">
+                      {(() => {
+                        let fileExtension = file.type.includes("/")
+                          ? file.type.split("/")[1]
+                          : file.type
 
-                      switch (fileExtension) {
-                        case "pdf":
-                          return <IconFileTypePdf />
-                        case "markdown":
-                          return <IconMarkdown />
-                        case "txt":
-                          return <IconFileTypeTxt />
-                        case "json":
-                          return <IconJson />
-                        case "csv":
-                          return <IconFileTypeCsv />
-                        case "docx":
-                          return <IconFileTypeDocx />
-                        default:
-                          return <IconFileFilled />
-                      }
-                    })()}
+                        switch (fileExtension) {
+                          case "pdf":
+                            return <IconFileTypePdf />
+                          case "markdown":
+                            return <IconMarkdown />
+                          case "txt":
+                            return <IconFileTypeTxt />
+                          case "json":
+                            return <IconJson />
+                          case "csv":
+                            return <IconFileTypeCsv />
+                          case "docx":
+                            return <IconFileTypeDocx />
+                          default:
+                            return <IconFileFilled />
+                        }
+                      })()}
+                    </div>
+
+                    <div className="truncate text-sm">
+                      <div className="truncate">{file.name}</div>
+                    </div>
+
+                    <IconX
+                      className="bg-muted-foreground border-primary absolute right-[-6px] top-[-6px] flex size-5 cursor-pointer items-center justify-center rounded-full border-DEFAULT text-[10px] hover:border-red-500 hover:bg-white hover:text-red-500"
+                      onClick={e => {
+                        e.stopPropagation()
+                        setNewMessageFiles(
+                          newMessageFiles.filter(f => f.id !== file.id)
+                        )
+                        setChatFiles(chatFiles.filter(f => f.id !== file.id))
+                      }}
+                    />
                   </div>
-
-                  <div className="truncate text-sm">
-                    <div className="truncate">{file.name}</div>
-                  </div>
-
-                  <IconX
-                    className="bg-muted-foreground border-primary absolute right-[-6px] top-[-6px] flex size-5 cursor-pointer items-center justify-center rounded-full border-DEFAULT text-[10px] hover:border-red-500 hover:bg-white hover:text-red-500"
-                    onClick={e => {
-                      e.stopPropagation()
-                      setNewMessageFiles(
-                        newMessageFiles.filter(f => f.id !== file.id)
-                      )
-                      setChatFiles(chatFiles.filter(f => f.id !== file.id))
-                    }}
-                  />
-                </div>
+                </SummarySheet>
               )
             )}
           </div>
         </div>
       </div>
-    </>
+    </div>
   ) : (
     combinedMessageFiles.length > 0 && (
       <div className="flex w-full items-center justify-center space-x-2">
