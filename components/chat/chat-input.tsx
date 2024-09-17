@@ -172,7 +172,6 @@ export const ChatInput: FC<ChatInputProps> = ({}) => {
         <ChatFilesDisplay />
 
         <SuggestionCarousel
-          suggestion={suggestion}
           handleSendMessage={handleSendMessage}
           chatMessages={chatMessages}
         />
