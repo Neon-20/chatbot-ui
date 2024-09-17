@@ -86,6 +86,11 @@ export const SidebarSwitcher: FC<SidebarSwitcherProps> = ({
             contentType="files"
             onContentTypeChange={onContentTypeChange}
           />
+          <SidebarSwitchItem
+            icon={<IconPencil size={SIDEBAR_ICON_SIZE} />}
+            contentType="prompts"
+            onContentTypeChange={onContentTypeChange}
+          />
         </TabsList>
 
         <div className="flex flex-col items-center space-y-4">
