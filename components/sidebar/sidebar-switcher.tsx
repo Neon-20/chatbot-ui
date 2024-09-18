@@ -34,21 +34,21 @@ export const SidebarSwitcher: FC<SidebarSwitcherProps> = ({
       icon: <IconMessage size={SIDEBAR_ICON_SIZE} />,
       contentType: "chats"
     },
-    {
-      name: "Presets",
-      icon: <IconAdjustmentsHorizontal size={SIDEBAR_ICON_SIZE} />,
-      contentType: "presets"
-    },
+    // {
+    //   name: "Presets",
+    //   icon: <IconAdjustmentsHorizontal size={SIDEBAR_ICON_SIZE} />,
+    //   contentType: "presets"
+    // },
     {
       name: "Prompts",
       icon: <IconPencil size={SIDEBAR_ICON_SIZE} />,
       contentType: "prompts"
     },
-    {
-      name: "Models",
-      icon: <IconSparkles size={SIDEBAR_ICON_SIZE} />,
-      contentType: "models"
-    },
+    // {
+    //   name: "Models",
+    //   icon: <IconSparkles size={SIDEBAR_ICON_SIZE} />,
+    //   contentType: "models"
+    // },
     {
       name: "Files",
       icon: <IconFile size={SIDEBAR_ICON_SIZE} />,
@@ -63,12 +63,12 @@ export const SidebarSwitcher: FC<SidebarSwitcherProps> = ({
       name: "Assistants",
       icon: <IconRobotFace size={SIDEBAR_ICON_SIZE} />,
       contentType: "assistants"
-    },
-    {
-      name: "Tools",
-      icon: <IconBolt size={SIDEBAR_ICON_SIZE} />,
-      contentType: "tools"
     }
+    // {
+    //   name: "Tools",
+    //   icon: <IconBolt size={SIDEBAR_ICON_SIZE} />,
+    //   contentType: "tools"
+    // }
   ]
 
   if (profile?.roles == "user") {

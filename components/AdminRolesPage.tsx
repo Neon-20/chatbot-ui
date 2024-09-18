@@ -87,7 +87,7 @@ const AdminRolesPage = () => {
         <SheetHeader>
           <SheetTitle>Admin Role Management</SheetTitle>
         </SheetHeader>
-        <div>
+        <div className="max-h-[95vh] overflow-y-auto">
           <Input
             value={inputValue}
             onChange={e => setInputValue(e.target.value)}
