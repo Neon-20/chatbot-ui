@@ -4,6 +4,7 @@ import { Button } from "../ui/button"
 import { ChatMessage } from "@/types/chat-message"
 import { genSuggestions } from "@/lib/retrieval/summary"
 import { Skeleton } from "../ui/skeleton"
+import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa"
 
 function SuggestionCarousel({
   handleSendMessage,
@@ -65,14 +66,14 @@ function SuggestionCarousel({
       <Button
         onClick={() => scroll("left")}
         variant={"ghost"}
-        className="rounded-full p-2 focus:outline-none"
+        className="rounded-full focus:outline-none"
       >
-        ←
+        <FaArrowCircleLeft className="size-6" />
       </Button>
 
       <div
         ref={scrollRef}
-        className="no-scrollbar relative flex w-full space-x-4 overflow-x-auto px-2"
+        className="no-scrollbar relative flex w-full space-x-2 overflow-x-auto"
       >
         {suggestion.map((suggestion, index) => (
           <div
@@ -97,9 +98,9 @@ function SuggestionCarousel({
       <Button
         onClick={() => scroll("right")}
         variant={"ghost"}
-        className="rounded-full p-2 focus:outline-none"
+        className="rounded-full focus:outline-none"
       >
-        →
+        <FaArrowCircleRight className="size-6" />
       </Button>
     </div>
   )

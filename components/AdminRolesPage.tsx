@@ -20,7 +20,8 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
+  TableRow,
+  TableFooter
 } from "@/components/ui/table"
 import { TablesUpdate } from "@/supabase/types"
 import { supabase } from "@/lib/supabase/browser-client"
@@ -76,6 +77,24 @@ const AdminRolesPage = () => {
       console.error("Error updating role:", error)
     }
   }
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString)
+    return new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    }).format(date)
+  }
+
+  const totalAdmins = filteredProfileList.filter(
+    user => user.roles === "admin"
+  ).length
+  const totalUsers = filteredProfileList.filter(
+    user => user.roles === "user"
+  ).length
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -99,6 +118,7 @@ const AdminRolesPage = () => {
               <TableRow>
                 <TableHead>Name</TableHead>
                 <TableHead>Role</TableHead>
+                <TableHead>Date Joined</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -116,15 +136,23 @@ const AdminRolesPage = () => {
                         <SelectValue placeholder="Select a role" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="user">User</SelectItem>
-                        <SelectItem value="developer">Developer</SelectItem>
-                        <SelectItem value="admin">Admin</SelectItem>
+                        <SelectItem value="user">User 👨🏻</SelectItem>
+                        <SelectItem value="developer">Developer 👨🏻‍💻</SelectItem>
+                        <SelectItem value="admin">Admin 👑</SelectItem>
                       </SelectContent>
                     </Select>
                   </TableCell>
+                  <TableCell>{formatDate(user.created_at!!)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
+            <TableFooter className="bg-background">
+              <TableRow>
+                <TableCell colSpan={4} className="text-center text-red-400">
+                  Total Admins: {totalAdmins} | Total Users: {totalUsers}
+                </TableCell>
+              </TableRow>
+            </TableFooter>
           </Table>
         </div>
       </SheetContent>
