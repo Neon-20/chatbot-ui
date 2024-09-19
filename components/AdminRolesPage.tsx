@@ -39,7 +39,13 @@ const AdminRolesPage = () => {
   const [filteredProfileList, setFilteredProfileList] = useState<
     TablesUpdate<"profiles">[]
   >([])
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc")
+  const [sortOrder, setSortOrder] = useState<{
+    created_at: "asc" | "desc"
+    updated_at: "asc" | "desc"
+  }>({ created_at: "asc", updated_at: "asc" })
+  const [sortBy, setSortBy] = useState<"created_at" | "updated_at">(
+    "created_at"
+  )
 
   useEffect(() => {
     async function fetchProfiles() {
@@ -56,13 +62,13 @@ const AdminRolesPage = () => {
         user.display_name?.toLowerCase().includes(inputValue.toLowerCase())
     )
     sortedList = sortedList.sort((a, b) => {
-      const dateA = new Date(a.created_at ?? "").getTime()
-      const dateB = new Date(b.created_at ?? "").getTime()
-      return sortOrder === "asc" ? dateA - dateB : dateB - dateA
+      const dateA = new Date(a[sortBy] ?? "").getTime()
+      const dateB = new Date(b[sortBy] ?? "").getTime()
+      return sortOrder[sortBy] === "asc" ? dateA - dateB : dateB - dateA
     })
 
     setFilteredProfileList(sortedList)
-  }, [inputValue, profileList, sortOrder])
+  }, [inputValue, profileList, sortOrder, sortBy])
 
   const handleRoleChange = async (username: string, newRole: Role) => {
     try {
@@ -85,7 +91,8 @@ const AdminRolesPage = () => {
     }
   }
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string | undefined) => {
+    if (!dateString) return "Not Updated Yet"
     const date = new Date(dateString)
     return new Intl.DateTimeFormat("en-US", {
       year: "numeric",
@@ -96,8 +103,12 @@ const AdminRolesPage = () => {
     }).format(date)
   }
 
-  const toggleSortOrder = () => {
-    setSortOrder(prev => (prev === "asc" ? "desc" : "asc"))
+  const toggleSortOrder = (column: "created_at" | "updated_at") => {
+    setSortBy(column)
+    setSortOrder(prev => ({
+      ...prev,
+      [column]: prev[column] === "asc" ? "desc" : "asc"
+    }))
   }
 
   const totalAdmins = filteredProfileList.filter(
@@ -131,8 +142,21 @@ const AdminRolesPage = () => {
                 <TableHead>Name</TableHead>
                 <TableHead>Role</TableHead>
                 <TableHead>
-                  <Button variant="ghost" onClick={toggleSortOrder}>
+                  <Button
+                    className="gap-3"
+                    variant="ghost"
+                    onClick={() => toggleSortOrder("created_at")}
+                  >
                     Date Joined <ArrowUpDown size={18} />
+                  </Button>
+                </TableHead>
+                <TableHead>
+                  <Button
+                    variant="ghost"
+                    className="gap-3"
+                    onClick={() => toggleSortOrder("updated_at")}
+                  >
+                    Last Login <ArrowUpDown size={18} />
                   </Button>
                 </TableHead>
               </TableRow>
@@ -159,6 +183,7 @@ const AdminRolesPage = () => {
                     </Select>
                   </TableCell>
                   <TableCell>{formatDate(user.created_at ?? "")}</TableCell>
+                  <TableCell>{formatDate(user.updated_at ?? "")}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
