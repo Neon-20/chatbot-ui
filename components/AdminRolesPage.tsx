@@ -29,6 +29,7 @@ import { Button } from "./ui/button"
 import { IconCrown } from "@tabler/icons-react"
 import { getAllProfiles } from "@/db/profile"
 import { Input } from "./ui/input"
+import { ArrowUpDown } from "lucide-react"
 
 type Role = "user" | "developer" | "admin"
 
@@ -38,6 +39,13 @@ const AdminRolesPage = () => {
   const [filteredProfileList, setFilteredProfileList] = useState<
     TablesUpdate<"profiles">[]
   >([])
+  const [sortOrder, setSortOrder] = useState<{
+    created_at: "asc" | "desc"
+    updated_at: "asc" | "desc"
+  }>({ created_at: "asc", updated_at: "asc" })
+  const [sortBy, setSortBy] = useState<"created_at" | "updated_at">(
+    "created_at"
+  )
 
   useEffect(() => {
     async function fetchProfiles() {
@@ -48,14 +56,19 @@ const AdminRolesPage = () => {
   }, [])
 
   useEffect(() => {
-    setFilteredProfileList(
-      profileList.filter(
-        user =>
-          user.username?.toLowerCase().includes(inputValue.toLowerCase()) ||
-          user.display_name?.toLowerCase().includes(inputValue.toLowerCase())
-      )
+    let sortedList = [...profileList].filter(
+      user =>
+        user.username?.toLowerCase().includes(inputValue.toLowerCase()) ||
+        user.display_name?.toLowerCase().includes(inputValue.toLowerCase())
     )
-  }, [inputValue, profileList])
+    sortedList = sortedList.sort((a, b) => {
+      const dateA = new Date(a[sortBy] ?? "").getTime()
+      const dateB = new Date(b[sortBy] ?? "").getTime()
+      return sortOrder[sortBy] === "asc" ? dateA - dateB : dateB - dateA
+    })
+
+    setFilteredProfileList(sortedList)
+  }, [inputValue, profileList, sortOrder, sortBy])
 
   const handleRoleChange = async (username: string, newRole: Role) => {
     try {
@@ -77,7 +90,9 @@ const AdminRolesPage = () => {
       console.error("Error updating role:", error)
     }
   }
-  const formatDate = (dateString: string) => {
+
+  const formatDate = (dateString: string | undefined) => {
+    if (!dateString) return "Not Updated Yet"
     const date = new Date(dateString)
     return new Intl.DateTimeFormat("en-US", {
       year: "numeric",
@@ -86,6 +101,14 @@ const AdminRolesPage = () => {
       hour: "2-digit",
       minute: "2-digit"
     }).format(date)
+  }
+
+  const toggleSortOrder = (column: "created_at" | "updated_at") => {
+    setSortBy(column)
+    setSortOrder(prev => ({
+      ...prev,
+      [column]: prev[column] === "asc" ? "desc" : "asc"
+    }))
   }
 
   const totalAdmins = filteredProfileList.filter(
@@ -111,14 +134,31 @@ const AdminRolesPage = () => {
             value={inputValue}
             onChange={e => setInputValue(e.target.value)}
             placeholder="Search users..."
-            className="m-2"
+            className="my-2"
           />
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
                 <TableHead>Role</TableHead>
-                <TableHead>Date Joined</TableHead>
+                <TableHead>
+                  <Button
+                    className="gap-3"
+                    variant="ghost"
+                    onClick={() => toggleSortOrder("created_at")}
+                  >
+                    Date Joined <ArrowUpDown size={18} />
+                  </Button>
+                </TableHead>
+                <TableHead>
+                  <Button
+                    variant="ghost"
+                    className="gap-3"
+                    onClick={() => toggleSortOrder("updated_at")}
+                  >
+                    Last Login <ArrowUpDown size={18} />
+                  </Button>
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -142,7 +182,8 @@ const AdminRolesPage = () => {
                       </SelectContent>
                     </Select>
                   </TableCell>
-                  <TableCell>{formatDate(user.created_at!!)}</TableCell>
+                  <TableCell>{formatDate(user.created_at ?? "")}</TableCell>
+                  <TableCell>{formatDate(user.updated_at ?? "")}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

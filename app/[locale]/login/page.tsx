@@ -41,6 +41,13 @@ export default async function Login({
       .eq("is_home", true)
       .single()
 
+    await supabase
+      .from("profiles")
+      .update({ updated_at: new Date().toISOString() })
+      .eq("user_id", session.user.id)
+      .select("*")
+      .single()
+
     if (!homeWorkspace) {
       throw new Error(error.message)
     }
