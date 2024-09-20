@@ -92,7 +92,7 @@ const AdminRolesPage = () => {
   }
 
   const formatDate = (dateString: string | undefined) => {
-    if (!dateString) return "Not Updated Yet"
+    if (!dateString) return undefined
     const date = new Date(dateString)
     return new Intl.DateTimeFormat("en-US", {
       year: "numeric",
@@ -183,7 +183,9 @@ const AdminRolesPage = () => {
                     </Select>
                   </TableCell>
                   <TableCell>{formatDate(user.created_at ?? "")}</TableCell>
-                  <TableCell>{formatDate(user.updated_at ?? "")}</TableCell>
+                  <TableCell>
+                    {formatDate(user.updated_at ?? user.created_at ?? "")}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

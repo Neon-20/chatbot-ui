@@ -119,11 +119,24 @@ export function SummarySheet({
   )
 }
 
-function createBatches(data: any[]): any[][] {
+export function createBatches(
+  data: {
+    content: string
+    created_at: string
+    file_id: string
+    id: string
+    local_embedding: string | null
+    openai_embedding: string | null
+    sharing: string
+    tokens: number
+    updated_at: string | null
+    user_id: string
+  }[]
+) {
   if (!data || !Array.isArray(data)) return []
 
-  const batches: any[][] = []
-  let currentBatch: any[] = []
+  const batches = []
+  let currentBatch = []
   let currentTokenCount = 0
   const TOKEN_LIMIT = 100000
 
