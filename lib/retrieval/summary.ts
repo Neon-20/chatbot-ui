@@ -47,13 +47,36 @@ export async function genSummary(text: string | undefined) {
   return "Error generating summary"
 }
 
-export async function genSuggestions(userQuery: string | undefined) {
+export async function genSuggestions({
+  userQuery,
+  filesData
+}: {
+  userQuery: string | undefined
+  filesData:
+    | {
+        content: string
+        tokens: number
+      }[]
+    | undefined
+}) {
+  console.error("genSuggestions")
   if (!userQuery) {
     return ["No data provided"]
   }
+  const data = filesData?.map(file => file.content)
 
   const profile = await getServerProfile()
-  const prompt = `Based on the user's current query, suggest some potential follow-up questions or related topics they might be interested in. The suggestions should be relevant, and encourage deeper exploration of the subject matter. the suggestions should be an array of strings with variable name 'suggestions'`
+  const prompt = `
+    Analyze this content: <content> {${userQuery}} </content>
+    Along with the additional files data: ${data}
+    Generate 3-5 suggestions that:
+    Relate directly to the main topic/themes
+    Encourage deeper exploration
+    Cover different aspects of the topic
+    Are phrased as questions or brief descriptions
+    Cater to various interests within the topic
+    Stick closely to the content, include only logically connected concepts, and avoid speculation.
+    Present your output as: <output> suggestions = [ "First suggestion", "Second suggestion", "Third suggestion", "Fourth suggestion (if applicable)", "Fifth suggestion (if applicable)" ] </output>`
 
   checkApiKey(profile.azure_openai_api_key, "Azure OpenAI")
 
@@ -81,8 +104,7 @@ export async function genSuggestions(userQuery: string | undefined) {
         content:
           "You are a helpful assistant that extracts data and returns it in JSON format."
       },
-      { role: "user", content: prompt },
-      { role: "user", content: userQuery }
+      { role: "user", content: prompt }
     ],
     response_format: {
       type: "json_object"

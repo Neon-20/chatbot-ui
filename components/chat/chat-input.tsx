@@ -171,10 +171,7 @@ export const ChatInput: FC<ChatInputProps> = ({}) => {
       <div className="flex flex-col flex-wrap justify-center gap-2">
         <ChatFilesDisplay />
 
-        <SuggestionCarousel
-          handleSendMessage={handleSendMessage}
-          chatMessages={chatMessages}
-        />
+        <SuggestionCarousel handleSendMessage={handleSendMessage} />
 
         {selectedTools &&
           selectedTools.map((tool, index) => (
