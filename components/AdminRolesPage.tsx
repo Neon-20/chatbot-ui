@@ -49,7 +49,12 @@ const AdminRolesPage = () => {
 
   useEffect(() => {
     async function fetchProfiles() {
-      const profiles = await getAllProfiles()
+      let profiles = await getAllProfiles()
+      profiles.map(profile => {
+        if (!profile.updated_at) {
+          profile.updated_at = profile.created_at
+        }
+      })
       setProfileList(profiles)
     }
     fetchProfiles()
@@ -183,9 +188,7 @@ const AdminRolesPage = () => {
                     </Select>
                   </TableCell>
                   <TableCell>{formatDate(user.created_at ?? "")}</TableCell>
-                  <TableCell>
-                    {formatDate(user.updated_at ?? user.created_at ?? "")}
-                  </TableCell>
+                  <TableCell>{formatDate(user.updated_at ?? "")}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
