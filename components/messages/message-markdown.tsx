@@ -3,9 +3,18 @@ import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
 import { MessageCodeBlock } from "./message-codeblock"
 import { MessageMarkdownMemoized } from "./message-markdown-memoized"
+import rehypeKatex from "rehype-katex"
 
 interface MessageMarkdownProps {
   content: string
+}
+
+const replaceMathDelimiters = (content: string) => {
+  return content
+    .replace(/\\\(/g, "$")
+    .replace(/\\\)/g, "$")
+    .replace(/\\\[/g, "\n$$")
+    .replace(/\\\]/g, "$$\n")
 }
 
 export const MessageMarkdown: FC<MessageMarkdownProps> = ({ content }) => {
@@ -13,6 +22,7 @@ export const MessageMarkdown: FC<MessageMarkdownProps> = ({ content }) => {
     <MessageMarkdownMemoized
       className="prose dark:prose-invert prose-p:leading-relaxed prose-pre:p-0 min-w-full space-y-6 break-words"
       remarkPlugins={[remarkGfm, remarkMath]}
+      rehypePlugins={[rehypeKatex]}
       components={{
         p({ children }) {
           return <p className="mb-2 last:mb-0">{children}</p>
@@ -23,9 +33,13 @@ export const MessageMarkdown: FC<MessageMarkdownProps> = ({ content }) => {
         code({ node, className, children, ...props }) {
           const childArray = React.Children.toArray(children)
           const firstChild = childArray[0] as React.ReactElement
+          const secondChild = childArray[1] as React.ReactElement
           const firstChildAsString = React.isValidElement(firstChild)
             ? (firstChild as React.ReactElement).props.children
             : firstChild
+          const secondChildAsString = React.isValidElement(secondChild)
+            ? (secondChild as React.ReactElement).props.children
+            : secondChild
 
           if (firstChildAsString === "▍") {
             return <span className="mt-1 animate-pulse cursor-default">▍</span>
@@ -59,7 +73,7 @@ export const MessageMarkdown: FC<MessageMarkdownProps> = ({ content }) => {
         }
       }}
     >
-      {content}
+      {replaceMathDelimiters(content)}
     </MessageMarkdownMemoized>
   )
 }
