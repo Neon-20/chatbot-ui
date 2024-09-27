@@ -24,6 +24,7 @@ function SuggestionCarousel({
   const [userQuery, setUserQuery] = useState<string | undefined>(undefined)
   const [filesData, setFilesData] =
     useState<{ content: string; tokens: number }[]>()
+
   const [suggestions, setSuggestions] = useState<string[]>(defaultSuggestion)
   const [isGenerating, setIsGenerating] = useState(false)
 
@@ -108,7 +109,7 @@ function SuggestionCarousel({
         ref={scrollRef}
         className="no-scrollbar relative flex w-full space-x-2 overflow-x-auto"
       >
-        {suggestions.map((suggestion, index) => (
+        {suggestions?.map((suggestion, index) => (
           <div
             key={index}
             className="flex h-full shrink-0 cursor-pointer items-center justify-center"
