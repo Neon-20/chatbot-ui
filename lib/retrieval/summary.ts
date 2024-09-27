@@ -2,6 +2,7 @@
 import OpenAI from "openai"
 import { checkApiKey, getServerProfile } from "../server/server-chat-helpers"
 import { ChatCompletionCreateParamsBase } from "openai/resources/chat/completions.mjs"
+import { defaultSuggestion } from "../suggestion"
 
 export async function genSummary(text: string | undefined) {
   if (!text) {
@@ -60,8 +61,8 @@ export async function genSuggestions({
     | undefined
 }) {
   console.error("genSuggestions")
-  if (!userQuery) {
-    return ["No data provided"]
+  if (!userQuery && !filesData) {
+    return defaultSuggestion
   }
   const data = filesData?.map(file => file.content)
 

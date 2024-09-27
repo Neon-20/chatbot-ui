@@ -7,6 +7,7 @@ import { Skeleton } from "../ui/skeleton"
 import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa"
 import { ChatbotUIContext } from "@/context/context"
 import { supabase } from "@/lib/supabase/browser-client"
+import { defaultSuggestion } from "@/lib/suggestion"
 
 function SuggestionCarousel({
   handleSendMessage
@@ -23,13 +24,7 @@ function SuggestionCarousel({
   const [userQuery, setUserQuery] = useState<string | undefined>(undefined)
   const [filesData, setFilesData] =
     useState<{ content: string; tokens: number }[]>()
-  const [suggestions, setSuggestions] = useState<string[]>([
-    "What is alter Domus?",
-    "How does alter Domus Do Business?",
-    "alter Domus deals in which sector of business?",
-    "Where are the branches of alter Domus?",
-    "Where is alter Domus head office located?"
-  ])
+  const [suggestions, setSuggestions] = useState<string[]>(defaultSuggestion)
   const [isGenerating, setIsGenerating] = useState(false)
 
   const scroll = (direction: "left" | "right") => {
@@ -81,7 +76,7 @@ function SuggestionCarousel({
 
   useEffect(() => {
     const fetchSuggestions = async () => {
-      if (!userQuery || isGenerating || !filesData) return
+      if (isGenerating) return
       setIsGenerating(true)
       try {
         const fetchedSuggestions = await genSuggestions({
