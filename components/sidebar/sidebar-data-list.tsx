@@ -170,7 +170,7 @@ export const SidebarDataList: FC<SidebarDataListProps> = ({
 
     setStateFunction((items: any) =>
       items.map((item: any) =>
-        item.id === updatedItem.id ? updatedItem : item
+        item.id === updatedItem?.id ? updatedItem : item
       )
     )
   }

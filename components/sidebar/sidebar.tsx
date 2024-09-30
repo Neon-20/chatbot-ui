@@ -23,7 +23,9 @@ export const Sidebar: FC<SidebarProps> = ({ contentType, showSidebar }) => {
     collections,
     assistants,
     tools,
-    models
+    models,
+    selectedWorkspace,
+    profile
   } = useContext(ChatbotUIContext)
 
   const chatFolders = folders.filter(folder => folder.type === "chats")
@@ -63,8 +65,9 @@ export const Sidebar: FC<SidebarProps> = ({ contentType, showSidebar }) => {
       <div className="flex h-full flex-col p-3">
         <div className="flex items-center border-b-2 pb-2">
           <WorkspaceSwitcher />
-
-          <WorkspaceSettings />
+          {selectedWorkspace?.user_id == profile?.user_id && (
+            <WorkspaceSettings />
+          )}
         </div>
 
         {(() => {

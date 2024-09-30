@@ -145,7 +145,7 @@ export const updatePrompt = async (
     .single()
 
   if (error) {
-    throw new Error(error.message)
+    console.error(error.message)
   }
 
   return updatedPrompt
