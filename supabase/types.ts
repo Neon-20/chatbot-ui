@@ -1412,6 +1412,7 @@ export type Database = {
           instructions: string
           is_home: boolean
           name: string
+          public: boolean
           sharing: string
           updated_at: string | null
           user_id: string
@@ -1431,6 +1432,7 @@ export type Database = {
           instructions: string
           is_home?: boolean
           name: string
+          public?: boolean
           sharing?: string
           updated_at?: string | null
           user_id: string
@@ -1450,6 +1452,7 @@ export type Database = {
           instructions?: string
           is_home?: boolean
           name?: string
+          public?: boolean
           sharing?: string
           updated_at?: string | null
           user_id?: string

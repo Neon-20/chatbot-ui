@@ -15,6 +15,7 @@ import { ChatSettingsForm } from "../ui/chat-settings-form"
 import ImagePicker from "../ui/image-picker"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
+import { Switch } from "@/components/ui/switch"
 import { LimitDisplay } from "../ui/limit-display"
 import {
   Sheet,
@@ -258,6 +259,20 @@ export const WorkspaceSettings: FC<WorkspaceSettingsProps> = ({}) => {
                   used={instructions.length}
                   limit={WORKSPACE_INSTRUCTIONS_MAX}
                 />
+              </div>
+              <div className="my-3 flex items-center space-x-2">
+                <Label>Private</Label>
+                <Switch
+                  checked={selectedWorkspace.public}
+                  onCheckedChange={checked =>
+                    setSelectedWorkspace({
+                      ...selectedWorkspace,
+                      public: checked
+                    })
+                  }
+                  id="airplane-mode"
+                />
+                <Label htmlFor="airplane-mode">Public</Label>
               </div>
             </TabsContent>
 
