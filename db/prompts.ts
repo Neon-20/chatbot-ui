@@ -1,3 +1,4 @@
+import { basePrompts } from "@/lib/suggestion"
 import { supabase } from "@/lib/supabase/browser-client"
 import { TablesInsert, TablesUpdate } from "@/supabase/types"
 
@@ -49,7 +50,11 @@ export const getPromptWorkspacesByPromptId = async (promptId: string) => {
     .single()
 
   if (!prompt) {
-    throw new Error(error.message)
+    const prompt = basePrompts.find(prompt => prompt.id === promptId)
+    if (!prompt) {
+      throw new Error(error.message)
+    }
+    return prompt
   }
 
   return prompt
