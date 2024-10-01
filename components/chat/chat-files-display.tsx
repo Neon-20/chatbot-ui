@@ -175,7 +175,7 @@ export const ChatFilesDisplay: FC<ChatFilesDisplayProps> = ({}) => {
                 </div>
               ) : (
                 <SummarySheet file={file} key={file.id}>
-                  <div className="relative flex h-[64px] cursor-pointer items-center space-x-4 rounded-xl border-2 px-4 py-3 hover:opacity-50">
+                  <div className="relative flex h-[64px] cursor-pointer items-center space-x-4 rounded-xl border-2 px-4 py-3">
                     <div className="rounded bg-blue-500 p-2">
                       {(() => {
                         let fileExtension = file.type.includes("/")
@@ -203,6 +203,9 @@ export const ChatFilesDisplay: FC<ChatFilesDisplayProps> = ({}) => {
 
                     <div className="truncate text-sm">
                       <div className="truncate">{file.name}</div>
+                      <div className="text-xs font-bold hover:opacity-50">
+                        Click here for summary
+                      </div>
                     </div>
 
                     <IconX
