@@ -60,7 +60,6 @@ export async function genSuggestions({
       }[]
     | undefined
 }) {
-  console.error("genSuggestions")
   if (!userQuery && !filesData) {
     return defaultSuggestion
   }
@@ -96,7 +95,7 @@ export async function genSuggestions({
     defaultQuery: { "api-version": "2023-12-01-preview" },
     defaultHeaders: { "api-key": KEY }
   })
-
+  console.error("Suggestions")
   const response = await azureOpenai.chat.completions.create({
     model: DEPLOYMENT_ID as ChatCompletionCreateParamsBase["model"],
     messages: [
