@@ -239,7 +239,10 @@ export const SidebarUpdateItem: FC<SidebarUpdateItemProps> = ({
     prompts: async (promptId: string) => {
       if (basePrompts.find(prompt => prompt.id === promptId)) return []
       const item = await getPromptWorkspacesByPromptId(promptId)
-      return item.workspaces
+      if ("workspaces" in item) {
+        return item.workspaces
+      }
+      return []
     },
     files: async (fileId: string) => {
       const item = await getFileWorkspacesByFileId(fileId)
