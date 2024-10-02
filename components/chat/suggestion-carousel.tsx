@@ -7,7 +7,6 @@ import { Skeleton } from "../ui/skeleton"
 import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa"
 import { ChatbotUIContext } from "@/context/context"
 import { supabase } from "@/lib/supabase/browser-client"
-import { defaultSuggestion } from "@/lib/suggestion"
 
 function SuggestionCarousel({
   handleSendMessage
@@ -18,14 +17,16 @@ function SuggestionCarousel({
     arg2: boolean
   ) => void
 }) {
-  const { chatMessages, newMessageFiles } = useContext(ChatbotUIContext)
+  const { chatMessages, newMessageFiles, profile } =
+    useContext(ChatbotUIContext)
 
   const scrollRef = useRef(null)
   const [userQuery, setUserQuery] = useState<string | undefined>(undefined)
   const [filesData, setFilesData] =
     useState<{ content: string; tokens: number }[]>()
-
-  const [suggestions, setSuggestions] = useState<string[]>(defaultSuggestion)
+  const [suggestions, setSuggestions] = useState<string[]>(
+    profile?.defaultPrompts!
+  )
   const [isGenerating, setIsGenerating] = useState(false)
 
   const scroll = (direction: "left" | "right") => {

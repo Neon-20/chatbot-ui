@@ -16,6 +16,7 @@ import { ProfileSettings } from "../utility/profile-settings"
 import { SidebarSwitchItem } from "./sidebar-switch-item"
 import { ChatbotUIContext } from "@/context/context"
 import AdminRolesPage from "../AdminRolesPage"
+import DefaultSuggestion from "./defaultSuggestion"
 
 export const SIDEBAR_ICON_SIZE = 28
 
@@ -121,7 +122,7 @@ export const SidebarSwitcher: FC<SidebarSwitcherProps> = ({
               onContentTypeChange={onContentTypeChange}
             />
           ))}
-
+          <DefaultSuggestion />
           <AdminRolesPage />
         </TabsList>
         {/* <SidebarSwitchItem

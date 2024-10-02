@@ -2,7 +2,6 @@
 import OpenAI from "openai"
 import { checkApiKey, getServerProfile } from "../server/server-chat-helpers"
 import { ChatCompletionCreateParamsBase } from "openai/resources/chat/completions.mjs"
-import { defaultSuggestion } from "../suggestion"
 
 export async function genSummary(text: string | undefined) {
   if (!text) {
@@ -60,12 +59,12 @@ export async function genSuggestions({
       }[]
     | undefined
 }) {
+  const profile = await getServerProfile()
   if (!userQuery && !filesData) {
-    return defaultSuggestion
+    return profile?.defaultPrompts
   }
   const data = filesData?.map(file => file.content)
 
-  const profile = await getServerProfile()
   const prompt = `
     Analyze this content: <content> {${userQuery}} </content>
     Along with the additional files data: ${data}
