@@ -60,7 +60,7 @@ export const baseFolders: Tables<"folders">[] = [
     created_at: "2024-09-27T09:00:00Z",
     description: "Folder for storing prompts related to email writing tasks.",
     id: "1",
-    name: "email",
+    name: "Email",
     type: "prompts",
     updated_at: null,
     user_id: "",
@@ -71,7 +71,7 @@ export const baseFolders: Tables<"folders">[] = [
     description:
       "Folder for storing prompts related to summarizing data and documents.",
     id: "2",
-    name: "summarize",
+    name: "Summarize",
     type: "prompts",
     updated_at: null,
     user_id: "",

@@ -84,6 +84,7 @@ import { FC, useContext, useEffect, useRef, useState } from "react"
 import profile from "react-syntax-highlighter/dist/esm/languages/hljs/profile"
 import { toast } from "sonner"
 import { SidebarDeleteItem } from "./sidebar-delete-item"
+import { basePrompts } from "@/lib/suggestion"
 
 interface SidebarUpdateItemProps {
   isTyping: boolean
@@ -236,6 +237,7 @@ export const SidebarUpdateItem: FC<SidebarUpdateItemProps> = ({
       return item.workspaces
     },
     prompts: async (promptId: string) => {
+      if (basePrompts.find(prompt => prompt.id === promptId)) return []
       const item = await getPromptWorkspacesByPromptId(promptId)
       return item.workspaces
     },
