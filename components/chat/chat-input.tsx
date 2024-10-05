@@ -21,7 +21,7 @@ import { useChatHandler } from "./chat-hooks/use-chat-handler"
 import { useChatHistoryHandler } from "./chat-hooks/use-chat-history"
 import { usePromptAndCommand } from "./chat-hooks/use-prompt-and-command"
 import { useSelectFileHandler } from "./chat-hooks/use-select-file-handler"
-import { suggestion } from "@/lib/suggestion"
+import { defaultSuggestion } from "@/lib/suggestion"
 import SuggestionCarousel from "./suggestion-carousel"
 import { getAppInsights } from "@/lib/appInsights"
 

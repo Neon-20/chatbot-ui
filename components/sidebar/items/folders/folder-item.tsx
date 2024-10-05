@@ -63,7 +63,13 @@ export const Folder: FC<FolderProps> = ({
     <div
       ref={itemRef}
       id="folder"
-      className={cn("rounded focus:outline-none", isDragOver && "bg-accent")}
+      className={
+        folder.id == "1"
+          ? "text-red-500"
+          : "" + folder.id == "2"
+            ? "text-blue-500"
+            : "" + cn("rounded focus:outline-none", isDragOver && "bg-accent")
+      }
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDragOver={handleDragOver}

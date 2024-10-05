@@ -8,8 +8,9 @@ import {
   CardTitle
 } from "@/components/ui/card"
 import { FC, useRef } from "react"
+import Image from "next/image"
 
-export const SETUP_STEP_COUNT = 3
+export const SETUP_STEP_COUNT = 2
 
 interface StepContainerProps {
   stepDescription: string
@@ -42,18 +43,20 @@ export const StepContainer: FC<StepContainerProps> = ({
 
   return (
     <Card
-      className="max-h-[calc(100vh-60px)] w-[600px] overflow-auto"
+      className="relative max-h-[calc(100vh-60px)] w-[600px] overflow-auto backdrop-blur-md"
       onKeyDown={handleKeyDown}
     >
       <CardHeader>
         <CardTitle className="flex justify-between">
           <div>{stepTitle}</div>
-
-          <div className="text-sm">
-            {stepNum} / {SETUP_STEP_COUNT}
-          </div>
+          <Image
+            src="/images/image.png"
+            width={50}
+            height={40}
+            alt={""}
+            className="absolute right-4 top-3 object-contain"
+          />
         </CardTitle>
-
         <CardDescription>{stepDescription}</CardDescription>
       </CardHeader>
 
