@@ -81,10 +81,8 @@ import { convertBlobToBase64 } from "@/lib/blob-to-b64"
 import { Tables, TablesUpdate } from "@/supabase/types"
 import { CollectionFile, ContentType, DataItemType } from "@/types"
 import { FC, useContext, useEffect, useRef, useState } from "react"
-import profile from "react-syntax-highlighter/dist/esm/languages/hljs/profile"
 import { toast } from "sonner"
 import { SidebarDeleteItem } from "./sidebar-delete-item"
-import { basePrompts } from "@/lib/suggestion"
 
 interface SidebarUpdateItemProps {
   isTyping: boolean
@@ -104,6 +102,7 @@ export const SidebarUpdateItem: FC<SidebarUpdateItemProps> = ({
   isTyping
 }) => {
   const {
+    profile,
     workspaces,
     selectedWorkspace,
     setChats,
@@ -237,7 +236,6 @@ export const SidebarUpdateItem: FC<SidebarUpdateItemProps> = ({
       return item.workspaces
     },
     prompts: async (promptId: string) => {
-      if (basePrompts.find(prompt => prompt.id === promptId)) return []
       const item = await getPromptWorkspacesByPromptId(promptId)
       return item.workspaces
     },
@@ -375,8 +373,6 @@ export const SidebarUpdateItem: FC<SidebarUpdateItemProps> = ({
       collectionId: string,
       updateState: TablesUpdate<"assistants">
     ) => {
-      if (!profile) return
-
       const { ...rest } = updateState
 
       const filesToAdd = selectedCollectionFiles.filter(
@@ -643,12 +639,13 @@ export const SidebarUpdateItem: FC<SidebarUpdateItemProps> = ({
         <div className="grow overflow-auto">
           <SheetHeader>
             <SheetTitle className="text-2xl font-bold">
-              Edit {contentType.slice(0, -1)}
+              {item.user_id == profile?.user_id ? "Edit" : " "}{" "}
+              {contentType.slice(0, -1)}
             </SheetTitle>
           </SheetHeader>
 
           <div className="mt-4 space-y-3">
-            {workspaces.length > 1 && (
+            {workspaces.length > 1 && item.user_id == profile?.user_id && (
               <div className="space-y-1">
                 <Label>Assigned Workspaces</Label>
 
@@ -663,19 +660,21 @@ export const SidebarUpdateItem: FC<SidebarUpdateItemProps> = ({
           </div>
         </div>
 
-        <SheetFooter className="mt-2 flex justify-between">
-          <SidebarDeleteItem item={item} contentType={contentType} />
+        {item.user_id == profile?.user_id && (
+          <SheetFooter className="mt-2 flex justify-between">
+            <SidebarDeleteItem item={item} contentType={contentType} />
 
-          <div className="flex grow justify-end space-x-2">
-            <Button variant="outline" onClick={() => setIsOpen(false)}>
-              Cancel
-            </Button>
+            <div className="flex grow justify-end space-x-2">
+              <Button variant="outline" onClick={() => setIsOpen(false)}>
+                Cancel
+              </Button>
 
-            <Button ref={buttonRef} onClick={handleUpdate}>
-              Save
-            </Button>
-          </div>
-        </SheetFooter>
+              <Button ref={buttonRef} onClick={handleUpdate}>
+                Save
+              </Button>
+            </div>
+          </SheetFooter>
+        )}
       </SheetContent>
     </Sheet>
   )

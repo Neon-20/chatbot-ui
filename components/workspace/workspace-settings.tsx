@@ -282,7 +282,7 @@ export const WorkspaceSettings: FC<WorkspaceSettingsProps> = ({}) => {
                   limit={WORKSPACE_INSTRUCTIONS_MAX}
                 />
               </div>
-              {profile?.roles === "admin" && (
+              {profile?.roles === "superadmin" && (
                 <div className="my-3 flex items-center space-x-2">
                   <Label>Private</Label>
                   <AlertDialog>

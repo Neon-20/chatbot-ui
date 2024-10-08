@@ -1,6 +1,5 @@
 import { supabase } from "@/lib/supabase/browser-client"
 import { TablesInsert, TablesUpdate } from "@/supabase/types"
-import { basePrompts } from "@/lib/suggestion"
 
 export const getPromptById = async (promptId: string) => {
   const { data: prompt, error } = await supabase
@@ -17,7 +16,21 @@ export const getPromptById = async (promptId: string) => {
 }
 
 export const getPromptWorkspacesByWorkspaceId = async (workspaceId: string) => {
-  const { data: workspace, error } = await supabase
+  // Step 1: Fetch the superadmin's user_id
+  const { data: superadmin, error: superadminError } = await supabase
+    .from("profiles")
+    .select("user_id")
+    .eq("roles", "superadmin")
+    .single()
+
+  if (superadminError) {
+    throw new Error(`Error fetching superadmin: ${superadminError.message}`)
+  }
+
+  const superadminUserId = superadmin?.user_id
+
+  // Step 2: Fetch the workspace and include prompts from both the specific workspaceId and superadmin's workspace
+  const { data: workspaces, error: workspacesError } = await supabase
     .from("workspaces")
     .select(
       `
@@ -26,14 +39,17 @@ export const getPromptWorkspacesByWorkspaceId = async (workspaceId: string) => {
       prompts (*)
     `
     )
-    .eq("id", workspaceId)
-    .single()
+    .or(`id.eq.${workspaceId},user_id.eq.${superadminUserId}`)
 
-  if (!workspace) {
-    throw new Error(error.message)
+  if (workspacesError) {
+    throw new Error(`Error fetching workspace: ${workspacesError.message}`)
   }
 
-  return workspace
+  if (!workspaces || workspaces.length === 0) {
+    throw new Error("No workspaces found.")
+  }
+
+  return workspaces[0] // Return all matching workspaces
 }
 
 export const getPromptWorkspacesByPromptId = async (promptId: string) => {
@@ -50,13 +66,8 @@ export const getPromptWorkspacesByPromptId = async (promptId: string) => {
     .single()
 
   if (!prompt) {
-    const prompt = basePrompts.find(prompt => prompt.id === promptId)
-    if (!prompt) {
-      throw new Error(error.message)
-    }
-    return prompt
+    throw new Error(error.message)
   }
-
   return prompt
 }
 

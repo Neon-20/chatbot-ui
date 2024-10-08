@@ -108,7 +108,7 @@ export const SidebarSwitcher: FC<SidebarSwitcherProps> = ({
       </div>
     )
   }
-  if (profile?.roles == "admin") {
+  if (profile?.roles == "admin" || profile?.roles == "superadmin") {
     return (
       <div className="flex flex-col justify-between border-r-2 pb-5">
         <TabsList className="bg-background grid h-[440px] grid-rows-7">
