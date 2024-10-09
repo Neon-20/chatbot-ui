@@ -2,9 +2,10 @@ import { cn } from "@/lib/utils"
 import { Tables } from "@/supabase/types"
 import { ContentType } from "@/types"
 import { IconChevronDown, IconChevronRight } from "@tabler/icons-react"
-import { FC, useRef, useState } from "react"
+import { FC, useContext, useRef, useState } from "react"
 import { DeleteFolder } from "./delete-folder"
 import { UpdateFolder } from "./update-folder"
+import { ChatbotUIContext } from "@/context/context"
 
 interface FolderProps {
   folder: Tables<"folders">
@@ -20,6 +21,7 @@ export const Folder: FC<FolderProps> = ({
   onUpdateFolder
 }) => {
   const itemRef = useRef<HTMLDivElement>(null)
+  const { profile } = useContext(ChatbotUIContext)
 
   const [isDragOver, setIsDragOver] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false)
@@ -96,7 +98,7 @@ export const Folder: FC<FolderProps> = ({
             <div>{folder.name}</div>
           </div>
 
-          {isHovering && (
+          {isHovering && folder.user_id == profile?.user_id && (
             <div
               onClick={e => {
                 e.stopPropagation()

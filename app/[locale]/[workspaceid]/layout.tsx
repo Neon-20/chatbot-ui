@@ -19,7 +19,6 @@ import { LLMID } from "@/types"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { ReactNode, useContext, useEffect, useState } from "react"
 import Loading from "../loading"
-import { baseFolders, basePrompts } from "@/lib/suggestion"
 
 interface WorkspaceLayoutProps {
   children: ReactNode
@@ -140,7 +139,7 @@ export default function WorkspaceLayout({ children }: WorkspaceLayoutProps) {
     setCollections(collectionData.collections)
 
     const folders = await getFoldersByWorkspaceId(workspaceId)
-    setFolders([...folders, ...baseFolders])
+    setFolders(folders)
 
     const fileData = await getFileWorkspacesByWorkspaceId(workspaceId)
     setFiles(fileData.files)
@@ -149,7 +148,7 @@ export default function WorkspaceLayout({ children }: WorkspaceLayoutProps) {
     setPresets(presetData.presets)
 
     const promptData = await getPromptWorkspacesByWorkspaceId(workspaceId)
-    setPrompts([...promptData.prompts, ...basePrompts])
+    setPrompts(promptData.prompts)
 
     const toolData = await getToolWorkspacesByWorkspaceId(workspaceId)
     setTools(toolData.tools)

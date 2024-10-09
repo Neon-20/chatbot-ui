@@ -11,7 +11,7 @@ import {
   fetchOpenRouterModels
 } from "@/lib/models/fetch-models"
 import { supabase } from "@/lib/supabase/browser-client"
-import { TablesUpdate } from "@/supabase/types"
+import { TablesInsert, TablesUpdate } from "@/supabase/types"
 import { useRouter } from "next/navigation"
 import { useContext, useEffect, useState } from "react"
 import { APIStep } from "../../../components/setup/api-step"
@@ -21,6 +21,8 @@ import {
   SETUP_STEP_COUNT,
   StepContainer
 } from "../../../components/setup/step-container"
+import { createFolder } from "@/db/folders"
+import { createPrompt, createPrompts } from "@/db/prompts"
 
 export default function SetupPage() {
   const {
@@ -147,6 +149,73 @@ export default function SetupPage() {
 
     const workspaces = await getWorkspacesByUserId(profile.user_id)
     const homeWorkspace = workspaces.find(w => w.is_home)
+    const baseFolders: TablesInsert<"folders">[] = [
+      {
+        description:
+          "Folder for storing prompts related to email writing tasks.",
+        name: "email",
+        type: "prompts",
+        workspace_id: homeWorkspace?.id!,
+        user_id: profile.user_id
+      },
+      {
+        description:
+          "Folder for storing prompts related to summarizing data and documents.",
+        name: "summarize",
+        type: "prompts",
+        workspace_id: homeWorkspace?.id!,
+        user_id: profile.user_id
+      }
+    ]
+
+    const createdFolders = await Promise.all(
+      baseFolders.map(folder => createFolder(folder))
+    )
+
+    const folderMap = createdFolders.reduce(
+      (acc, folder) => {
+        acc[folder.name] = folder.id
+        return acc
+      },
+      {} as Record<string, string>
+    )
+
+    const basePrompts: TablesInsert<"prompts">[] = [
+      {
+        content:
+          "Compose a formal email requesting a project update. Ensure to mention the deadline and the expected deliverables.",
+        name: "Request Project Update",
+        sharing: "private",
+        user_id: profile.user_id,
+        folder_id: folderMap["email"]
+      },
+      {
+        content:
+          "Write a formal email to schedule a meeting with the client. Mention possible dates and time slots for their convenience.",
+        name: "Schedule Client Meeting",
+        sharing: "private",
+        user_id: profile.user_id,
+        folder_id: folderMap["email"]
+      },
+      {
+        content:
+          "Summarize the attached report into a concise executive summary. Focus on key insights, metrics, and actionable recommendations.",
+        name: "Summarize Report",
+        sharing: "private",
+        user_id: profile.user_id,
+        folder_id: folderMap["summarize"]
+      },
+      {
+        content:
+          "Provide a summary of the latest customer feedback from multiple sources. Focus on common themes, pain points, and improvement areas.",
+        name: "Summarize Customer Feedback",
+        sharing: "private",
+        user_id: profile.user_id,
+        folder_id: folderMap["summarize"]
+      }
+    ]
+
+    await createPrompts(basePrompts, homeWorkspace?.id!)
 
     // There will always be a home workspace
     setSelectedWorkspace(homeWorkspace!)

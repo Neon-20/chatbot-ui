@@ -24,6 +24,17 @@ import {
   SheetTitle,
   SheetTrigger
 } from "../ui/sheet"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger
+} from "@/components/ui/alert-dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 import { TextareaAutosize } from "../ui/textarea-autosize"
 import { WithTooltip } from "../ui/with-tooltip"
@@ -163,6 +174,17 @@ export const WorkspaceSettings: FC<WorkspaceSettingsProps> = ({}) => {
     }
   }
 
+  const handleSwitchChange = (checked: boolean) => {
+    setSelectedWorkspace(prev =>
+      prev
+        ? {
+            ...prev,
+            public: checked
+          }
+        : null
+    )
+  }
+
   if (!selectedWorkspace || !profile) return null
 
   return (
@@ -260,20 +282,42 @@ export const WorkspaceSettings: FC<WorkspaceSettingsProps> = ({}) => {
                   limit={WORKSPACE_INSTRUCTIONS_MAX}
                 />
               </div>
-              <div className="my-3 flex items-center space-x-2">
-                <Label>Private</Label>
-                <Switch
-                  checked={selectedWorkspace.public}
-                  onCheckedChange={checked =>
-                    setSelectedWorkspace({
-                      ...selectedWorkspace,
-                      public: checked
-                    })
-                  }
-                  id="airplane-mode"
-                />
-                <Label htmlFor="airplane-mode">Public</Label>
-              </div>
+              {profile?.roles === "superadmin" && (
+                <div className="my-3 flex items-center space-x-2">
+                  <Label>Private</Label>
+                  <AlertDialog>
+                    <AlertDialogTrigger>
+                      <Switch checked={selectedWorkspace.public} id="public" />
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you sure you want to change the visibility of this
+                          workspace to{" "}
+                          {selectedWorkspace.public ? "Private" : "Public"}?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Switching to public will make the workspace accessible
+                          to anyone, while setting it to private will restrict
+                          access to only you. This change can be undone at any
+                          time.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() =>
+                            handleSwitchChange(!selectedWorkspace.public)
+                          }
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                  <Label htmlFor="public">Public</Label>
+                </div>
+              )}
             </TabsContent>
 
             <TabsContent className="mt-5" value="defaults">

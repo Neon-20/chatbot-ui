@@ -31,7 +31,7 @@ import { getAllProfiles } from "@/db/profile"
 import { Input } from "./ui/input"
 import { ArrowUpDown } from "lucide-react"
 
-type Role = "user" | "developer" | "admin"
+type Role = "user" | "developer" | "admin" | "superadmin"
 
 const AdminRolesPage = () => {
   const [profileList, setProfileList] = useState<TablesUpdate<"profiles">[]>([])
@@ -184,6 +184,9 @@ const AdminRolesPage = () => {
                         <SelectItem value="user">User 👨🏻</SelectItem>
                         <SelectItem value="developer">Developer 👨🏻‍💻</SelectItem>
                         <SelectItem value="admin">Admin 👑</SelectItem>
+                        <SelectItem value="superadmin">
+                          Super Admin 👑👑
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </TableCell>
