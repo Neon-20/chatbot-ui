@@ -16,7 +16,6 @@ export const getPromptById = async (promptId: string) => {
 }
 
 export const getPromptWorkspacesByWorkspaceId = async (workspaceId: string) => {
-  // Step 1: Fetch the superadmin's user_id
   const { data: superadmin, error: superadminError } = await supabase
     .from("profiles")
     .select("user_id")
@@ -24,12 +23,24 @@ export const getPromptWorkspacesByWorkspaceId = async (workspaceId: string) => {
     .single()
 
   if (superadminError) {
-    throw new Error(`Error fetching superadmin: ${superadminError.message}`)
+    const { data: workspace, error } = await supabase
+      .from("workspaces")
+      .select(
+        `
+      id,
+      name,
+      prompts (*)
+    `
+      )
+      .eq("id", workspaceId)
+      .single()
+    if (!workspace) {
+      throw new Error(error.message)
+    }
+    return workspace
   }
 
   const superadminUserId = superadmin?.user_id
-
-  // Step 2: Fetch the workspace and include prompts from both the specific workspaceId and superadmin's workspace
   const { data: workspaces, error: workspacesError } = await supabase
     .from("workspaces")
     .select(
@@ -49,7 +60,7 @@ export const getPromptWorkspacesByWorkspaceId = async (workspaceId: string) => {
     throw new Error("No workspaces found.")
   }
 
-  return workspaces[0] // Return all matching workspaces
+  return workspaces[0]
 }
 
 export const getPromptWorkspacesByPromptId = async (promptId: string) => {

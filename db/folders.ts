@@ -9,7 +9,14 @@ export const getFoldersByWorkspaceId = async (workspaceId: string) => {
     .single()
 
   if (superadminError) {
-    throw new Error("Error fetching superadmin:" + superadminError.message)
+    const { data, error } = await supabase
+      .from("folders")
+      .select("*")
+      .eq("workspace_id", workspaceId)
+    if (!data) {
+      throw new Error(error.message)
+    }
+    return data
   } else {
     const superadminUserId = superadmin?.user_id
 
