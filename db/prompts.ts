@@ -16,32 +16,7 @@ export const getPromptById = async (promptId: string) => {
 }
 
 export const getPromptWorkspacesByWorkspaceId = async (workspaceId: string) => {
-  const { data: superadmin, error: superadminError } = await supabase
-    .from("profiles")
-    .select("user_id")
-    .eq("roles", "superadmin")
-    .single()
-
-  if (superadminError) {
-    const { data: workspace, error } = await supabase
-      .from("workspaces")
-      .select(
-        `
-      id,
-      name,
-      prompts (*)
-    `
-      )
-      .eq("id", workspaceId)
-      .single()
-    if (!workspace) {
-      throw new Error(error.message)
-    }
-    return workspace
-  }
-
-  const superadminUserId = superadmin?.user_id
-  const { data: workspaces, error: workspacesError } = await supabase
+  const { data: workspace, error } = await supabase
     .from("workspaces")
     .select(
       `
@@ -50,17 +25,27 @@ export const getPromptWorkspacesByWorkspaceId = async (workspaceId: string) => {
       prompts (*)
     `
     )
-    .or(`id.eq.${workspaceId},user_id.eq.${superadminUserId}`)
+    .eq("id", workspaceId)
+    .single()
 
-  if (workspacesError) {
-    throw new Error(`Error fetching workspace: ${workspacesError.message}`)
+  const { data: publicPrompts, error: publicPromptsError } = await supabase
+    .from("prompts")
+    .select("*")
+    .eq("public", true)
+
+  if (publicPromptsError) {
+    throw new Error(publicPromptsError.message)
   }
 
-  if (!workspaces || workspaces.length === 0) {
-    throw new Error("No workspaces found.")
+  if (!workspace) {
+    throw new Error(error.message)
   }
+  const allPrompts = [...workspace.prompts, ...publicPrompts]
+  const uniquePrompts = Array.from(
+    new Map(allPrompts.map(prompt => [prompt.id, prompt])).values()
+  )
 
-  return workspaces[0]
+  return uniquePrompts
 }
 
 export const getPromptWorkspacesByPromptId = async (promptId: string) => {

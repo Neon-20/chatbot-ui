@@ -728,6 +728,7 @@ export type Database = {
           description: string
           id: string
           name: string
+          public: boolean
           type: string
           updated_at: string | null
           user_id: string
@@ -738,6 +739,7 @@ export type Database = {
           description: string
           id?: string
           name: string
+          public?: boolean
           type: string
           updated_at?: string | null
           user_id: string
@@ -748,6 +750,7 @@ export type Database = {
           description?: string
           id?: string
           name?: string
+          public?: boolean
           type?: string
           updated_at?: string | null
           user_id?: string
@@ -1252,6 +1255,7 @@ export type Database = {
           folder_id: string | null
           id: string
           name: string
+          public: boolean
           sharing: string
           updated_at: string | null
           user_id: string
@@ -1262,6 +1266,7 @@ export type Database = {
           folder_id?: string | null
           id?: string
           name: string
+          public?: boolean
           sharing?: string
           updated_at?: string | null
           user_id: string
@@ -1272,6 +1277,7 @@ export type Database = {
           folder_id?: string | null
           id?: string
           name?: string
+          public?: boolean
           sharing?: string
           updated_at?: string | null
           user_id?: string

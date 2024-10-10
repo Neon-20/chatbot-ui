@@ -7,6 +7,18 @@ import {
   DialogTitle,
   DialogTrigger
 } from "@/components/ui/dialog"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger
+} from "@/components/ui/alert-dialog"
+import { Switch } from "@/components/ui/switch"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ChatbotUIContext } from "@/context/context"
@@ -20,15 +32,17 @@ interface UpdateFolderProps {
 }
 
 export const UpdateFolder: FC<UpdateFolderProps> = ({ folder }) => {
-  const { setFolders } = useContext(ChatbotUIContext)
+  const { profile, setFolders } = useContext(ChatbotUIContext)
 
   const buttonRef = useRef<HTMLButtonElement>(null)
 
   const [showFolderDialog, setShowFolderDialog] = useState(false)
   const [name, setName] = useState(folder.name)
+  const [isPublic, setIsPublic] = useState(folder.public)
 
   const handleUpdateFolder = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const updatedFolder = await updateFolder(folder.id, {
+      public: isPublic,
       name
     })
     setFolders(prevState =>
@@ -60,6 +74,36 @@ export const UpdateFolder: FC<UpdateFolderProps> = ({ folder }) => {
 
           <Input value={name} onChange={e => setName(e.target.value)} />
         </div>
+        {profile?.roles === "superadmin" && (
+          <div className="my-3 flex items-center space-x-2">
+            <Label>Private</Label>
+            <AlertDialog>
+              <AlertDialogTrigger>
+                <Switch checked={isPublic} id="public" />
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    Are you sure you want to change the visibility of this
+                    workspace to{" "}
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Switching to public will make the workspace accessible to
+                    anyone, while setting it to private will restrict access to
+                    only you. This change can be undone at any time.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => setIsPublic(prev => !prev)}>
+                    Continue
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+            <Label htmlFor="public">Public</Label>
+          </div>
+        )}
 
         <DialogFooter>
           <Button variant="ghost" onClick={() => setShowFolderDialog(false)}>

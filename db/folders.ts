@@ -2,35 +2,16 @@ import { supabase } from "@/lib/supabase/browser-client"
 import { TablesInsert, TablesUpdate } from "@/supabase/types"
 
 export const getFoldersByWorkspaceId = async (workspaceId: string) => {
-  const { data: superadmin, error: superadminError } = await supabase
-    .from("profiles")
-    .select("user_id")
-    .eq("roles", "superadmin")
-    .single()
+  const { data: folders, error: foldersError } = await supabase
+    .from("folders")
+    .select("*")
+    .or(`workspace_id.eq.${workspaceId},public.eq.true`)
 
-  if (superadminError) {
-    const { data, error } = await supabase
-      .from("folders")
-      .select("*")
-      .eq("workspace_id", workspaceId)
-    if (!data) {
-      throw new Error(error.message)
-    }
-    return data
-  } else {
-    const superadminUserId = superadmin?.user_id
-
-    const { data: folders, error: foldersError } = await supabase
-      .from("folders")
-      .select("*")
-      .or(`workspace_id.eq.${workspaceId},user_id.eq.${superadminUserId}`)
-
-    if (foldersError) {
-      throw new Error("Error fetching folders:" + foldersError.message)
-    }
-
-    return folders
+  if (foldersError) {
+    throw new Error("Error fetching folders:" + foldersError.message)
   }
+  console.log("folders", folders)
+  return folders
 }
 
 export const createFolder = async (folder: TablesInsert<"folders">) => {

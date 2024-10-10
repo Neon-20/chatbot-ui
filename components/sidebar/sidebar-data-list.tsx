@@ -34,6 +34,7 @@ export const SidebarDataList: FC<SidebarDataListProps> = ({
   folders
 }) => {
   const {
+    profile,
     setChats,
     setPresets,
     setPrompts,
@@ -155,9 +156,8 @@ export const SidebarDataList: FC<SidebarDataListProps> = ({
   }
 
   const updateFolder = async (itemId: string, folderId: string | null) => {
-    const item: any = data.find(item => item.id === itemId)
-
-    if (!item) return null
+    const item = data.find(item => item.id === itemId)
+    if (!item || item.user_id != profile?.user_id) return null
 
     const updateFunction = updateFunctions[contentType]
     const setStateFunction = stateUpdateFunctions[contentType]
