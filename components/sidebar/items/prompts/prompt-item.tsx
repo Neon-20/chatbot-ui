@@ -4,16 +4,31 @@ import { TextareaAutosize } from "@/components/ui/textarea-autosize"
 import { PROMPT_NAME_MAX } from "@/db/limits"
 import { Tables } from "@/supabase/types"
 import { IconPencil } from "@tabler/icons-react"
-import { FC, useState } from "react"
+import { FC, useContext, useState } from "react"
 import { SidebarItem } from "../all/sidebar-display-item"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger
+} from "@/components/ui/alert-dialog"
+import { Switch } from "@/components/ui/switch"
+import { ChatbotUIContext } from "@/context/context"
 
 interface PromptItemProps {
   prompt: Tables<"prompts">
 }
 
 export const PromptItem: FC<PromptItemProps> = ({ prompt }) => {
+  const { profile } = useContext(ChatbotUIContext)
   const [name, setName] = useState(prompt.name)
   const [content, setContent] = useState(prompt.content)
+  const [isPublic, setIsPublic] = useState(prompt.public)
   const [isTyping, setIsTyping] = useState(false)
   return (
     <SidebarItem
@@ -21,7 +36,7 @@ export const PromptItem: FC<PromptItemProps> = ({ prompt }) => {
       isTyping={isTyping}
       contentType="prompts"
       icon={<IconPencil size={30} />}
-      updateState={{ name, content }}
+      updateState={{ name, content, public: isPublic }}
       renderInputs={() => (
         <>
           <div className="space-y-1">
@@ -50,6 +65,38 @@ export const PromptItem: FC<PromptItemProps> = ({ prompt }) => {
               onCompositionEnd={() => setIsTyping(false)}
             />
           </div>
+          {profile?.roles === "superadmin" && (
+            <div className="my-3 flex items-center space-x-2">
+              <Label>Private</Label>
+              <AlertDialog>
+                <AlertDialogTrigger>
+                  <Switch checked={isPublic} id="public" />
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you sure you want to change the visibility of this
+                      workspace to{" "}
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Switching to public will make the workspace accessible to
+                      anyone, while setting it to private will restrict access
+                      to only you. This change can be undone at any time.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => setIsPublic(prev => !prev)}
+                    >
+                      Continue
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+              <Label htmlFor="public">Public</Label>
+            </div>
+          )}
         </>
       )}
     />
