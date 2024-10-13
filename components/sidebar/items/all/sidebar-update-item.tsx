@@ -645,16 +645,18 @@ export const SidebarUpdateItem: FC<SidebarUpdateItemProps> = ({
           </SheetHeader>
 
           <div className="mt-4 space-y-3">
-            {workspaces.length > 1 && item.user_id == profile?.user_id && (
-              <div className="space-y-1">
-                <Label>Assigned Workspaces</Label>
+            {workspaces.length > 1 &&
+              item.user_id == profile?.user_id &&
+              profile?.roles !== "superadmin" && (
+                <div className="space-y-1">
+                  <Label>Assigned Workspaces</Label>
 
-                <AssignWorkspaces
-                  selectedWorkspaces={selectedWorkspaces}
-                  onSelectWorkspace={handleSelectWorkspace}
-                />
-              </div>
-            )}
+                  <AssignWorkspaces
+                    selectedWorkspaces={selectedWorkspaces}
+                    onSelectWorkspace={handleSelectWorkspace}
+                  />
+                </div>
+              )}
 
             {renderInputs(renderState[contentType])}
           </div>
