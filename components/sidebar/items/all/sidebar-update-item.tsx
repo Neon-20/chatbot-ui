@@ -660,7 +660,8 @@ export const SidebarUpdateItem: FC<SidebarUpdateItemProps> = ({
           </div>
         </div>
 
-        {item.user_id == profile?.user_id && (
+        {(item.user_id == profile?.user_id ||
+          profile?.roles == "superadmin") && (
           <SheetFooter className="mt-2 flex justify-between">
             <SidebarDeleteItem item={item} contentType={contentType} />
 

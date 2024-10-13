@@ -6,7 +6,7 @@ import {
   SheetTitle,
   SheetTrigger
 } from "@/components/ui/sheet"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import {
   Select,
   SelectContent,
@@ -30,10 +30,12 @@ import { IconCrown } from "@tabler/icons-react"
 import { getAllProfiles } from "@/db/profile"
 import { Input } from "./ui/input"
 import { ArrowUpDown } from "lucide-react"
+import { ChatbotUIContext } from "@/context/context"
 
 type Role = "user" | "developer" | "admin" | "superadmin"
 
 const AdminRolesPage = () => {
+  const { profile } = useContext(ChatbotUIContext)
   const [profileList, setProfileList] = useState<TablesUpdate<"profiles">[]>([])
   const [inputValue, setInputValue] = useState("")
   const [filteredProfileList, setFilteredProfileList] = useState<
@@ -184,7 +186,10 @@ const AdminRolesPage = () => {
                         <SelectItem value="user">User 👨🏻</SelectItem>
                         <SelectItem value="developer">Developer 👨🏻‍💻</SelectItem>
                         <SelectItem value="admin">Admin 👑</SelectItem>
-                        <SelectItem value="superadmin">
+                        <SelectItem
+                          value="superadmin"
+                          disabled={profile?.roles != "superadmin"}
+                        >
                           Super Admin 👑👑
                         </SelectItem>
                       </SelectContent>
