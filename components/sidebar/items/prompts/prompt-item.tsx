@@ -63,10 +63,7 @@ export const PromptItem: FC<PromptItemProps> = ({ prompt }) => {
               maxRows={20}
               onCompositionStart={() => setIsTyping(true)}
               onCompositionEnd={() => setIsTyping(false)}
-              disabled={
-                prompt.user_id != profile?.user_id ||
-                profile?.roles != "superadmin"
-              }
+              disabled={profile?.roles != "superadmin"}
             />
           </div>
           {profile?.roles === "superadmin" && (
