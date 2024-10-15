@@ -29,7 +29,7 @@ import { Button } from "./ui/button"
 import { IconCrown } from "@tabler/icons-react"
 import { getAllProfiles } from "@/db/profile"
 import { Input } from "./ui/input"
-import { ArrowUpDown } from "lucide-react"
+import { ArrowUpDown, XIcon } from "lucide-react"
 import { ChatbotUIContext } from "@/context/context"
 
 type Role = "user" | "developer" | "admin" | "superadmin"
@@ -137,12 +137,18 @@ const AdminRolesPage = () => {
           <SheetTitle>Admin Role Management</SheetTitle>
         </SheetHeader>
         <div className="max-h-[95vh] overflow-y-auto">
-          <Input
-            value={inputValue}
-            onChange={e => setInputValue(e.target.value)}
-            placeholder="Search users..."
-            className="my-2"
-          />
+          <div className="relative">
+            <Input
+              value={inputValue}
+              onChange={e => setInputValue(e.target.value)}
+              placeholder="Search users..."
+              className="my-2 pr-8"
+            />
+            <XIcon
+              className="absolute right-2 top-1/2 size-4 -translate-y-1/2 cursor-pointer"
+              onClick={() => setInputValue("")}
+            />
+          </div>
           <Table>
             <TableHeader>
               <TableRow>

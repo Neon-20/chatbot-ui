@@ -6,6 +6,7 @@ import { FC, useContext, useRef, useState } from "react"
 import { DeleteFolder } from "./delete-folder"
 import { UpdateFolder } from "./update-folder"
 import { ChatbotUIContext } from "@/context/context"
+import { PlusIcon } from "lucide-react"
 
 interface FolderProps {
   folder: Tables<"folders">
@@ -104,8 +105,8 @@ export const Folder: FC<FolderProps> = ({
               }}
               className="ml-2 flex space-x-2"
             >
+              <PlusIcon className="size-5 hover:opacity-50" />
               <UpdateFolder folder={folder} />
-
               <DeleteFolder folder={folder} contentType={contentType} />
             </div>
           )}

@@ -16,7 +16,9 @@ export default function HomePage() {
 
   return (
     <div className="max-w-auto mt-8 flex min-h-screen flex-col items-center justify-center p-4">
-      <Card className="mt-6 w-full max-w-3xl border-2 bg-white shadow-xl">
+      <Card
+        className={`mt-6 w-full max-w-3xl border-2 shadow-xl ${theme === "dark" ? "bg-white text-white" : "bg-white"}`}
+      >
         <CardHeader className="flex flex-col items-center space-y-2">
           <div className="flex flex-col items-center">
             <Image
@@ -26,14 +28,20 @@ export default function HomePage() {
               height={120}
               className="size-auto"
             />
-            <span className="mt-2 text-sm text-gray-500">v2.0</span>
+            <span
+              className={`mt-2 text-sm ${theme === "dark" ? "text-black" : "text-gray-500"}`}
+            >
+              v2.0
+            </span>
           </div>
-          <h2 className="text-center text-xl font-bold lg:text-2xl">
+          <h2 className="text-center text-xl font-bold text-black lg:text-2xl">
             Let&apos;s transform the way we work together!
           </h2>
         </CardHeader>
         <CardContent className="space-y-6 text-center">
-          <p className="text-lg text-gray-600 lg:text-xl">
+          <p
+            className={`text-lg lg:text-xl ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}
+          >
             Experience the power of our <i>Internal ChatGPT</i> your AI-driven
             assistant designed to enhance productivity and streamline your
             workday.
@@ -42,7 +50,9 @@ export default function HomePage() {
             <h3 className="mb-4 text-xl font-semibold lg:text-2xl">
               Key Benefits:
             </h3>
-            <ul className="space-y-4 text-gray-600">
+            <ul
+              className={`space-y-4 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}
+            >
               {[
                 "<strong>Boosted Efficiency:</strong> Achieve tasks faster by streamlining email writing, development, content creation, and documentation with our AI tools.",
                 "<strong>Instant Access to Information:</strong> Get answers and insights right at your fingertips.",
@@ -71,14 +81,18 @@ export default function HomePage() {
             <div className="flex cursor-pointer">
               <AnimatedTooltip items={people} />
             </div>
-            <p className="max-w-[300px] text-xs text-gray-500">
+            <p
+              className={`max-w-[300px] text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}
+            >
               Driven and Maintained by the AI - Automation & Cloud Engineering
               Team at AD
             </p>
           </div>
         </CardFooter>
       </Card>
-      <footer className="mb-4 py-2 text-center text-xs text-gray-500">
+      <footer
+        className={`mb-4 py-2 text-center text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}
+      >
         Alter Domus, AiD © Copyright 2024. All rights reserved.
       </footer>
     </div>
