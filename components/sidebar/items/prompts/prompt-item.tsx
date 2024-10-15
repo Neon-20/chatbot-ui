@@ -49,6 +49,7 @@ export const PromptItem: FC<PromptItemProps> = ({ prompt }) => {
               maxLength={PROMPT_NAME_MAX}
               onCompositionStart={() => setIsTyping(true)}
               onCompositionEnd={() => setIsTyping(false)}
+              disabled={profile?.roles != "superadmin"}
             />
           </div>
 
@@ -63,6 +64,7 @@ export const PromptItem: FC<PromptItemProps> = ({ prompt }) => {
               maxRows={20}
               onCompositionStart={() => setIsTyping(true)}
               onCompositionEnd={() => setIsTyping(false)}
+              disabled={profile?.roles != "superadmin"}
             />
           </div>
           {profile?.roles === "superadmin" && (
@@ -76,12 +78,17 @@ export const PromptItem: FC<PromptItemProps> = ({ prompt }) => {
                   <AlertDialogHeader>
                     <AlertDialogTitle>
                       Are you sure you want to change the visibility of this
-                      workspace to{" "}
+                      prompt to {isPublic ? "private" : "public"}?
                     </AlertDialogTitle>
                     <AlertDialogDescription>
-                      Switching to public will make the workspace accessible to
-                      anyone, while setting it to private will restrict access
-                      to only you. This change can be undone at any time.
+                      Switching to {isPublic ? "private" : "public"} will make
+                      the prompt accessible to
+                      {isPublic ? " no-one" : " anyone"}, while setting it to{" "}
+                      {!isPublic ? "private" : "public"} will{" "}
+                      {isPublic
+                        ? "make it available for everyone"
+                        : "restrict access to only you"}
+                      . This change can be undone at any time.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>

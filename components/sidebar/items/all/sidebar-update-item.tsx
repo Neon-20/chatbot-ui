@@ -657,8 +657,14 @@ export const SidebarUpdateItem: FC<SidebarUpdateItemProps> = ({
                   />
                 </div>
               )}
-
             {renderInputs(renderState[contentType])}
+            {profile?.roles !== "superadmin" && (
+              <SheetFooter>
+                <Button ref={buttonRef} onClick={() => setIsOpen(false)}>
+                  Close
+                </Button>
+              </SheetFooter>
+            )}
           </div>
         </div>
 

@@ -8,7 +8,7 @@ interface TextareaAutosizeProps {
 
   textareaRef?: React.RefObject<HTMLTextAreaElement>
   className?: string
-
+  disabled?: boolean
   placeholder?: string
   minRows?: number
   maxRows?: number
@@ -22,6 +22,7 @@ interface TextareaAutosizeProps {
 export const TextareaAutosize: FC<TextareaAutosizeProps> = ({
   value,
   onValueChange,
+  disabled,
   textareaRef,
   className,
   placeholder = "",
@@ -50,6 +51,7 @@ export const TextareaAutosize: FC<TextareaAutosizeProps> = ({
       onPaste={onPaste}
       onCompositionStart={onCompositionStart}
       onCompositionEnd={onCompositionEnd}
+      disabled={disabled}
     />
   )
 }

@@ -85,12 +85,17 @@ export const UpdateFolder: FC<UpdateFolderProps> = ({ folder }) => {
                 <AlertDialogHeader>
                   <AlertDialogTitle>
                     Are you sure you want to change the visibility of this
-                    workspace to{" "}
+                    folder to {isPublic ? "private" : "public"}?
                   </AlertDialogTitle>
                   <AlertDialogDescription>
-                    Switching to public will make the workspace accessible to
-                    anyone, while setting it to private will restrict access to
-                    only you. This change can be undone at any time.
+                    Switching to {isPublic ? "private" : "public"} will make the
+                    folder accessible to
+                    {isPublic ? " no-one" : " anyone"}, while setting it to{" "}
+                    {!isPublic ? "private" : "public"} will{" "}
+                    {isPublic
+                      ? "make it available for everyone"
+                      : "restrict access to only you"}
+                    . This change can be undone at any time.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

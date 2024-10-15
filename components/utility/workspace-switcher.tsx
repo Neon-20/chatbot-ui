@@ -124,7 +124,9 @@ export const WorkspaceSwitcher: FC<WorkspaceSwitcherProps> = ({}) => {
             </div>
           )}
 
-          {getWorkspaceName(value) || "Select workspace..."}
+          {(getWorkspaceName(value) || "Select workspace...").length > 16
+            ? `${(getWorkspaceName(value) || "Select workspace...").slice(0, 16)}..`
+            : getWorkspaceName(value) || "Select workspace..."}
         </div>
 
         <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
@@ -216,7 +218,9 @@ export const WorkspaceSwitcher: FC<WorkspaceSwitcherProps> = ({}) => {
                     )}
 
                     <div className="text-lg font-semibold">
-                      {workspace.name}
+                      {workspace.name.length > 18
+                        ? workspace.name.slice(0, 18) + "..."
+                        : workspace.name}
                     </div>
                   </Button>
                 )
