@@ -28,6 +28,7 @@ import { Tables, TablesInsert } from "@/supabase/types"
 import { ContentType } from "@/types"
 import { FC, useContext, useRef, useState } from "react"
 import { toast } from "sonner"
+import { X } from "lucide-react"
 
 interface SidebarCreateItemProps {
   isOpen: boolean
@@ -36,6 +37,7 @@ interface SidebarCreateItemProps {
   contentType: ContentType
   renderInputs: () => JSX.Element
   createState: any
+  onCreate?: (createState: any) => Promise<void>
 }
 
 export const SidebarCreateItem: FC<SidebarCreateItemProps> = ({
@@ -44,7 +46,8 @@ export const SidebarCreateItem: FC<SidebarCreateItemProps> = ({
   contentType,
   renderInputs,
   createState,
-  isTyping
+  isTyping,
+  onCreate
 }) => {
   const {
     selectedWorkspace,
@@ -189,16 +192,19 @@ export const SidebarCreateItem: FC<SidebarCreateItemProps> = ({
       if (!selectedWorkspace) return
       if (isTyping) return // Prevent creation while typing
 
-      const createFunction = createFunctions[contentType]
-      const setStateFunction = stateUpdateFunctions[contentType]
-
-      if (!createFunction || !setStateFunction) return
-
       setCreating(true)
 
-      const newItem = await createFunction(createState, selectedWorkspace.id)
+      if (onCreate) {
+        await onCreate(createState)
+      } else {
+        const createFunction = createFunctions[contentType]
+        const setStateFunction = stateUpdateFunctions[contentType]
 
-      setStateFunction((prevItems: any) => [...prevItems, newItem])
+        if (!createFunction || !setStateFunction) return
+
+        const newItem = await createFunction(createState, selectedWorkspace.id)
+        setStateFunction((prevItems: any) => [...prevItems, newItem])
+      }
 
       onOpenChange(false)
       setCreating(false)
@@ -224,10 +230,19 @@ export const SidebarCreateItem: FC<SidebarCreateItemProps> = ({
       >
         <div className="grow overflow-auto">
           <SheetHeader>
-            <SheetTitle className="text-2xl font-bold">
-              Create{" "}
-              {contentType.charAt(0).toUpperCase() + contentType.slice(1, -1)}
-            </SheetTitle>
+            <div className="flex items-center justify-between">
+              <SheetTitle className="text-2xl font-bold">
+                Create{" "}
+                {contentType.charAt(0).toUpperCase() + contentType.slice(1, -1)}
+              </SheetTitle>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => onOpenChange(false)}
+              >
+                <X className="size-5" />
+              </Button>
+            </div>
           </SheetHeader>
 
           <div className="mt-4 space-y-3">{renderInputs()}</div>

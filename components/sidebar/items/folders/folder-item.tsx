@@ -7,6 +7,7 @@ import { DeleteFolder } from "./delete-folder"
 import { UpdateFolder } from "./update-folder"
 import { ChatbotUIContext } from "@/context/context"
 import { PlusIcon } from "lucide-react"
+import { CreatePrompt } from "../prompts/create-prompt"
 
 interface FolderProps {
   folder: Tables<"folders">
@@ -27,6 +28,7 @@ export const Folder: FC<FolderProps> = ({
   const [isDragOver, setIsDragOver] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
+  const [isCreatingPrompt, setIsCreatingPrompt] = useState(false)
 
   const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
@@ -60,6 +62,12 @@ export const Folder: FC<FolderProps> = ({
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     setIsExpanded(!isExpanded)
+  }
+
+  const handleCreatePrompt = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    e.preventDefault()
+    setIsCreatingPrompt(true)
   }
 
   return (
@@ -105,7 +113,10 @@ export const Folder: FC<FolderProps> = ({
               }}
               className="ml-2 flex space-x-2"
             >
-              <PlusIcon className="size-5 hover:opacity-50" />
+              <PlusIcon
+                className="size-5 hover:opacity-50"
+                onClick={handleCreatePrompt}
+              />
               <UpdateFolder folder={folder} />
               <DeleteFolder folder={folder} contentType={contentType} />
             </div>
@@ -115,6 +126,18 @@ export const Folder: FC<FolderProps> = ({
 
       {isExpanded && (
         <div className="ml-5 mt-2 space-y-2 border-l-2 pl-4">{children}</div>
+      )}
+
+      {isCreatingPrompt && (
+        <CreatePrompt
+          isOpen={isCreatingPrompt}
+          onOpenChange={isOpen => {
+            setIsCreatingPrompt(isOpen)
+            if (!isOpen) {
+            }
+          }}
+          folderId={folder.id}
+        />
       )}
     </div>
   )
