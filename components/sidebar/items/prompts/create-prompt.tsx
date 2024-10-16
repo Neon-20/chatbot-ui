@@ -6,23 +6,35 @@ import { ChatbotUIContext } from "@/context/context"
 import { PROMPT_NAME_MAX } from "@/db/limits"
 import { TablesInsert } from "@/supabase/types"
 import { FC, useContext, useState } from "react"
+import { createPrompt } from "@/db/prompts"
 
 interface CreatePromptProps {
   isOpen: boolean
   onOpenChange: (isOpen: boolean) => void
+  folderId?: string
 }
 
 export const CreatePrompt: FC<CreatePromptProps> = ({
   isOpen,
-  onOpenChange
+  onOpenChange,
+  folderId
 }) => {
-  const { profile, selectedWorkspace } = useContext(ChatbotUIContext)
+  const { profile, selectedWorkspace, setPrompts } =
+    useContext(ChatbotUIContext)
   const [isTyping, setIsTyping] = useState(false)
   const [name, setName] = useState("")
   const [content, setContent] = useState("")
 
   if (!profile) return null
   if (!selectedWorkspace) return null
+
+  const handleCreate = async (createState: TablesInsert<"prompts">) => {
+    if (!selectedWorkspace) return
+
+    const newPrompt = await createPrompt(createState, selectedWorkspace.id)
+    setPrompts(prevPrompts => [...prevPrompts, newPrompt])
+    onOpenChange(false)
+  }
 
   return (
     <SidebarCreateItem
@@ -34,7 +46,8 @@ export const CreatePrompt: FC<CreatePromptProps> = ({
         {
           user_id: profile.user_id,
           name,
-          content
+          content,
+          folder_id: folderId
         } as TablesInsert<"prompts">
       }
       renderInputs={() => (
@@ -67,6 +80,7 @@ export const CreatePrompt: FC<CreatePromptProps> = ({
           </div>
         </>
       )}
+      onCreate={handleCreate}
     />
   )
 }

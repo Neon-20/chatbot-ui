@@ -144,10 +144,12 @@ const AdminRolesPage = () => {
               placeholder="Search users..."
               className="my-2 pr-8"
             />
-            <XIcon
-              className="absolute right-2 top-1/2 size-4 -translate-y-1/2 cursor-pointer"
-              onClick={() => setInputValue("")}
-            />
+            {inputValue && (
+              <XIcon
+                className="absolute right-2 top-1/2 size-4 -translate-y-1/2 cursor-pointer"
+                onClick={() => setInputValue("")}
+              />
+            )}
           </div>
           <Table>
             <TableHeader>
