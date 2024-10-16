@@ -128,7 +128,7 @@ export const Folder: FC<FolderProps> = ({
         <div className="ml-5 mt-2 space-y-2 border-l-2 pl-4">{children}</div>
       )}
 
-      {isCreatingPrompt && (
+      {isCreatingPrompt && contentType == "prompts" && (
         <CreatePrompt
           isOpen={isCreatingPrompt}
           onOpenChange={isOpen => {
