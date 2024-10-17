@@ -6,6 +6,12 @@ import { ContentType, DataItemType } from "@/types"
 import { useRouter } from "next/navigation"
 import { FC, useContext, useRef, useState } from "react"
 import { SidebarUpdateItem } from "./sidebar-update-item"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from "@/components/ui/tooltip"
 
 interface SidebarItemProps {
   item: DataItemType
@@ -91,21 +97,32 @@ export const SidebarItem: FC<SidebarItemProps> = ({
       updateState={updateState}
       renderInputs={renderInputs}
     >
-      <div
-        ref={itemRef}
-        className={cn(
-          "hover:bg-accent flex w-full cursor-pointer items-center rounded p-2 hover:opacity-50 focus:outline-none"
-        )}
-        tabIndex={0}
-        onKeyDown={handleKeyDown}
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
-      >
-        {icon}
+      <div>
+        <TooltipProvider>
+          <Tooltip delayDuration={100}>
+            <TooltipTrigger asChild>
+              <div
+                ref={itemRef}
+                className={cn(
+                  "hover:bg-accent flex w-full cursor-pointer items-center rounded p-2 hover:opacity-50 focus:outline-none"
+                )}
+                tabIndex={0}
+                onKeyDown={handleKeyDown}
+                onMouseEnter={() => setIsHovering(true)}
+                onMouseLeave={() => setIsHovering(false)}
+              >
+                {icon}
 
-        <div className="ml-3 flex-1 truncate text-sm font-semibold">
-          {item.name}
-        </div>
+                <div className="ml-3 flex-1 truncate text-sm font-semibold">
+                  {item.name}
+                </div>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{item.name}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
 
         {/* TODO */}
         {/* {isHovering && (
