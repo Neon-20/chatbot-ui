@@ -3,6 +3,7 @@ import { ChatbotUIContext } from "@/context/context"
 import { Tables } from "@/supabase/types"
 import { FC, useContext, useState } from "react"
 import { Message } from "../messages/message"
+import { usePDF } from "react-to-pdf"
 
 interface ChatMessagesProps {}
 

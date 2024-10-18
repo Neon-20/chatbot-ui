@@ -11,7 +11,7 @@ import { convertBlobToBase64 } from "@/lib/blob-to-b64"
 import useHotkey from "@/lib/hooks/use-hotkey"
 import { LLMID, MessageImage } from "@/types"
 import { useParams } from "next/navigation"
-import { FC, useContext, useEffect, useState } from "react"
+import { FC, useContext, useEffect, useRef, useState } from "react"
 import { ChatHelp } from "./chat-help"
 import { useScroll } from "./chat-hooks/use-scroll"
 import { ChatInput } from "./chat-input"
@@ -56,6 +56,18 @@ export const ChatUI: FC<ChatUIProps> = ({}) => {
   } = useScroll()
 
   const [loading, setLoading] = useState(true)
+  const componentRef = useRef<HTMLDivElement>(null)
+
+  const handlePrint = () => {
+    const printContents = componentRef?.current?.innerHTML
+    const originalContents = document.body.innerHTML
+
+    if (printContents) {
+      document.body.innerHTML = printContents
+    }
+    window.print()
+    document.body.innerHTML = originalContents
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -210,6 +222,7 @@ export const ChatUI: FC<ChatUIProps> = ({}) => {
       <div
         className="flex size-full flex-col overflow-auto border-b"
         onScroll={handleScroll}
+        ref={componentRef}
       >
         <div ref={messagesStartRef} />
 
@@ -219,6 +232,7 @@ export const ChatUI: FC<ChatUIProps> = ({}) => {
       </div>
 
       <div className="relative w-full min-w-[300px] items-end px-2 pb-3 pt-0 sm:w-[600px] sm:pb-8 sm:pt-5 md:w-[700px] lg:w-[700px] xl:w-[800px]">
+        <button onClick={() => handlePrint()}>Download Chat PDF</button>
         <ChatInput />
       </div>
 
