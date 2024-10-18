@@ -105,7 +105,7 @@ export const Folder: FC<FolderProps> = ({
             <div>{folder.name}</div>
           </div>
 
-          {isHovering && folder.user_id == profile?.user_id && (
+          {isHovering && profile?.roles == "superadmin" && (
             <div
               onClick={e => {
                 e.stopPropagation()
