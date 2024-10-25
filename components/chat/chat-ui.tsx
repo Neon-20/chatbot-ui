@@ -11,13 +11,14 @@ import { convertBlobToBase64 } from "@/lib/blob-to-b64"
 import useHotkey from "@/lib/hooks/use-hotkey"
 import { LLMID, MessageImage } from "@/types"
 import { useParams } from "next/navigation"
-import { FC, useContext, useEffect, useState } from "react"
+import { FC, useContext, useEffect, useRef, useState } from "react"
 import { ChatHelp } from "./chat-help"
 import { useScroll } from "./chat-hooks/use-scroll"
 import { ChatInput } from "./chat-input"
 import { ChatMessages } from "./chat-messages"
 import { ChatScrollButtons } from "./chat-scroll-buttons"
 import { ChatSecondaryButtons } from "./chat-secondary-buttons"
+import { Printer } from "lucide-react"
 
 interface ChatUIProps {}
 
@@ -56,6 +57,18 @@ export const ChatUI: FC<ChatUIProps> = ({}) => {
   } = useScroll()
 
   const [loading, setLoading] = useState(true)
+  const componentRef = useRef<HTMLDivElement>(null)
+
+  const handlePrint = () => {
+    const printContents = componentRef?.current?.innerHTML
+    const originalContents = document.body.innerHTML
+
+    if (printContents) {
+      document.body.innerHTML = printContents
+    }
+    window.print()
+    document.body.innerHTML = originalContents
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -199,6 +212,9 @@ export const ChatUI: FC<ChatUIProps> = ({}) => {
 
       <div className="absolute right-4 top-1 flex h-[40px] items-center space-x-2">
         <ChatSecondaryButtons />
+        <button onClick={() => handlePrint()}>
+          <Printer />
+        </button>
       </div>
 
       <div className="bg-secondary flex max-h-[50px] min-h-[50px] w-full items-center justify-center border-b-2 font-bold">
@@ -210,6 +226,7 @@ export const ChatUI: FC<ChatUIProps> = ({}) => {
       <div
         className="flex size-full flex-col overflow-auto border-b"
         onScroll={handleScroll}
+        ref={componentRef}
       >
         <div ref={messagesStartRef} />
 

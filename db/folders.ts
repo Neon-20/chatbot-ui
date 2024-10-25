@@ -10,8 +10,10 @@ export const getFoldersByWorkspaceId = async (workspaceId: string) => {
   if (foldersError) {
     throw new Error("Error fetching folders:" + foldersError.message)
   }
-  console.log("folders", folders)
-  return folders
+  const sortedFolders = folders?.sort((a, b) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+  )
+  return sortedFolders
 }
 
 export const createFolder = async (folder: TablesInsert<"folders">) => {
