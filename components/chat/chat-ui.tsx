@@ -19,6 +19,7 @@ import { ChatMessages } from "./chat-messages"
 import { ChatScrollButtons } from "./chat-scroll-buttons"
 import { ChatSecondaryButtons } from "./chat-secondary-buttons"
 import { Printer } from "lucide-react"
+import { WithTooltip } from "../ui/with-tooltip"
 
 interface ChatUIProps {}
 
@@ -210,11 +211,17 @@ export const ChatUI: FC<ChatUIProps> = ({}) => {
         />
       </div>
 
-      <div className="absolute right-4 top-1 flex h-[40px] items-center space-x-2">
+      <div className="absolute right-4 top-1 flex h-[40px] cursor-pointer items-center space-x-4">
         <ChatSecondaryButtons />
-        <button onClick={() => handlePrint()}>
-          <Printer />
-        </button>
+        <WithTooltip
+          delayDuration={200}
+          display={<div>Print Chat</div>}
+          trigger={
+            <button onClick={() => handlePrint()}>
+              <Printer className="relative mt-1.5" />
+            </button>
+          }
+        />
       </div>
 
       <div className="bg-secondary flex max-h-[50px] min-h-[50px] w-full items-center justify-center border-b-2 font-bold">
