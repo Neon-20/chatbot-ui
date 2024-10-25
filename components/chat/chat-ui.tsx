@@ -60,14 +60,32 @@ export const ChatUI: FC<ChatUIProps> = ({}) => {
   const componentRef = useRef<HTMLDivElement>(null)
 
   const handlePrint = () => {
-    const printContents = componentRef?.current?.innerHTML
-    const originalContents = document.body.innerHTML
+    const styleSheets = Array.from(document.styleSheets)
+    let allStyles = ""
 
-    if (printContents) {
-      document.body.innerHTML = printContents
+    styleSheets.forEach(sheet => {
+      try {
+        const cssRules = Array.from(sheet.cssRules)
+        cssRules.forEach(rule => {
+          allStyles += rule.cssText
+        })
+      } catch (e) {
+        console.warn("Cannot access stylesheet", e)
+      }
+    })
+    if (typeof window !== "undefined") {
+      const printWindow = window.open("", "_blank")
+      if (printWindow && componentRef.current) {
+        printWindow.document.write("<html><head><title>Print</title>")
+        printWindow.document.write(`<style>${allStyles}</style>`)
+        printWindow.document.write("</head><body>")
+        printWindow.document.write(componentRef.current.innerHTML)
+        printWindow.document.write("</body></html>")
+        printWindow.document.close()
+        printWindow.print()
+        setTimeout(() => printWindow.close(), 100)
+      }
     }
-    window.print()
-    document.body.innerHTML = originalContents
   }
 
   useEffect(() => {
