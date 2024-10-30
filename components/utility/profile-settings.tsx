@@ -733,7 +733,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
           <div className="flex items-center space-x-1">
             <ThemeSwitcher />
 
-            <WithTooltip
+            {/* <WithTooltip
               display={
                 <div>
                   Download Chatbot UI 1.0 data as JSON. Import coming soon!
@@ -746,7 +746,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
                   onClick={exportLocalStorageAsJSON}
                 />
               }
-            />
+            /> */}
           </div>
 
           <div className="ml-auto space-x-2">
