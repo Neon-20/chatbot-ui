@@ -44,8 +44,10 @@ export const getPromptWorkspacesByWorkspaceId = async (workspaceId: string) => {
   const uniquePrompts = Array.from(
     new Map(allPrompts.map(prompt => [prompt.id, prompt])).values()
   )
-
-  return uniquePrompts
+  const sortedPrompts = uniquePrompts?.sort((a, b) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+  )
+  return sortedPrompts
 }
 
 export const getPromptWorkspacesByPromptId = async (promptId: string) => {
