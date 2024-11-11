@@ -50,7 +50,7 @@ export const ModelSelect: FC<ModelSelectProps> = ({
     setIsOpen(false)
   }
 
-  const allModels = [
+  let allModels = [
     ...models.map(model => ({
       modelId: model.model_id as LLMID,
       modelName: model.name,
@@ -63,6 +63,9 @@ export const ModelSelect: FC<ModelSelectProps> = ({
     ...availableLocalModels,
     ...availableOpenRouterModels
   ]
+  if (profile?.roles != "superadmin") {
+    allModels = allModels.filter(model => model.modelId !== "o1-preview")
+  }
 
   const groupedModels = allModels.reduce<Record<string, LLM[]>>(
     (groups, model) => {
