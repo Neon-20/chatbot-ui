@@ -60,7 +60,6 @@ export async function genSuggestions({
       }[]
     | undefined
 }) {
-  console.error("genSuggestions")
   if (!userQuery && !filesData) {
     return defaultSuggestion
   }

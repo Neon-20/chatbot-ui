@@ -185,7 +185,7 @@ export const useSelectFileHandler = () => {
             )
           }
         } catch (error: any) {
-          toast.error("Failed to upload. " + error?.message, {
+          toast.error("Upload failed: The file format is not supported.", {
             duration: 10000
           })
           setNewMessageImages(prev =>
