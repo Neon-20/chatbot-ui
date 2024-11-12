@@ -185,7 +185,7 @@ export const useSelectFileHandler = () => {
             )
           }
         } catch (error: any) {
-          toast.error("Upload failed: The file format is not supported.", {
+          toast.error("Upload failed: Unsupported PDF content", {
             duration: 10000
           })
           setNewMessageImages(prev =>
