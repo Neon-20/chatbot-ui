@@ -60,7 +60,7 @@ export async function POST(request: Request) {
       defaultQuery: { "api-version": "2023-12-01-preview" },
       defaultHeaders: { "api-key": KEY }
     })
-    if (DEPLOYMENT_ID == "o1-preview") {
+    if (chatSettings.model === "o1-preview") {
       const completion = await azureOpenai.chat.completions.create({
         model: "o1-preview",
         messages: messages.filter(
