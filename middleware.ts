@@ -30,6 +30,11 @@ export async function middleware(request: NextRequest) {
         new URL(`/${homeWorkspace.id}/chat`, request.url)
       )
     }
+    if (request.geo) {
+      response.headers.set("X-Geo-City", request.geo.city ?? "Unknown")
+      response.headers.set("X-Geo-Country", request.geo.country ?? "Unknown")
+      response.headers.set("X-Geo-Region", request.geo.region ?? "Unknown")
+    }
 
     return response
   } catch (e) {
