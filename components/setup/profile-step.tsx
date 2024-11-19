@@ -13,6 +13,13 @@ import {
 import { FC, useCallback, useState } from "react"
 import { LimitDisplay } from "../ui/limit-display"
 import { toast } from "sonner"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "../ui/select"
 
 interface ProfileStepProps {
   username: string
@@ -32,6 +39,7 @@ export const ProfileStep: FC<ProfileStepProps> = ({
   onDisplayNameChange
 }) => {
   const [loading, setLoading] = useState(false)
+  const [regionError, setRegionError] = useState(false)
 
   const debounce = (func: (...args: any[]) => void, wait: number) => {
     let timeout: NodeJS.Timeout | null
@@ -143,6 +151,22 @@ export const ProfileStep: FC<ProfileStepProps> = ({
           used={displayName.length}
           limit={PROFILE_DISPLAY_NAME_MAX}
         />
+      </div>
+      <div className="space-y-1">
+        <Label>Select a Region</Label>
+        <Select>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Your Region" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="light" className="cursor-pointer">
+              Europe-Region
+            </SelectItem>
+            <SelectItem value="dark" className="cursor-pointer">
+              Non Europe-Region
+            </SelectItem>
+          </SelectContent>
+        </Select>
       </div>
     </>
   )

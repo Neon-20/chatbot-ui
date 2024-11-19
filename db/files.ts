@@ -145,9 +145,12 @@ export const createFile = async (
     console.error(
       `Error processing file:${createdFile.id}, status:${response.status}, response:${json.message}`
     )
-    toast.error("Upload failed: The file format is not supported.", {
-      duration: 10000
-    })
+    toast.error(
+      "Error: The file appears to be a PDF containing images. Please provide a PDF with machine-readable text.",
+      {
+        duration: 10000
+      }
+    )
     await deleteFile(createdFile.id)
   }
 
@@ -209,9 +212,12 @@ export const createDocXFile = async (
     console.error(
       `Error processing file:${createdFile.id}, status:${response.status}, response:${json.message}`
     )
-    toast.error("Upload failed: The file format is not supported.", {
-      duration: 10000
-    })
+    toast.error(
+      "Error: The file appears to be a PDF containing images. Please provide a PDF with machine-readable text.",
+      {
+        duration: 10000
+      }
+    )
     await deleteFile(createdFile.id)
   }
 

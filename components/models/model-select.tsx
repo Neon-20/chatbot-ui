@@ -63,7 +63,7 @@ export const ModelSelect: FC<ModelSelectProps> = ({
     ...availableLocalModels,
     ...availableOpenRouterModels
   ]
-  if (profile?.roles != "superadmin") {
+  if (profile?.roles !== "superadmin" && profile?.roles !== "admin") {
     allModels = allModels.filter(model => model.modelId !== "o1-preview")
   }
 

@@ -16,6 +16,12 @@ import { useRouter } from "next/navigation"
 import { FC, useContext, useEffect, useState } from "react"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from "../ui/tooltip"
 
 interface WorkspaceSwitcherProps {}
 
@@ -159,29 +165,37 @@ export const WorkspaceSwitcher: FC<WorkspaceSwitcherProps> = ({}) => {
                 )
 
                 return (
-                  <Button
-                    key={workspace.id}
-                    className="flex items-center justify-start"
-                    variant="ghost"
-                    onClick={() => handleSelect(workspace.id)}
-                  >
-                    {image ? (
-                      <Image
-                        style={{ width: "28px", height: "28px" }}
-                        className="mr-3 rounded"
-                        src={image.url || ""}
-                        width={28}
-                        height={28}
-                        alt={workspace.name}
-                      />
-                    ) : (
-                      <IconHome className="mr-3" size={28} />
-                    )}
+                  <TooltipProvider key={workspace.id}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          className="flex items-center justify-start"
+                          variant="ghost"
+                          onClick={() => handleSelect(workspace.id)}
+                        >
+                          {image ? (
+                            <Image
+                              style={{ width: "28px", height: "28px" }}
+                              className="mr-3 rounded"
+                              src={image.url || ""}
+                              width={28}
+                              height={28}
+                              alt={workspace.name}
+                            />
+                          ) : (
+                            <IconHome className="mr-3" size={28} />
+                          )}
 
-                    <div className="text-lg font-semibold">
-                      {workspace.name}
-                    </div>
-                  </Button>
+                          <div className="text-lg font-semibold">
+                            {workspace.name}
+                          </div>
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{workspace.name}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 )
               })}
 
@@ -198,31 +212,39 @@ export const WorkspaceSwitcher: FC<WorkspaceSwitcherProps> = ({}) => {
                 )
 
                 return (
-                  <Button
-                    key={workspace.id}
-                    className="flex items-center justify-start"
-                    variant="ghost"
-                    onClick={() => handleSelect(workspace.id)}
-                  >
-                    {image ? (
-                      <Image
-                        style={{ width: "28px", height: "28px" }}
-                        className="mr-3 rounded"
-                        src={image.url || ""}
-                        width={28}
-                        height={28}
-                        alt={workspace.name}
-                      />
-                    ) : (
-                      <IconBuilding className="mr-3" size={28} />
-                    )}
+                  <TooltipProvider key={workspace.id}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          className="flex items-center justify-start"
+                          variant="ghost"
+                          onClick={() => handleSelect(workspace.id)}
+                        >
+                          {image ? (
+                            <Image
+                              style={{ width: "28px", height: "28px" }}
+                              className="mr-3 rounded"
+                              src={image.url || ""}
+                              width={28}
+                              height={28}
+                              alt={workspace.name}
+                            />
+                          ) : (
+                            <IconBuilding className="mr-3" size={28} />
+                          )}
 
-                    <div className="text-lg font-semibold">
-                      {workspace.name.length > 18
-                        ? workspace.name.slice(0, 18) + "..."
-                        : workspace.name}
-                    </div>
-                  </Button>
+                          <div className="text-lg font-semibold">
+                            {workspace.name.length > 18
+                              ? workspace.name.slice(0, 18) + "..."
+                              : workspace.name}
+                          </div>
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{workspace.name}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 )
               })}
           </div>
