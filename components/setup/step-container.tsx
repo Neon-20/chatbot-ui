@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card"
 import { FC, useRef } from "react"
 import Image from "next/image"
+import { toast } from "sonner"
 
 export const SETUP_STEP_COUNT = 2
 
@@ -39,6 +40,13 @@ export const StepContainer: FC<StepContainerProps> = ({
         buttonRef.current.click()
       }
     }
+  }
+  const handleNextButtonClick = () => {
+    if (localStorage.getItem("selectedRegion") === null) {
+      toast.error("Please select a region to proceed.")
+      return
+    }
+    onShouldProceed(true)
   }
 
   return (
@@ -77,11 +85,7 @@ export const StepContainer: FC<StepContainerProps> = ({
 
         <div>
           {showNextButton && (
-            <Button
-              ref={buttonRef}
-              size="sm"
-              onClick={() => onShouldProceed(true)}
-            >
+            <Button ref={buttonRef} size="sm" onClick={handleNextButtonClick}>
               Next
             </Button>
           )}

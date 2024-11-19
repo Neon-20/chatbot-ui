@@ -39,7 +39,9 @@ export const ProfileStep: FC<ProfileStepProps> = ({
   onDisplayNameChange
 }) => {
   const [loading, setLoading] = useState(false)
-  const [regionError, setRegionError] = useState(false)
+  const [region, setRegion] = useState(
+    localStorage.getItem("selectedRegion") || ""
+  )
 
   const debounce = (func: (...args: any[]) => void, wait: number) => {
     let timeout: NodeJS.Timeout | null
@@ -154,15 +156,21 @@ export const ProfileStep: FC<ProfileStepProps> = ({
       </div>
       <div className="space-y-1">
         <Label>Select a Region</Label>
-        <Select>
+        <Select
+          value={region}
+          onValueChange={value => {
+            localStorage.setItem("selectedRegion", value)
+            setRegion(value)
+          }}
+        >
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Your Region" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="light" className="cursor-pointer">
+            <SelectItem value="europe" className="cursor-pointer">
               Europe-Region
             </SelectItem>
-            <SelectItem value="dark" className="cursor-pointer">
+            <SelectItem value="non-europe" className="cursor-pointer">
               Non Europe-Region
             </SelectItem>
           </SelectContent>
