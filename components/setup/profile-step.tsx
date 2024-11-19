@@ -36,9 +36,7 @@ export const ProfileStep: FC<ProfileStepProps> = ({
   displayName,
   onUsernameAvailableChange,
   onUsernameChange,
-  onDisplayNameChange,
-  onRegionChange,
-  selectedRegion
+  onDisplayNameChange
 }) => {
   const [loading, setLoading] = useState(false)
   const [regionError, setRegionError] = useState(false)
