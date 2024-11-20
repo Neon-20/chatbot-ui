@@ -266,17 +266,17 @@ export const ChatUI: FC<ChatUIProps> = ({}) => {
         <ChatInput />
       </div>
 
-      <div className="mb-8 flex justify-center space-x-4">
+      <div className="mb-6 flex justify-center space-x-4">
         <Link href={"/terms-and-conditions"}>
           <Button variant="link" size={"sm"} className="text-sm text-gray-500">
             Terms & Conditions
           </Button>
         </Link>
-        <Link href={"/privacy-policy"}>
-          <Button variant="link" size={"sm"} className="text-sm text-gray-500">
-            Privacy Policy
-          </Button>
-        </Link>
+        {/* <Link href={"/privacy-policy"}> */}
+        <Button variant="link" size={"sm"} className="text-sm text-gray-500">
+          Privacy Policy
+        </Button>
+        {/* </Link> */}
       </div>
 
       <div className="absolute bottom-2 right-2 hidden md:block lg:bottom-4 lg:right-4">

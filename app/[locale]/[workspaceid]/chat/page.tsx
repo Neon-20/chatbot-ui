@@ -56,7 +56,7 @@ export default function ChatPage() {
               <QuickSettings />
             </div>
             <div className="m-3 flex items-center space-x-2">
-              <Label className="hidden lg:block">Select a Region</Label>
+              {/* <Label className="hidden lg:block">Select a Region</Label> */}
               <Select
                 value={region ?? undefined}
                 onValueChange={value => {
@@ -85,7 +85,7 @@ export default function ChatPage() {
           <div className="w-full min-w-[300px] items-end px-2 pb-3 pt-0 sm:w-[600px] sm:pb-8 sm:pt-5 md:w-[700px] lg:w-[700px] xl:w-[800px]">
             <ChatInput />
           </div>
-          <div className="mb-8 flex justify-center space-x-2">
+          <div className="mb-6 flex justify-center space-x-2">
             <Link href={"/terms-and-conditions"}>
               <Button
                 variant="link"
@@ -95,15 +95,15 @@ export default function ChatPage() {
                 Terms & Conditions
               </Button>
             </Link>
-            <Link href={"/privacy-policy"}>
-              <Button
-                variant="link"
-                size={"sm"}
-                className="text-sm text-gray-500"
-              >
-                Privacy Policy
-              </Button>
-            </Link>
+            {/* <Link href={"/privacy-policy"}> */}
+            <Button
+              variant="link"
+              size={"sm"}
+              className="text-sm text-gray-500"
+            >
+              Privacy Policy
+            </Button>
+            {/* </Link> */}
           </div>
 
           <div className="absolute bottom-2 right-2 hidden md:block lg:bottom-4 lg:right-4">
