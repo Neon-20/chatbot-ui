@@ -42,6 +42,11 @@ export default function ChatPage() {
       setRegion("europe")
     }
   }, [])
+  const handleRegionChange = (value: string) => {
+    localStorage.setItem("selectedRegion", value)
+    setRegion(value)
+    window.location.reload()
+  }
 
   return (
     <>
@@ -59,10 +64,7 @@ export default function ChatPage() {
               {/* <Label className="hidden lg:block">Select a Region</Label> */}
               <Select
                 value={region ?? undefined}
-                onValueChange={value => {
-                  localStorage.setItem("selectedRegion", value)
-                  setRegion(value)
-                }}
+                onValueChange={handleRegionChange}
               >
                 <SelectTrigger className="lg:w-[150px]">
                   <SelectValue placeholder="Your Region" />
