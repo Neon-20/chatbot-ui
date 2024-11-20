@@ -8,11 +8,19 @@ import { ChatUI } from "@/components/chat/chat-ui"
 import { QuickSettings } from "@/components/chat/quick-settings"
 import { Brand } from "@/components/ui/brand"
 import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select"
 import { ChatbotUIContext } from "@/context/context"
 import useHotkey from "@/lib/hooks/use-hotkey"
 import { useTheme } from "next-themes"
 import Link from "next/link"
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 
 export default function ChatPage() {
   useHotkey("o", () => handleNewChat())
@@ -25,6 +33,15 @@ export default function ChatPage() {
   const { handleNewChat, handleFocusChatInput } = useChatHandler()
 
   const { theme } = useTheme()
+  const [region, setRegion] = useState<string | null>(
+    localStorage.getItem("selectedRegion")
+  )
+  useEffect(() => {
+    if (region === null) {
+      localStorage.setItem("selectedRegion", "europe")
+      setRegion("europe")
+    }
+  }, [])
 
   return (
     <>
@@ -34,12 +51,33 @@ export default function ChatPage() {
             <Brand theme={theme === "dark" ? "dark" : "light"} />
           </div>
 
-          <div className="absolute left-2 top-2">
-            <QuickSettings />
-          </div>
-
-          <div className="absolute right-2 top-2">
-            <ChatSettings />
+          <div className="m-2 flex w-full justify-between">
+            <div className="hidden lg:block">
+              <QuickSettings />
+            </div>
+            <div className="m-3 flex items-center space-x-2">
+              <Label className="hidden lg:block">Select a Region</Label>
+              <Select
+                value={region ?? undefined}
+                onValueChange={value => {
+                  localStorage.setItem("selectedRegion", value)
+                  setRegion(value)
+                }}
+              >
+                <SelectTrigger className="lg:w-[150px]">
+                  <SelectValue placeholder="Your Region" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="europe" className="cursor-pointer">
+                    Europe
+                  </SelectItem>
+                  <SelectItem value="non-europe" className="cursor-pointer">
+                    Non Europe
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <ChatSettings />
+            </div>
           </div>
 
           <div className="flex grow flex-col items-center justify-center" />
