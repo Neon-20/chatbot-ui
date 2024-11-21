@@ -262,11 +262,11 @@ export const ChatUI: FC<ChatUIProps> = ({}) => {
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="relative w-full min-w-[300px] items-end px-2 pb-3 pt-0 sm:w-[600px] sm:pb-8 sm:pt-5 md:w-[700px] lg:w-[700px] xl:w-[800px]">
+      <div className="relative w-full min-w-[300px] items-end px-2 pt-0 sm:w-[600px] sm:pt-5 md:w-[700px] lg:w-[700px] xl:w-[800px]">
         <ChatInput />
       </div>
 
-      <div className="mb-6 flex justify-center space-x-4">
+      <div className="mb-4 flex justify-center space-x-4">
         <Link href={"/terms-and-conditions"}>
           <Button variant="link" size={"sm"} className="text-sm text-gray-500">
             Terms & Conditions
