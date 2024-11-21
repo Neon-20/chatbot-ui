@@ -22,6 +22,8 @@ import { Printer } from "lucide-react"
 import { WithTooltip } from "../ui/with-tooltip"
 import { Button } from "../ui/button"
 import Link from "next/link"
+import TermsAndConditions from "../legal/terms-and-conditions"
+import PrivacyPolicy from "../legal/privacy-policy"
 
 interface ChatUIProps {}
 
@@ -267,16 +269,8 @@ export const ChatUI: FC<ChatUIProps> = ({}) => {
       </div>
 
       <div className="mb-4 flex justify-center space-x-4">
-        <Link href={"/terms-and-conditions"}>
-          <Button variant="link" size={"sm"} className="text-sm text-gray-500">
-            Terms & Conditions
-          </Button>
-        </Link>
-        {/* <Link href={"/privacy-policy"}> */}
-        <Button variant="link" size={"sm"} className="text-sm text-gray-500">
-          Privacy Policy
-        </Button>
-        {/* </Link> */}
+        <TermsAndConditions />
+        <PrivacyPolicy />
       </div>
 
       <div className="absolute bottom-2 right-2 hidden md:block lg:bottom-4 lg:right-4">
