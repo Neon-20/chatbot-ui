@@ -6,6 +6,8 @@ import { ChatInput } from "@/components/chat/chat-input"
 import { ChatSettings } from "@/components/chat/chat-settings"
 import { ChatUI } from "@/components/chat/chat-ui"
 import { QuickSettings } from "@/components/chat/quick-settings"
+import PrivacyPolicy from "@/components/legal/privacy-policy"
+import TermsAndConditions from "@/components/legal/terms-and-conditions"
 import { Brand } from "@/components/ui/brand"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
@@ -88,24 +90,8 @@ export default function ChatPage() {
             <ChatInput />
           </div>
           <div className="mb-4 flex justify-center space-x-2">
-            <Link href={"/terms-and-conditions"}>
-              <Button
-                variant="link"
-                size={"sm"}
-                className="text-sm text-gray-500"
-              >
-                Terms & Conditions
-              </Button>
-            </Link>
-            {/* <Link href={"/privacy-policy"}> */}
-            <Button
-              variant="link"
-              size={"sm"}
-              className="text-sm text-gray-500"
-            >
-              Privacy Policy
-            </Button>
-            {/* </Link> */}
+            <TermsAndConditions />
+            <PrivacyPolicy />
           </div>
 
           <div className="absolute bottom-2 right-2 hidden md:block lg:bottom-4 lg:right-4">
