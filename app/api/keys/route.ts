@@ -5,7 +5,7 @@ import { VALID_ENV_KEYS } from "@/types/valid-keys"
 
 export async function GET() {
   const envKeyMap: Record<string, VALID_ENV_KEYS> = {
-    azure: VALID_ENV_KEYS.AZURE_OPENAI_API_KEY,
+    azure: VALID_ENV_KEYS.AZURE_OPENAI_SWEDEN_API_KEY,
     openai: VALID_ENV_KEYS.OPENAI_API_KEY,
     google: VALID_ENV_KEYS.GOOGLE_GEMINI_API_KEY,
     anthropic: VALID_ENV_KEYS.ANTHROPIC_API_KEY,
