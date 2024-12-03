@@ -2,6 +2,7 @@ import { Brand } from "@/components/ui/brand"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { SubmitButton } from "@/components/ui/submit-button"
+import { getProfileByUserId } from "@/db/profile"
 import { createClient } from "@/lib/supabase/server"
 import { Database } from "@/supabase/types"
 import { createServerClient } from "@supabase/ssr"
@@ -34,25 +35,28 @@ export default async function Login({
   const session = (await supabase.auth.getSession()).data.session
 
   if (session) {
-    const { data: homeWorkspace, error } = await supabase
-      .from("workspaces")
-      .select("*")
-      .eq("user_id", session.user.id)
-      .eq("is_home", true)
-      .single()
+    try {
+      const profile = await getProfileByUserId(session.user.id)
+      const { data: homeWorkspace, error } = await supabase
+        .from("workspaces")
+        .select("*")
+        .eq("user_id", session.user.id)
+        .eq("is_home", true)
+        .single()
 
-    await supabase
-      .from("profiles")
-      .update({ updated_at: new Date().toISOString() })
-      .eq("user_id", session.user.id)
-      .select("*")
-      .single()
+      await supabase
+        .from("profiles")
+        .update({ updated_at: new Date().toISOString() })
+        .eq("user_id", session.user.id)
+        .select("*")
+        .single()
 
-    if (!homeWorkspace) {
-      throw new Error(error.message)
-    }
+      if (!homeWorkspace) {
+        throw new Error(error.message)
+      }
 
-    return redirect(`/${homeWorkspace.id}/chat`)
+      return redirect(`/${homeWorkspace.id}/chat`)
+    } catch (error) {}
   }
 
   const signIn = async (formData: FormData) => {
