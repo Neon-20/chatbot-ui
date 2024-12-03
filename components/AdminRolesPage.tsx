@@ -260,7 +260,7 @@ const AdminRolesPage = () => {
                         <AlertDialogContent>
                           <AlertDialogHeader>
                             <AlertDialogTitle>
-                              Are you sure you want to delete this?
+                              Are you sure you want to delete this user?
                             </AlertDialogTitle>
                             <AlertDialogDescription>
                               The profile will be permanently removed from the
