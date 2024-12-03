@@ -71,10 +71,7 @@ export const deleteProfile = async (profileId: string) => {
 }
 
 export const getAllProfiles = async () => {
-  const { data: profiles, error } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("is_deleted", false)
+  const { data: profiles, error } = await supabase.from("profiles").select("*")
 
   if (!profiles) {
     throw new Error(error.message)

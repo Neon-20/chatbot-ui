@@ -157,12 +157,16 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
 
     if (session) {
       const user = session.user
+      try {
+        const profile = await getProfileByUserId(user.id)
+        setProfile(profile)
 
-      const profile = await getProfileByUserId(user.id)
-      setProfile(profile)
-
-      if (!profile.has_onboarded) {
-        return router.push("/setup")
+        if (!profile.has_onboarded) {
+          return router.push("/setup")
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error)
+        return router.push("/login")
       }
 
       const workspaces = await getWorkspacesByUserId(user.id)

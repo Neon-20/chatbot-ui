@@ -101,19 +101,22 @@ const AdminRolesPage = () => {
     }
   }
 
-  const handleDeleteUser = async (username: string) => {
+  const handleDeleteUser = async (userId: string | undefined) => {
     try {
-      // Soft delete the user in the Supabase database
-      const { error } = await supabase
+      if (!userId) throw "User ID not found"
+
+      const { data, error } = await supabase
         .from("profiles")
-        .update({ is_deleted: true }) // Assuming you add an is_deleted column
-        .eq("username", username)
+        .delete()
+        .eq("id", userId)
+      const { error: err } = await supabase
+        .from("users")
+        .delete()
+        .eq("id", userId)
 
       if (error) throw error
 
-      // Remove the user from the local state
-      setProfileList(profileList.filter(user => user.username !== username))
-
+      setProfileList(profileList.filter(user => user.id !== userId))
       toast.success("User removed successfully")
     } catch (error) {
       console.error("Error removing user:", error)
@@ -140,22 +143,6 @@ const AdminRolesPage = () => {
       [column]: prev[column] === "asc" ? "desc" : "asc"
     }))
   }
-
-  // Modify getAllProfiles to filter out soft-deleted users
-  useEffect(() => {
-    async function fetchProfiles() {
-      let profiles = await getAllProfiles()
-      // Filter out soft-deleted users
-      profiles = profiles.filter(profile => !profile.is_deleted)
-      profiles.map(profile => {
-        if (!profile.updated_at) {
-          profile.updated_at = profile.created_at
-        }
-      })
-      setProfileList(profiles)
-    }
-    fetchProfiles()
-  }, [])
 
   const totalAdmins = filteredProfileList.filter(
     user => user.roles === "admin"
@@ -213,7 +200,9 @@ const AdminRolesPage = () => {
                     Last Login <ArrowUpDown size={18} />
                   </Button>
                 </TableHead>
-                <TableHead>Actions</TableHead>
+                {profile?.roles === "superadmin" && (
+                  <TableHead>Actions</TableHead>
+                )}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -245,16 +234,18 @@ const AdminRolesPage = () => {
                   </TableCell>
                   <TableCell>{formatDate(user.created_at ?? "")}</TableCell>
                   <TableCell>{formatDate(user.updated_at ?? "")}</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleDeleteUser(user.username!)}
-                      className="text-red-500 hover:text-red-700"
-                    >
-                      <Trash2 className="size-4" />
-                    </Button>
-                  </TableCell>
+                  {profile?.roles === "superadmin" && (
+                    <TableCell>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleDeleteUser(user.id)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <Trash2 className="size-4" />
+                      </Button>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
             </TableBody>
