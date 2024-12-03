@@ -1,4 +1,5 @@
 "use client"
+import { toast } from "sonner"
 import {
   Sheet,
   SheetContent,
@@ -29,7 +30,7 @@ import { Button } from "./ui/button"
 import { IconCrown } from "@tabler/icons-react"
 import { getAllProfiles } from "@/db/profile"
 import { Input } from "./ui/input"
-import { ArrowUpDown, XIcon } from "lucide-react"
+import { ArrowUpDown, Trash2, XIcon } from "lucide-react"
 import { ChatbotUIContext } from "@/context/context"
 
 type Role = "user" | "developer" | "admin" | "superadmin"
@@ -93,8 +94,30 @@ const AdminRolesPage = () => {
       )
 
       console.log("Role updated successfully")
+      toast.success("Role updated successfully")
     } catch (error) {
       console.error("Error updating role:", error)
+      toast.error("Error updating role")
+    }
+  }
+
+  const handleDeleteUser = async (username: string) => {
+    try {
+      // Soft delete the user in the Supabase database
+      const { error } = await supabase
+        .from("profiles")
+        .update({ is_deleted: true }) // Assuming you add an is_deleted column
+        .eq("username", username)
+
+      if (error) throw error
+
+      // Remove the user from the local state
+      setProfileList(profileList.filter(user => user.username !== username))
+
+      toast.success("User removed successfully")
+    } catch (error) {
+      console.error("Error removing user:", error)
+      toast.error("Error removing user")
     }
   }
 
@@ -117,6 +140,22 @@ const AdminRolesPage = () => {
       [column]: prev[column] === "asc" ? "desc" : "asc"
     }))
   }
+
+  // Modify getAllProfiles to filter out soft-deleted users
+  useEffect(() => {
+    async function fetchProfiles() {
+      let profiles = await getAllProfiles()
+      // Filter out soft-deleted users
+      profiles = profiles.filter(profile => !profile.is_deleted)
+      profiles.map(profile => {
+        if (!profile.updated_at) {
+          profile.updated_at = profile.created_at
+        }
+      })
+      setProfileList(profiles)
+    }
+    fetchProfiles()
+  }, [])
 
   const totalAdmins = filteredProfileList.filter(
     user => user.roles === "admin"
@@ -174,6 +213,7 @@ const AdminRolesPage = () => {
                     Last Login <ArrowUpDown size={18} />
                   </Button>
                 </TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -205,12 +245,22 @@ const AdminRolesPage = () => {
                   </TableCell>
                   <TableCell>{formatDate(user.created_at ?? "")}</TableCell>
                   <TableCell>{formatDate(user.updated_at ?? "")}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleDeleteUser(user.username!)}
+                      className="text-red-500 hover:text-red-700"
+                    >
+                      <Trash2 className="size-4" />
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
             <TableFooter className="bg-background">
               <TableRow>
-                <TableCell colSpan={4} className="text-center text-red-400">
+                <TableCell colSpan={5} className="text-center text-red-400">
                   Total Admins: {totalAdmins} | Total Users: {totalUsers}
                 </TableCell>
               </TableRow>
