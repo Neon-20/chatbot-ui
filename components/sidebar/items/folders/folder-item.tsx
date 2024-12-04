@@ -105,22 +105,24 @@ export const Folder: FC<FolderProps> = ({
             <div>{folder.name}</div>
           </div>
 
-          {isHovering && profile?.roles == "superadmin" && (
-            <div
-              onClick={e => {
-                e.stopPropagation()
-                e.preventDefault()
-              }}
-              className="ml-2 flex space-x-2"
-            >
-              <PlusIcon
-                className="size-5 hover:opacity-50"
-                onClick={handleCreatePrompt}
-              />
-              <UpdateFolder folder={folder} />
-              <DeleteFolder folder={folder} contentType={contentType} />
-            </div>
-          )}
+          {isHovering &&
+            (profile?.roles == "superadmin" ||
+              folder.user_id == profile?.user_id) && (
+              <div
+                onClick={e => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                }}
+                className="ml-2 flex space-x-2"
+              >
+                <PlusIcon
+                  className="size-5 hover:opacity-50"
+                  onClick={handleCreatePrompt}
+                />
+                <UpdateFolder folder={folder} />
+                <DeleteFolder folder={folder} contentType={contentType} />
+              </div>
+            )}
         </div>
       </div>
 
