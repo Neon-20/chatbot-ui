@@ -24,6 +24,7 @@ import { useSelectFileHandler } from "./chat-hooks/use-select-file-handler"
 import { defaultSuggestion } from "@/lib/suggestion"
 import SuggestionCarousel from "./suggestion-carousel"
 import { getAppInsights } from "@/lib/appInsights"
+import { Pencil } from "lucide-react"
 
 interface ChatInputProps {}
 
@@ -260,8 +261,8 @@ export const ChatInput: FC<ChatInputProps> = ({}) => {
         />
 
         <div className="absolute bottom-[14px] right-14 cursor-pointer hover:opacity-50">
-          <IconDownload
-            className="hover:bg-background animate-pulse rounded bg-transparent p-1"
+          <Pencil
+            className="hover:bg-background rounded bg-transparent p-1"
             size={30}
             onClick={() => setIsPromptPickerOpen(!isPromptPickerOpen)}
           />
