@@ -38,7 +38,13 @@ export const fetchHostedModels = async (profile: Tables<"profiles">) => {
         const models = LLM_LIST_MAP[provider]
 
         if (Array.isArray(models)) {
-          modelsToAdd.push(...models)
+          if (localStorage.getItem("region") == "uksouth") {
+            modelsToAdd.push(
+              ...models.filter(model => model.modelId != "o1-preview")
+            )
+          } else {
+            modelsToAdd.push(...models)
+          }
         }
       }
     }

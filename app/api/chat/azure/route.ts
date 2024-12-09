@@ -52,17 +52,11 @@ export async function POST(request: NextRequest) {
         case "gpt-4o-mini":
           DEPLOYMENT_ID = profile.azure_openai_4o_mini_id || ""
           break
-        case "gpt-4-vision-preview":
-          DEPLOYMENT_ID = profile.azure_openai_45_vision_id || ""
-          break
         case "gpt-4o":
           DEPLOYMENT_ID = profile.azure_openai_4o_id || ""
           break
         case "o1-preview":
           DEPLOYMENT_ID = profile.azure_openai_o1_preview_id || ""
-          break
-        case "o1-mini":
-          DEPLOYMENT_ID = profile.azure_openai_o1_mini_id || ""
           break
         default:
           return new Response(JSON.stringify({ message: "Model not found" }), {
