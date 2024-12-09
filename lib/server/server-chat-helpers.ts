@@ -37,7 +37,9 @@ export async function getServerProfile() {
   return profileWithKeys
 }
 
-function addApiKeysToProfile(profile: Tables<"profiles">) {
+function addApiKeysToProfile(
+  profile: Tables<"profiles"> & { [key: string]: string | boolean | null }
+) {
   const apiKeys = {
     [VALID_ENV_KEYS.OPENAI_API_KEY]: "openai_api_key",
     [VALID_ENV_KEYS.ANTHROPIC_API_KEY]: "anthropic_api_key",
@@ -46,11 +48,17 @@ function addApiKeysToProfile(profile: Tables<"profiles">) {
     [VALID_ENV_KEYS.GROQ_API_KEY]: "groq_api_key",
     [VALID_ENV_KEYS.PERPLEXITY_API_KEY]: "perplexity_api_key",
     [VALID_ENV_KEYS.AZURE_OPENAI_SWEDEN_API_KEY]: "azure_openai_api_key",
+    [VALID_ENV_KEYS.AZURE_OPENAI_EUROPE_API_KEY]: "azure_openai_europe_api_key",
     [VALID_ENV_KEYS.OPENROUTER_API_KEY]: "openrouter_api_key",
 
     [VALID_ENV_KEYS.OPENAI_ORGANIZATION_ID]: "openai_organization_id",
 
     [VALID_ENV_KEYS.AZURE_OPENAI_ENDPOINT]: "azure_openai_endpoint",
+    [VALID_ENV_KEYS.AZURE_OPENAI_EUROPE_ENDPOINT]:
+      "azure_openai_europe_endpoint",
+    [VALID_ENV_KEYS.AZURE_GPT_4o_EUROPE_NAME]: "azure_openai_4o_europe_id",
+    [VALID_ENV_KEYS.AZURE_GPT_4o_MINI_EUROPE_NAME]:
+      "azure_openai_4o_mini_europe_id",
     [VALID_ENV_KEYS.AZURE_GPT_35_TURBO_NAME]: "azure_openai_35_turbo_id",
     [VALID_ENV_KEYS.AZURE_GPT_45_VISION_NAME]: "azure_openai_45_vision_id",
     [VALID_ENV_KEYS.AZURE_GPT_45_TURBO_NAME]: "azure_openai_45_turbo_id",
@@ -63,7 +71,7 @@ function addApiKeysToProfile(profile: Tables<"profiles">) {
 
   for (const [envKey, profileKey] of Object.entries(apiKeys)) {
     if (process.env[envKey]) {
-      ;(profile as any)[profileKey] = process.env[envKey]
+      profile[profileKey] = process.env[envKey]
     }
   }
 

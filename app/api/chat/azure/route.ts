@@ -1,45 +1,76 @@
 import { checkApiKey, getServerProfile } from "@/lib/server/server-chat-helpers"
 import { ChatAPIPayload } from "@/types"
 import { OpenAIStream, StreamingTextResponse } from "ai"
+import { NextRequest } from "next/server"
 import OpenAI from "openai"
 import { ChatCompletionCreateParamsBase } from "openai/resources/chat/completions.mjs"
 
 export const runtime = "edge"
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const json = await request.json()
+  const region = request.nextUrl.searchParams.get("region")
   const { chatSettings, messages } = json as ChatAPIPayload
 
   try {
     const profile = await getServerProfile()
 
-    checkApiKey(profile.azure_openai_api_key, "Azure OpenAI")
-
-    const ENDPOINT = profile.azure_openai_endpoint
-    const KEY = profile.azure_openai_api_key
-
+    let ENDPOINT
+    let KEY
     let DEPLOYMENT_ID = ""
-    switch (chatSettings.model) {
-      case "gpt-4o-mini":
-        DEPLOYMENT_ID = profile.azure_openai_4o_mini_id || ""
-        break
-      case "gpt-4-vision-preview":
-        DEPLOYMENT_ID = profile.azure_openai_45_vision_id || ""
-        break
-      case "gpt-4o":
-        DEPLOYMENT_ID = profile.azure_openai_4o_id || ""
-        break
-      case "o1-preview":
-        DEPLOYMENT_ID = profile.azure_openai_o1_preview_id || ""
-        break
-      case "o1-mini":
-        DEPLOYMENT_ID = profile.azure_openai_o1_mini_id || ""
-        break
-      default:
-        return new Response(JSON.stringify({ message: "Model not found" }), {
-          status: 400
-        })
+
+    if (region === "uksouth") {
+      checkApiKey(
+        profile.azure_openai_europe_api_key as string | null,
+        "Azure OpenAI Europe"
+      )
+      ENDPOINT = profile.azure_openai_europe_endpoint
+      KEY = profile.azure_openai_europe_api_key as string | null
+      console.log("Using Azure OpenAI UK South")
+
+      switch (chatSettings.model) {
+        case "gpt-4o-mini":
+          DEPLOYMENT_ID = (profile.azure_openai_4o_mini_europe_id ||
+            "") as string
+          break
+        case "gpt-4o":
+          DEPLOYMENT_ID = (profile.azure_openai_4o_mini_europe_id ||
+            "") as string
+          break
+        default:
+          return new Response(JSON.stringify({ message: "Model not found" }), {
+            status: 400
+          })
+      }
+    } else {
+      checkApiKey(profile.azure_openai_api_key, "Azure OpenAI")
+      ENDPOINT = profile.azure_openai_endpoint
+      KEY = profile.azure_openai_api_key
+      console.log("Using Azure OpenAI Sweden")
+
+      switch (chatSettings.model) {
+        case "gpt-4o-mini":
+          DEPLOYMENT_ID = profile.azure_openai_4o_mini_id || ""
+          break
+        case "gpt-4-vision-preview":
+          DEPLOYMENT_ID = profile.azure_openai_45_vision_id || ""
+          break
+        case "gpt-4o":
+          DEPLOYMENT_ID = profile.azure_openai_4o_id || ""
+          break
+        case "o1-preview":
+          DEPLOYMENT_ID = profile.azure_openai_o1_preview_id || ""
+          break
+        case "o1-mini":
+          DEPLOYMENT_ID = profile.azure_openai_o1_mini_id || ""
+          break
+        default:
+          return new Response(JSON.stringify({ message: "Model not found" }), {
+            status: 400
+          })
+      }
     }
+
     if (!ENDPOINT || !KEY || !DEPLOYMENT_ID) {
       console.error({
         ENDPOINT: ENDPOINT,

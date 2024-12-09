@@ -39,9 +39,7 @@ export const ProfileStep: FC<ProfileStepProps> = ({
   onDisplayNameChange
 }) => {
   const [loading, setLoading] = useState(false)
-  const [region, setRegion] = useState(
-    localStorage.getItem("selectedRegion") || ""
-  )
+  const [region, setRegion] = useState(localStorage.getItem("region") || "")
 
   const debounce = (func: (...args: any[]) => void, wait: number) => {
     let timeout: NodeJS.Timeout | null
@@ -159,7 +157,7 @@ export const ProfileStep: FC<ProfileStepProps> = ({
         <Select
           value={region}
           onValueChange={value => {
-            localStorage.setItem("selectedRegion", value)
+            localStorage.setItem("region", value)
             setRegion(value)
           }}
         >
