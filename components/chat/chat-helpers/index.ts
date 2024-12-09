@@ -217,9 +217,14 @@ export const handleHostedChat = async (
   } else {
     formattedMessages = draftMessages
   }
-
-  const apiEndpoint =
-    provider === "custom" ? "/api/chat/custom" : `/api/chat/${provider}`
+  const region = localStorage.getItem("region")
+  let apiEndpoint
+  if (provider === "azure") {
+    apiEndpoint = `/api/chat/${provider}?region=${region}`
+  } else {
+    apiEndpoint =
+      provider === "custom" ? "/api/chat/custom" : `/api/chat/${provider}`
+  }
 
   const requestBody = {
     chatSettings: payload.chatSettings,

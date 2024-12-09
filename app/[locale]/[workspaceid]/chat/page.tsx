@@ -21,7 +21,6 @@ import {
 import { ChatbotUIContext } from "@/context/context"
 import useHotkey from "@/lib/hooks/use-hotkey"
 import { useTheme } from "next-themes"
-import Link from "next/link"
 import { useContext, useEffect, useState } from "react"
 
 export default function ChatPage() {
@@ -36,16 +35,16 @@ export default function ChatPage() {
 
   const { theme } = useTheme()
   const [region, setRegion] = useState<string | null>(
-    localStorage.getItem("selectedRegion")
+    localStorage.getItem("region")
   )
   useEffect(() => {
     if (region === null) {
-      localStorage.setItem("selectedRegion", "europe")
-      setRegion("europe")
+      localStorage.setItem("region", "sweden")
+      setRegion("sweden")
     }
   }, [])
   const handleRegionChange = (value: string) => {
-    localStorage.setItem("selectedRegion", value)
+    localStorage.setItem("region", value)
     setRegion(value)
     window.location.reload()
   }
@@ -72,11 +71,11 @@ export default function ChatPage() {
                   <SelectValue placeholder="Your Region" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="europe" className="cursor-pointer">
-                    Europe
+                  <SelectItem value="sweden" className="cursor-pointer">
+                    Sweden
                   </SelectItem>
-                  <SelectItem value="non-europe" className="cursor-pointer">
-                    Non Europe
+                  <SelectItem value="uksouth" className="cursor-pointer">
+                    Uk South
                   </SelectItem>
                 </SelectContent>
               </Select>
