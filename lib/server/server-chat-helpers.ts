@@ -71,7 +71,7 @@ function addApiKeysToProfile(
 
   for (const [envKey, profileKey] of Object.entries(apiKeys)) {
     if (process.env[envKey]) {
-      profile[profileKey] = process.env[envKey]
+      profile[profileKey] = process.env[envKey] ?? null
     }
   }
 
