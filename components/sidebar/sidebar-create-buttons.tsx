@@ -38,10 +38,22 @@ export const SidebarCreateButtons: FC<SidebarCreateButtonsProps> = ({
     if (!profile) return
     if (!selectedWorkspace) return
 
+    const existingFolders = folders.filter(f => f.name.startsWith("New Folder"))
+
+    let folderName = "New Folder"
+    if (existingFolders.length > 0) {
+      const numbers = existingFolders.map(f => {
+        const match = f.name.match(/New Folder( \((\d+)\))?/)
+        return match && match[2] ? parseInt(match[2]) : 1
+      })
+      const maxNumber = Math.max(...numbers)
+      folderName = `New Folder (${maxNumber + 1})`
+    }
+
     const createdFolder = await createFolder({
       user_id: profile.user_id,
       workspace_id: selectedWorkspace.id,
-      name: "New Folder",
+      name: folderName,
       description: "",
       type: contentType
     })
