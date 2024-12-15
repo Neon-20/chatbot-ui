@@ -7,7 +7,7 @@ import {
   IconCirclePlus,
   IconPlayerStopFilled,
   IconSend,
-  IconDownload
+  IconWriting
 } from "@tabler/icons-react"
 import Image from "next/image"
 import { FC, useContext, useEffect, useRef, useState } from "react"
@@ -21,7 +21,6 @@ import { useChatHandler } from "./chat-hooks/use-chat-handler"
 import { useChatHistoryHandler } from "./chat-hooks/use-chat-history"
 import { usePromptAndCommand } from "./chat-hooks/use-prompt-and-command"
 import { useSelectFileHandler } from "./chat-hooks/use-select-file-handler"
-import { defaultSuggestion } from "@/lib/suggestion"
 import SuggestionCarousel from "./suggestion-carousel"
 import { getAppInsights } from "@/lib/appInsights"
 
@@ -244,7 +243,7 @@ export const ChatInput: FC<ChatInputProps> = ({}) => {
 
         <TextareaAutosize
           textareaRef={chatInputRef}
-          className="ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring text-md flex w-full resize-none rounded-md border-none px-14 py-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+          className="ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring text-md flex w-full resize-none rounded-md border-none px-20 py-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
           placeholder={t(
             // `Ask anything. Type "@" for assistants, "/" for prompts, "#" for files, and "!" for tools.`
             `Ask anything. Type @  /  #  !`
@@ -260,7 +259,7 @@ export const ChatInput: FC<ChatInputProps> = ({}) => {
         />
 
         <div className="absolute bottom-[14px] right-14 cursor-pointer hover:opacity-50">
-          <IconDownload
+          <IconWriting
             className="hover:bg-background animate-pulse rounded bg-transparent p-1"
             size={30}
             onClick={() => setIsPromptPickerOpen(!isPromptPickerOpen)}
