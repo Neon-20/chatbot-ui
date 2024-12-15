@@ -9,8 +9,6 @@ import { QuickSettings } from "@/components/chat/quick-settings"
 import PrivacyPolicy from "@/components/legal/privacy-policy"
 import TermsAndConditions from "@/components/legal/terms-and-conditions"
 import { Brand } from "@/components/ui/brand"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
 import {
   Select,
   SelectContent,
@@ -29,7 +27,7 @@ export default function ChatPage() {
     handleFocusChatInput()
   })
 
-  const { chatMessages } = useContext(ChatbotUIContext)
+  const { profile, chatMessages } = useContext(ChatbotUIContext)
 
   const { handleNewChat, handleFocusChatInput } = useChatHandler()
 
@@ -58,9 +56,11 @@ export default function ChatPage() {
           </div>
 
           <div className="m-2 flex w-full justify-between">
-            <div className="hidden lg:block">
-              <QuickSettings />
-            </div>
+            {profile?.roles === "superadmin" && (
+              <div className="hidden lg:block">
+                <QuickSettings />
+              </div>
+            )}
             <div className="m-3 flex items-center space-x-2">
               {/* <Label className="hidden lg:block">Select a Region</Label> */}
               <Select
