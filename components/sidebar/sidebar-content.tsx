@@ -18,8 +18,27 @@ export const SidebarContent: FC<SidebarContentProps> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState("")
 
-  const filteredData: any = data.filter(item =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredData = data.filter(
+    (
+      item
+    ): item is {
+      created_at: string
+      description: string
+      folder_id: string | null
+      id: string
+      name: string
+      sharing: string
+      updated_at: string | null
+      user_id: string
+    } =>
+      "description" in item &&
+      item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
+  const filteredFolders = folders.filter(
+    folder =>
+      folder.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      filteredData.some(item => item.folder_id === folder.id)
   )
 
   return (
@@ -43,7 +62,7 @@ export const SidebarContent: FC<SidebarContentProps> = ({
       <SidebarDataList
         contentType={contentType}
         data={filteredData}
-        folders={folders}
+        folders={filteredFolders}
       />
     </div>
   )
