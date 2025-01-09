@@ -96,7 +96,7 @@ function SuggestionCarousel({
   }, [userQuery, filesData])
 
   return (
-    <div className="flex w-full items-center bg-[#fafafa]">
+    <div className="flex w-full items-center space-x-2 rounded-lg bg-inherit p-2">
       <Button
         onClick={() => scroll("left")}
         variant={"ghost"}

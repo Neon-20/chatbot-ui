@@ -217,6 +217,15 @@ export const SidebarDataList: FC<SidebarDataListProps> = ({
   const dataWithFolders = data.filter(item => item.folder_id)
   const dataWithoutFolders = data.filter(item => item.folder_id === null)
 
+  const sortedFolders = folders.sort((a, b) => a.name.localeCompare(b.name))
+
+  const sortedDataWithFolders = dataWithFolders.sort((a, b) =>
+    a.name.localeCompare(b.name)
+  )
+  const sortedDataWithoutFolders = dataWithoutFolders.sort((a, b) =>
+    a.name.localeCompare(b.name)
+  )
+
   return (
     <>
       <div
@@ -236,14 +245,14 @@ export const SidebarDataList: FC<SidebarDataListProps> = ({
             isOverflowing ? "w-[calc(100%-8px)]" : "w-full"
           } space-y-2 pt-2 ${isOverflowing ? "mr-2" : ""}`}
         >
-          {folders.map(folder => (
+          {sortedFolders.map(folder => (
             <Folder
               key={folder.id}
               folder={folder}
               onUpdateFolder={updateFolder}
               contentType={contentType}
             >
-              {dataWithFolders
+              {sortedDataWithFolders
                 .filter(item => item.folder_id === folder.id)
                 .map(item => (
                   <div
@@ -264,7 +273,7 @@ export const SidebarDataList: FC<SidebarDataListProps> = ({
               {["Today", "Yesterday", "Previous Week", "Older"].map(
                 dateCategory => {
                   const sortedData = getSortedData(
-                    dataWithoutFolders,
+                    sortedDataWithoutFolders,
                     dateCategory as
                       | "Today"
                       | "Yesterday"
@@ -313,7 +322,7 @@ export const SidebarDataList: FC<SidebarDataListProps> = ({
               onDragLeave={handleDragLeave}
               onDragOver={handleDragOver}
             >
-              {dataWithoutFolders.map(item => {
+              {sortedDataWithoutFolders.map(item => {
                 return (
                   <div
                     key={item.id}
