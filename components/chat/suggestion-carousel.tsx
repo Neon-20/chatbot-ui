@@ -8,6 +8,7 @@ import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa"
 import { ChatbotUIContext } from "@/context/context"
 import { supabase } from "@/lib/supabase/browser-client"
 import { defaultSuggestion } from "@/lib/suggestion"
+import { motion } from "framer-motion"
 
 function SuggestionCarousel({
   handleSendMessage
@@ -105,26 +106,40 @@ function SuggestionCarousel({
         <FaArrowCircleLeft className="size-6" />
       </Button>
 
-      <div
-        ref={scrollRef}
-        className="no-scrollbar relative flex w-full space-x-2 overflow-x-auto"
-      >
-        {suggestions?.map((suggestion, index) => (
-          <div
-            key={index}
-            className="flex h-full shrink-0 cursor-pointer items-center justify-center"
-            onClick={() => handleSendMessage(suggestion, chatMessages, false)}
-          >
-            {isGenerating ? (
-              <Skeleton className="h-10 w-20 rounded-lg" />
-            ) : (
-              <div className="flex h-full items-center space-x-1 rounded-lg px-3 py-1 hover:opacity-50">
-                <IconBolt size={20} />
-                <div>{suggestion}</div>
-              </div>
-            )}
-          </div>
-        ))}
+      <div className="relative w-full overflow-hidden">
+        <motion.div
+          ref={scrollRef}
+          className="flex space-x-2"
+          animate={{
+            x: [0, -100 * suggestions.length]
+          }}
+          transition={{
+            x: {
+              repeat: Infinity,
+              repeatType: "loop",
+              duration: 20,
+              ease: "linear"
+            }
+          }}
+        >
+          {[...suggestions, ...suggestions].map((suggestion, index) => (
+            <motion.div
+              key={index}
+              className="flex h-full shrink-0 cursor-pointer items-center justify-center"
+              onClick={() => handleSendMessage(suggestion, chatMessages, false)}
+              whileHover={{ scale: 1.05 }}
+            >
+              {isGenerating ? (
+                <Skeleton className="h-10 w-20 rounded-lg" />
+              ) : (
+                <div className="flex h-full items-center space-x-1 rounded-lg px-3 py-1">
+                  <IconBolt size={20} />
+                  <div>{suggestion}</div>
+                </div>
+              )}
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
 
       <Button
