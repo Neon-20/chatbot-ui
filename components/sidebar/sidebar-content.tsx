@@ -30,9 +30,7 @@ export const SidebarContent: FC<SidebarContentProps> = ({
       sharing: string
       updated_at: string | null
       user_id: string
-    } =>
-      "description" in item &&
-      item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    } => item.name.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   const filteredFolders = folders.filter(
