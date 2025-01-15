@@ -26,7 +26,9 @@ function SuggestionCarousel({
   const [filesData, setFilesData] =
     useState<{ content: string; tokens: number }[]>()
 
-  const [suggestions, setSuggestions] = useState<string[]>(defaultSuggestion)
+  const [suggestions, setSuggestions] = useState<string[] | undefined>(
+    defaultSuggestion
+  )
   const [isGenerating, setIsGenerating] = useState(false)
 
   const scroll = (direction: "left" | "right") => {
@@ -97,7 +99,7 @@ function SuggestionCarousel({
   }, [userQuery, filesData])
 
   return (
-    <div className="flex w-full items-center space-x-2 rounded-lg bg-inherit p-2">
+    <div className="bg-muted/50 flex w-full items-center space-x-2 rounded-lg p-2 backdrop-blur-md">
       <Button
         onClick={() => scroll("left")}
         variant={"ghost"}
@@ -111,7 +113,7 @@ function SuggestionCarousel({
           ref={scrollRef}
           className="flex space-x-2"
           animate={{
-            x: [0, -100 * suggestions.length]
+            x: [0, -100 * (suggestions?.length || 0)]
           }}
           transition={{
             x: {
@@ -122,23 +124,26 @@ function SuggestionCarousel({
             }
           }}
         >
-          {[...suggestions, ...suggestions].map((suggestion, index) => (
-            <motion.div
-              key={index}
-              className="flex h-full shrink-0 cursor-pointer items-center justify-center"
-              onClick={() => handleSendMessage(suggestion, chatMessages, false)}
-              whileHover={{ scale: 1.05 }}
-            >
-              {isGenerating ? (
-                <Skeleton className="h-10 w-20 rounded-lg" />
-              ) : (
-                <div className="flex h-full items-center space-x-1 rounded-lg px-3 py-1">
-                  <IconBolt size={20} />
-                  <div>{suggestion}</div>
-                </div>
-              )}
-            </motion.div>
-          ))}
+          {suggestions &&
+            [...suggestions, ...suggestions].map((suggestion, index) => (
+              <motion.div
+                key={index}
+                className="flex h-full shrink-0 cursor-pointer items-center justify-center"
+                onClick={() =>
+                  handleSendMessage(suggestion, chatMessages, false)
+                }
+                whileHover={{ scale: 1.05 }}
+              >
+                {isGenerating ? (
+                  <Skeleton className="h-10 w-20 rounded-lg" />
+                ) : (
+                  <div className="flex h-full items-center space-x-1 rounded-lg px-3 py-1">
+                    <IconBolt size={20} />
+                    <div>{suggestion}</div>
+                  </div>
+                )}
+              </motion.div>
+            ))}
         </motion.div>
       </div>
 

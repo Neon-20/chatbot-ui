@@ -19,52 +19,88 @@ export async function POST(request: NextRequest) {
     let KEY
     let DEPLOYMENT_ID = ""
 
-    if (region === "uksouth") {
-      checkApiKey(
-        profile.azure_openai_europe_api_key as string | null,
-        "Azure OpenAI Europe"
-      )
-      ENDPOINT = profile.azure_openai_europe_endpoint
-      KEY = profile.azure_openai_europe_api_key as string | null
-      console.log("Using Azure OpenAI UK South")
+    switch (region) {
+      case "uksouth":
+        checkApiKey(
+          profile.azure_openai_europe_api_key as string | null,
+          "Azure OpenAI Europe"
+        )
+        ENDPOINT = profile.azure_openai_europe_endpoint
+        KEY = profile.azure_openai_europe_api_key as string | null
+        console.log("Using Azure OpenAI UK South")
 
-      switch (chatSettings.model) {
-        case "gpt-4o-mini":
-          DEPLOYMENT_ID = (profile.azure_openai_4o_mini_europe_id ||
-            "") as string
-          break
-        case "gpt-4o":
-          DEPLOYMENT_ID = (profile.azure_openai_4o_mini_europe_id ||
-            "") as string
-          break
-        default:
-          return new Response(JSON.stringify({ message: "Model not found" }), {
-            status: 400
-          })
-      }
-    } else {
-      checkApiKey(profile.azure_openai_api_key, "Azure OpenAI")
-      ENDPOINT = profile.azure_openai_endpoint
-      KEY = profile.azure_openai_api_key
-      console.log("Using Azure OpenAI Sweden")
+        switch (chatSettings.model) {
+          case "gpt-4o-mini":
+            DEPLOYMENT_ID = (profile.azure_openai_4o_mini_europe_id ||
+              "") as string
+            break
+          case "gpt-4o":
+            DEPLOYMENT_ID = (profile.azure_openai_4o_mini_europe_id ||
+              "") as string
+            break
+          default:
+            return new Response(
+              JSON.stringify({ message: "Model not found" }),
+              {
+                status: 400
+              }
+            )
+        }
+        break
+      case "sweden":
+        checkApiKey(profile.azure_openai_api_key, "Azure OpenAI")
+        ENDPOINT = profile.azure_openai_endpoint
+        KEY = profile.azure_openai_api_key
+        console.log("Using Azure OpenAI Sweden")
 
-      switch (chatSettings.model) {
-        case "gpt-4o-mini":
-          DEPLOYMENT_ID = profile.azure_openai_4o_mini_id || ""
-          break
-        case "gpt-4o":
-          DEPLOYMENT_ID = profile.azure_openai_4o_id || ""
-          break
-        case "o1-preview":
-          DEPLOYMENT_ID = profile.azure_openai_o1_preview_id || ""
-          break
-        default:
-          return new Response(JSON.stringify({ message: "Model not found" }), {
-            status: 400
-          })
-      }
+        switch (chatSettings.model) {
+          case "gpt-4o-mini":
+            DEPLOYMENT_ID = profile.azure_openai_4o_mini_id || ""
+            break
+          case "gpt-4o":
+            DEPLOYMENT_ID = profile.azure_openai_4o_id || ""
+            break
+          case "o1-preview":
+            DEPLOYMENT_ID = profile.azure_openai_o1_preview_id || ""
+            break
+          default:
+            return new Response(
+              JSON.stringify({ message: "Model not found" }),
+              {
+                status: 400
+              }
+            )
+        }
+        break
+      case "switzerland":
+        checkApiKey(
+          profile.azure_openai_swiss_endpoint as string | null,
+          "Azure OpenAI Switzerland"
+        )
+        ENDPOINT = profile.azure_openai_swiss_endpoint as string | null
+        KEY = profile.azure_openai_swiss_api_key as string | null
+        console.log("Using Azure OpenAI Sweden")
+
+        switch (chatSettings.model) {
+          case "gpt-4o-mini":
+            DEPLOYMENT_ID = String(profile.azure_openai_4o_mini_swiss_id) || ""
+            break
+          case "gpt-4o":
+            DEPLOYMENT_ID = profile.azure_openai_4o_id || ""
+            break
+          case "o1-preview":
+            DEPLOYMENT_ID = profile.azure_openai_o1_preview_id || ""
+            break
+          default:
+            return new Response(
+              JSON.stringify({ message: "Model not found" }),
+              {
+                status: 400
+              }
+            )
+        }
+        break
     }
-
     if (!ENDPOINT || !KEY || !DEPLOYMENT_ID) {
       console.error({
         ENDPOINT: ENDPOINT,

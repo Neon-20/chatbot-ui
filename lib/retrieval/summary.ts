@@ -17,7 +17,7 @@ export async function genSummary(text: string | undefined) {
   const ENDPOINT = profile.azure_openai_endpoint
   const KEY = profile.azure_openai_api_key
 
-  let DEPLOYMENT_ID = profile.azure_openai_35_turbo_id
+  let DEPLOYMENT_ID = profile.azure_openai_4o_mini_id
 
   if (!ENDPOINT || !KEY || !DEPLOYMENT_ID) {
     return (
@@ -83,7 +83,7 @@ export async function genSuggestions({
   const ENDPOINT = profile.azure_openai_endpoint
   const KEY = profile.azure_openai_api_key
 
-  let DEPLOYMENT_ID = profile.azure_openai_35_turbo_id
+  let DEPLOYMENT_ID = profile.azure_openai_4o_mini_id
 
   if (!ENDPOINT || !KEY || !DEPLOYMENT_ID) {
     return ["Azure resources not found"]
