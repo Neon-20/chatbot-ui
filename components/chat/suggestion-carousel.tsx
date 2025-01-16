@@ -1,10 +1,8 @@
 import { IconBolt } from "@tabler/icons-react"
 import { useContext, useEffect, useRef, useState } from "react"
-import { Button } from "../ui/button"
 import { ChatMessage } from "@/types/chat-message"
 import { genSuggestions } from "@/lib/retrieval/summary"
 import { Skeleton } from "../ui/skeleton"
-import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa"
 import { ChatbotUIContext } from "@/context/context"
 import { supabase } from "@/lib/supabase/browser-client"
 import { defaultSuggestion } from "@/lib/suggestion"
@@ -99,21 +97,21 @@ function SuggestionCarousel({
   }, [userQuery, filesData])
 
   return (
-    <div className="bg-muted/50 flex w-full items-center space-x-2 rounded-lg p-2 backdrop-blur-md">
-      <Button
+    <div className="flex w-full items-center space-x-2 rounded-lg p-2 backdrop-blur-lg">
+      {/* <Button
         onClick={() => scroll("left")}
         variant={"ghost"}
         className="rounded-full focus:outline-none"
       >
         <FaArrowCircleLeft className="size-6" />
-      </Button>
+      </Button> */}
 
       <div className="relative w-full overflow-hidden">
         <motion.div
           ref={scrollRef}
           className="flex space-x-2"
           animate={{
-            x: [0, -100 * (suggestions?.length || 0)]
+            x: [0, -200 * (suggestions?.length || 0)]
           }}
           transition={{
             x: {
@@ -147,13 +145,13 @@ function SuggestionCarousel({
         </motion.div>
       </div>
 
-      <Button
+      {/* <Button
         onClick={() => scroll("right")}
         variant={"ghost"}
         className="rounded-full focus:outline-none"
       >
         <FaArrowCircleRight className="size-6" />
-      </Button>
+      </Button> */}
     </div>
   )
 }
