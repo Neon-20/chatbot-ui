@@ -4,7 +4,6 @@ import { Button } from "../ui/button"
 import { ChatMessage } from "@/types/chat-message"
 import { genSuggestions } from "@/lib/retrieval/summary"
 import { Skeleton } from "../ui/skeleton"
-import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa"
 import { ChatbotUIContext } from "@/context/context"
 import { supabase } from "@/lib/supabase/browser-client"
 import { defaultSuggestion } from "@/lib/suggestion"
@@ -122,7 +121,8 @@ function SuggestionCarousel({
         className="rounded-full focus:outline-none"
       >
         <FaArrowCircleLeft className="size-6" />
-      </Button>
+      </Button> */}
+
 
       <div className="relative w-full">
         <AnimatePresence initial={false} custom={direction}>
@@ -170,7 +170,7 @@ function SuggestionCarousel({
         className="rounded-full focus:outline-none"
       >
         <FaArrowCircleRight className="size-6" />
-      </Button>
+      </Button> */}
     </div>
   )
 }
