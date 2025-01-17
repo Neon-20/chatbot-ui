@@ -1,5 +1,5 @@
 import { IconBolt } from "@tabler/icons-react"
-import { useCallback, useContext, useEffect, useRef, useState } from "react"
+import { useCallback, useContext, useEffect, useState } from "react"
 import { Button } from "../ui/button"
 import { ChatMessage } from "@/types/chat-message"
 import { genSuggestions } from "@/lib/retrieval/summary"
@@ -8,6 +8,7 @@ import { ChatbotUIContext } from "@/context/context"
 import { supabase } from "@/lib/supabase/browser-client"
 import { defaultSuggestion } from "@/lib/suggestion"
 import { AnimatePresence, motion } from "framer-motion"
+import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa"
 
 function SuggestionCarousel({
   handleSendMessage
@@ -121,8 +122,7 @@ function SuggestionCarousel({
         className="rounded-full focus:outline-none"
       >
         <FaArrowCircleLeft className="size-6" />
-      </Button> */}
-
+      </Button>
 
       <div className="relative w-full">
         <AnimatePresence initial={false} custom={direction}>
@@ -170,7 +170,7 @@ function SuggestionCarousel({
         className="rounded-full focus:outline-none"
       >
         <FaArrowCircleRight className="size-6" />
-      </Button> */}
+      </Button>
     </div>
   )
 }

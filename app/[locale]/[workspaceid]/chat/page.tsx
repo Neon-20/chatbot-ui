@@ -56,11 +56,9 @@ export default function ChatPage() {
           </div>
 
           <div className="m-2 flex w-full justify-between">
-            {profile?.roles === "superadmin" && (
-              <div className="hidden lg:block">
-                <QuickSettings />
-              </div>
-            )}
+            <div className="hidden lg:block">
+              {profile?.roles === "superadmin" && <QuickSettings />}
+            </div>
             <div className="m-3 flex items-center space-x-2">
               {/* <Label className="hidden lg:block">Select a Region</Label> */}
               <Select
