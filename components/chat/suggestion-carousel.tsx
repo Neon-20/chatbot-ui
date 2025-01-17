@@ -1,12 +1,13 @@
 import { IconBolt } from "@tabler/icons-react"
-import { useContext, useEffect, useRef, useState } from "react"
+import { useCallback, useContext, useEffect, useRef, useState } from "react"
+import { Button } from "../ui/button"
 import { ChatMessage } from "@/types/chat-message"
 import { genSuggestions } from "@/lib/retrieval/summary"
 import { Skeleton } from "../ui/skeleton"
 import { ChatbotUIContext } from "@/context/context"
 import { supabase } from "@/lib/supabase/browser-client"
 import { defaultSuggestion } from "@/lib/suggestion"
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 
 function SuggestionCarousel({
   handleSendMessage
@@ -18,30 +19,46 @@ function SuggestionCarousel({
   ) => void
 }) {
   const { chatMessages, newMessageFiles } = useContext(ChatbotUIContext)
-
-  const scrollRef = useRef(null)
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [direction, setDirection] = useState(0)
   const [userQuery, setUserQuery] = useState<string | undefined>(undefined)
   const [filesData, setFilesData] =
     useState<{ content: string; tokens: number }[]>()
-
   const [suggestions, setSuggestions] = useState<string[] | undefined>(
     defaultSuggestion
   )
   const [isGenerating, setIsGenerating] = useState(false)
 
-  const scroll = (direction: "left" | "right") => {
-    if (scrollRef.current) {
-      const scrollAmount = direction === "left" ? -200 : 200
-      ;(scrollRef.current as HTMLDivElement).scrollBy({
-        left: scrollAmount,
-        behavior: "smooth"
+  const moveCarousel = useCallback(
+    (newDirection: number) => {
+      setDirection(newDirection)
+      setCurrentIndex(prevIndex => {
+        if (newDirection === -1) {
+          return prevIndex === 0
+            ? (suggestions?.length ?? 1) - 1
+            : prevIndex - 1
+        } else {
+          return (prevIndex + 1) % (suggestions?.length ?? 1)
+        }
       })
-    }
-  }
+    },
+    [suggestions?.length]
+  )
+
+  const moveLeft = useCallback(() => moveCarousel(-1), [moveCarousel])
+  const moveRight = useCallback(() => moveCarousel(1), [moveCarousel])
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      moveRight()
+    }, 3000)
+
+    return () => clearInterval(timer)
+  }, [moveRight, moveLeft])
 
   useEffect(() => {
     const fetchContent = async () => {
-      if (newMessageFiles.length === 0) return // No files, nothing to fetch
+      if (newMessageFiles.length === 0) return
       try {
         const promises = newMessageFiles.map(async file => {
           const { data, error } = await supabase
@@ -97,38 +114,40 @@ function SuggestionCarousel({
   }, [userQuery, filesData])
 
   return (
-    <div className="flex w-full items-center space-x-2 rounded-lg p-2 backdrop-blur-lg">
-      {/* <Button
-        onClick={() => scroll("left")}
+    <div className="bg-muted/50 flex w-full items-center space-x-2 rounded-lg p-2 backdrop-blur-md  ">
+      <Button
+        onClick={moveLeft}
         variant={"ghost"}
         className="rounded-full focus:outline-none"
       >
         <FaArrowCircleLeft className="size-6" />
       </Button> */}
 
-      <div className="relative w-full overflow-hidden">
-        <motion.div
-          ref={scrollRef}
-          className="flex space-x-2"
-          animate={{
-            x: [0, -200 * (suggestions?.length || 0)]
-          }}
-          transition={{
-            x: {
-              repeat: Infinity,
-              repeatType: "loop",
-              duration: 20,
-              ease: "linear"
-            }
-          }}
-        >
-          {suggestions &&
-            [...suggestions, ...suggestions].map((suggestion, index) => (
+
+      <div className="relative w-full">
+        <AnimatePresence initial={false} custom={direction}>
+          <motion.div
+            key={currentIndex}
+            custom={direction}
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{
+              x: { type: "spring", stiffness: 300, damping: 30 },
+              opacity: { duration: 0.2 }
+            }}
+            className="absolute flex size-full items-center justify-start"
+          >
+            {suggestions && (
               <motion.div
-                key={index}
-                className="flex h-full shrink-0 cursor-pointer items-center justify-center"
+                className="flex size-full shrink-0 cursor-pointer items-center justify-center"
                 onClick={() =>
-                  handleSendMessage(suggestion, chatMessages, false)
+                  handleSendMessage(
+                    suggestions[currentIndex],
+                    chatMessages,
+                    false
+                  )
                 }
                 whileHover={{ scale: 1.05 }}
               >
@@ -137,16 +156,16 @@ function SuggestionCarousel({
                 ) : (
                   <div className="flex h-full items-center space-x-1 rounded-lg px-3 py-1">
                     <IconBolt size={20} />
-                    <div>{suggestion}</div>
+                    <div>{suggestions[currentIndex]}</div>
                   </div>
                 )}
               </motion.div>
-            ))}
-        </motion.div>
+            )}
+          </motion.div>
+        </AnimatePresence>
       </div>
-
-      {/* <Button
-        onClick={() => scroll("right")}
+      <Button
+        onClick={moveRight}
         variant={"ghost"}
         className="rounded-full focus:outline-none"
       >
@@ -191,4 +210,25 @@ function trimFilesDataToTokenLimit(
   }
 
   return trimmedFilesData
+}
+
+const variants = {
+  enter: (direction: number) => {
+    return {
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0
+    }
+  },
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1
+  },
+  exit: (direction: number) => {
+    return {
+      zIndex: 0,
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0
+    }
+  }
 }
