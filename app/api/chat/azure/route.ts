@@ -34,10 +34,6 @@ export async function POST(request: NextRequest) {
             DEPLOYMENT_ID = (profile.azure_openai_4o_mini_europe_id ||
               "") as string
             break
-          case "gpt-4o":
-            DEPLOYMENT_ID = (profile.azure_openai_4o_mini_europe_id ||
-              "") as string
-            break
           default:
             return new Response(
               JSON.stringify({ message: "Model not found" }),
