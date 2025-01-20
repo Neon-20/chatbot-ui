@@ -6,6 +6,7 @@ AID Copilot is an advanced chat interface that enables seamless interaction with
 ### Key Features
 - Multi-model AI chat 
 - Real-time response
+- AI-Based Suggestions
 - Workspace organization
 - Default Prompts
 - Multi-File attachment capabilities
@@ -15,7 +16,6 @@ AID Copilot is an advanced chat interface that enables seamless interaction with
 - Customizable chat settings
 - Markdown message support
 
-<<<<<<< HEAD
 ## Demo below:
 =======
 ## 2. Purpose and Scope
@@ -87,6 +87,7 @@ npm run dev
 - Attachment management
 - Storage integration
 - User preferences
+- AI-Based Suggestions
 - Model configurations
 - Interface customization
 - Role Based Access Management (RBAC)
