@@ -1,10 +1,10 @@
-# Chatbot UI
+# Chatbot UI.
 
 The open-source AI chat app for everyone.
 
 <img src="./public/readme/screenshot.png" alt="Chatbot UI" width="600">
 
-## Demo
+## Demo below:
 
 View the latest demo [here](https://x.com/mckaywrigley/status/1738273242283151777?s=20).
 
