@@ -1,8 +1,6 @@
-<<<<<<< HEAD
 # Chatbot UI.
-=======
+
 # AID Copilot 
->>>>>>> fe06843 (readme changed)
 
 ## 1. Project Overview
 AID Copilot is an advanced chat interface that enables seamless interaction with various AI models. Built with modern web technologies, it provides a robust platform for AI-powered conversations with features like workspace management,role-based access management, file handling, and customizable settings.
