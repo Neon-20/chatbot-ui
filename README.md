@@ -17,7 +17,6 @@ AID Copilot is an advanced chat interface that enables seamless interaction with
 - Markdown message support
 
 ## Demo below:
-=======
 ## 2. Purpose and Scope
 The project aims to provide a flexible and powerful chat interface that can:
 - Support multiple AI language models (OpenAI, Azure, Anthropic, etc.)
@@ -26,7 +25,6 @@ The project aims to provide a flexible and powerful chat interface that can:
 - Provide customizable settings for different use cases
 - Facilitate seamless user experience across devices
 - Support multiple languages and locales in chat interface
->>>>>>> fe06843 (readme changed)
 
 ## 3. Local Quick Setup
 
