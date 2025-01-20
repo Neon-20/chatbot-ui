@@ -1,5 +1,3 @@
-# Chatbot UI.
-
 # AID Copilot 
 
 ## 1. Project Overview
