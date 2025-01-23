@@ -24,6 +24,8 @@ import { useSelectFileHandler } from "./chat-hooks/use-select-file-handler"
 import SuggestionCarousel from "./suggestion-carousel"
 import { getAppInsights } from "@/lib/appInsights"
 import { Pencil } from "lucide-react"
+import TermsAndConditions from "../legal/terms-and-conditions"
+import PrivacyPolicy from "../legal/privacy-policy"
 
 interface ChatInputProps {}
 
@@ -290,6 +292,11 @@ export const ChatInput: FC<ChatInputProps> = ({}) => {
             />
           )}
         </div>
+      </div>
+      <div className="flex flex-row items-center justify-center px-3 py-2 text-center text-[12px] text-black/50 md:px-4 md:pt-3 dark:text-white/50">
+        {t(
+          "AID is an open-source tool brought by the Alter Domus Automation Team and adapted by the Cloud Platform Engineering Team. Refer T&C and Privacy Policy for more details."
+        )}{" "}
       </div>
     </>
   )
