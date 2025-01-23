@@ -89,10 +89,10 @@ export default function ChatPage() {
           <div className="w-full min-w-[300px] items-end px-2 pt-0 backdrop-blur-lg sm:w-[600px] sm:pt-5 md:w-[700px] lg:w-[700px] xl:w-[800px]">
             <ChatInput />
           </div>
-          {/* <div className="mb-4 flex justify-center space-x-2">
-            <TermsAndConditions />
-            <PrivacyPolicy />
-          </div> */}
+          <div className="mb-4 flex justify-center space-x-2">
+            {/* <TermsAndConditions />
+            <PrivacyPolicy /> */}
+          </div>
 
           <div className="absolute bottom-2 right-2 hidden md:block lg:bottom-4 lg:right-4">
             <ChatHelp />
