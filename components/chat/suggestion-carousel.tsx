@@ -107,7 +107,6 @@ function SuggestionCarousel({
       >
         <FaArrowCircleLeft className="size-6" />
       </Button>
-
       <div className="relative w-full overflow-hidden">
         <motion.div
           ref={scrollRef}
