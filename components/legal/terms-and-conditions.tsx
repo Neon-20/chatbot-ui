@@ -5,7 +5,9 @@ export default function TermsAndConditions() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <p className="cursor-pointer px-1 underline">T&C</p>
+        <p className="cursor-pointer px-1 underline hover:animate-pulse hover:text-black">
+          T&C
+        </p>
       </DialogTrigger>
       <DialogContent className="w-[70vw] overflow-auto">
         <div className="container mx-auto px-4 py-8">

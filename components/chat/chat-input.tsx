@@ -298,7 +298,7 @@ export const ChatInput: FC<ChatInputProps> = ({}) => {
           "AID is an open-source tool brought by the Alter Domus Automation Team and adapted by the Cloud Platform Engineering Team."
         )}{" "}
         <p className="flex">
-          Refer <TermsAndConditions /> and <PrivacyPolicy /> for more details
+          Refer <TermsAndConditions /> and <PrivacyPolicy /> for more details.
         </p>
       </div>
     </>

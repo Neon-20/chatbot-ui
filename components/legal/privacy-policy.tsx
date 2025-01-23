@@ -5,7 +5,9 @@ export default function PrivacyPolicy() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <p className="cursor-pointer px-1 underline">Privacy Policy</p>
+        <p className="cursor-pointer px-1 underline hover:animate-pulse hover:text-black">
+          Privacy Policy
+        </p>
       </DialogTrigger>
       <DialogContent className="w-[70vw] overflow-auto">
         <div className="container mx-auto px-4 py-8">
