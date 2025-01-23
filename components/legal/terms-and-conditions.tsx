@@ -5,7 +5,7 @@ export default function TermsAndConditions() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="link">Terms & Conditions</Button>
+        <p className="cursor-pointer px-1 underline">T&C</p>
       </DialogTrigger>
       <DialogContent className="w-[70vw] overflow-auto">
         <div className="container mx-auto px-4 py-8">
@@ -16,7 +16,6 @@ export default function TermsAndConditions() {
             <p>
               Welcome to AID Work Copilot at Alter Domus. By using AID Work
               Copilot, you agree to comply with these Terms and Conditions.
-              <br />
               Please read them carefully.
             </p>
 

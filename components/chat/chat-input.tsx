@@ -293,10 +293,13 @@ export const ChatInput: FC<ChatInputProps> = ({}) => {
           )}
         </div>
       </div>
-      <div className="flex flex-row items-center justify-center px-3 py-2 text-center text-[12px] text-black/50 md:px-4 md:pt-3 dark:text-white/50">
+      <div className="flex flex-col items-center justify-center px-3 py-2 text-center text-[12px] text-black/50 md:px-4 md:pt-3 dark:text-white/50">
         {t(
-          "AID is an open-source tool brought by the Alter Domus Automation Team and adapted by the Cloud Platform Engineering Team. Refer T&C and Privacy Policy for more details."
+          "AID is an open-source tool brought by the Alter Domus Automation Team and adapted by the Cloud Platform Engineering Team."
         )}{" "}
+        <p className="flex">
+          Refer <TermsAndConditions /> and <PrivacyPolicy /> for more details
+        </p>
       </div>
     </>
   )
