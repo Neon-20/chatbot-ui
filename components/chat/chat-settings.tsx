@@ -8,9 +8,11 @@ import { Button } from "../ui/button"
 import { ChatSettingsForm } from "../ui/chat-settings-form"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 
-interface ChatSettingsProps {}
+interface ChatSettingsProps {
+  disabled: boolean
+}
 
-export const ChatSettings: FC<ChatSettingsProps> = ({}) => {
+export const ChatSettings: FC<ChatSettingsProps> = ({ disabled }) => {
   useHotkey("i", () => handleClick())
 
   const {
@@ -67,11 +69,12 @@ export const ChatSettings: FC<ChatSettingsProps> = ({}) => {
 
   return (
     <Popover>
-      <PopoverTrigger>
+      <PopoverTrigger asChild>
         <Button
           ref={buttonRef}
           className="flex items-center space-x-2"
           variant="ghost"
+          disabled={disabled}
         >
           <div className="max-w-[120px] truncate text-lg sm:max-w-[300px] lg:max-w-[500px]">
             {fullModel?.modelName || chatSettings.model}
