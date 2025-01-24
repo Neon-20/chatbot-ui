@@ -62,7 +62,7 @@ export default function ChatPage() {
               <Select
                 value={region ?? undefined}
                 onValueChange={handleRegionChange}
-                disabled={profile?.roles === "user"}
+                open={profile?.roles == "user" ? false : undefined}
               >
                 <SelectTrigger className="lg:w-[150px]">
                   <SelectValue placeholder="Your Region" />
