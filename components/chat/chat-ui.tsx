@@ -20,10 +20,6 @@ import { ChatScrollButtons } from "./chat-scroll-buttons"
 import { ChatSecondaryButtons } from "./chat-secondary-buttons"
 import { Printer } from "lucide-react"
 import { WithTooltip } from "../ui/with-tooltip"
-import { Button } from "../ui/button"
-import Link from "next/link"
-import TermsAndConditions from "../legal/terms-and-conditions"
-import PrivacyPolicy from "../legal/privacy-policy"
 
 interface ChatUIProps {}
 
@@ -267,11 +263,6 @@ export const ChatUI: FC<ChatUIProps> = ({}) => {
       <div className="relative w-full min-w-[300px] items-end px-2 pt-0 sm:w-[600px] sm:pt-5 md:w-[700px] lg:w-[700px] xl:w-[800px]">
         <ChatInput />
       </div>
-
-      {/* <div className="mb-2 flex justify-center space-x-2">
-        <TermsAndConditions />
-        <PrivacyPolicy />
-      </div> */}
 
       <div className="absolute bottom-2 right-2 hidden md:block lg:bottom-4 lg:right-4">
         <ChatHelp />
