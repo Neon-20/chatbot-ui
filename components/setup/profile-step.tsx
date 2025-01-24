@@ -39,7 +39,7 @@ export const ProfileStep: FC<ProfileStepProps> = ({
   onDisplayNameChange
 }) => {
   const [loading, setLoading] = useState(false)
-  const [region, setRegion] = useState(localStorage.getItem("region"))
+  const [region, setRegion] = useState("sweden")
   const handleRegionChange = (value: string) => {
     localStorage.setItem("region", value)
     setRegion(value)
@@ -159,7 +159,12 @@ export const ProfileStep: FC<ProfileStepProps> = ({
       </div>
       <div className="space-y-1">
         <Label>Select a Region</Label>
-        <Select value={region ?? undefined} onValueChange={handleRegionChange}>
+        <Select
+          value={region ?? undefined}
+          open={false}
+          onValueChange={handleRegionChange}
+          disabled={true}
+        >
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Your Region" />
           </SelectTrigger>

@@ -68,13 +68,12 @@ export const ChatSettings: FC<ChatSettingsProps> = ({ disabled }) => {
   const fullModel = allModels.find(llm => llm.modelId === chatSettings.model)
 
   return (
-    <Popover>
+    <Popover open={disabled ? false : undefined}>
       <PopoverTrigger asChild>
         <Button
           ref={buttonRef}
           className="flex items-center space-x-2"
           variant="ghost"
-          disabled={disabled}
         >
           <div className="max-w-[120px] truncate text-lg sm:max-w-[300px] lg:max-w-[500px]">
             {fullModel?.modelName || chatSettings.model}
