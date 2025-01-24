@@ -264,6 +264,11 @@ export const ChatUI: FC<ChatUIProps> = ({}) => {
         <ChatInput />
       </div>
 
+      <div className="mb-2 flex justify-center space-x-2">
+        {/* <TermsAndConditions />
+        <PrivacyPolicy /> */}
+      </div>
+
       <div className="absolute bottom-2 right-2 hidden md:block lg:bottom-4 lg:right-4">
         <ChatHelp />
       </div>
