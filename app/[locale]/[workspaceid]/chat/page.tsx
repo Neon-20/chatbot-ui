@@ -31,7 +31,7 @@ export default function ChatPage() {
 
   const { theme } = useTheme()
   const [region, setRegion] = useState<string | null>(
-    localStorage.getItem("region")
+    profile?.roles === "user" ? "sweden" : localStorage.getItem("region")
   )
   useEffect(() => {
     if (region === null) {
