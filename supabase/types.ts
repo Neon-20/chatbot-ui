@@ -1113,6 +1113,7 @@ export type Database = {
           azure_openai_4o_id: string | null
           azure_openai_4o_mini_id: string | null
           azure_openai_o1_preview_id: string | null
+          azure_openai_o1_id: string | null
           azure_openai_o1_mini_id: string | null
           azure_openai_api_key: string | null
           azure_openai_embeddings_id: string | null

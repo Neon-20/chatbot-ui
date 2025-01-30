@@ -17,6 +17,36 @@ const o1Preview: LLM = {
   }
 }
 
+const o1: LLM = {
+  modelId: "o1",
+  modelName: "o1",
+  provider: "openai",
+  hostedId: "o1",
+  platformLink: OPENAI_PLATORM_LINK,
+  imageInput: false,
+  pricing: {
+    currency: "USD",
+    unit: "1M tokens",
+    inputCost: 10,
+    outputCost: 40
+  }
+}
+
+const o1Mini: LLM = {
+  modelId: "o1-mini",
+  modelName: "o1 Mini",
+  provider: "openai",
+  hostedId: "o1-mini",
+  platformLink: OPENAI_PLATORM_LINK,
+  imageInput: false,
+  pricing: {
+    currency: "USD",
+    unit: "1M tokens",
+    inputCost: 0.6,
+    outputCost: 2.4
+  }
+}
+
 const GPT4o: LLM = {
   modelId: "gpt-4o",
   modelName: "GPT-4o",
@@ -47,4 +77,4 @@ const GPT4oMini: LLM = {
   }
 }
 
-export const OPENAI_LLM_LIST: LLM[] = [GPT4oMini, GPT4o, o1Preview]
+export const OPENAI_LLM_LIST: LLM[] = [GPT4oMini, GPT4o, o1Preview, o1, o1Mini]

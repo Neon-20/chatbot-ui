@@ -65,6 +65,7 @@ function addApiKeysToProfile(
     [VALID_ENV_KEYS.AZURE_GPT_4o_NAME]: "azure_openai_4o_id",
     [VALID_ENV_KEYS.AZURE_GPT_4o_MINI_NAME]: "azure_openai_4o_mini_id",
     [VALID_ENV_KEYS.AZURE_o1_PREVIEW_NAME]: "azure_openai_o1_preview_id",
+    [VALID_ENV_KEYS.AZURE_o1_NAME]: "azure_openai_o1_id",
     [VALID_ENV_KEYS.AZURE_o1_MINI_NAME]: "azure_openai_o1_mini_id",
     [VALID_ENV_KEYS.AZURE_EMBEDDINGS_NAME]: "azure_openai_embeddings_id",
     // swiss

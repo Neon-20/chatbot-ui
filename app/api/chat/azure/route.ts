@@ -9,7 +9,7 @@ export const runtime = "edge"
 
 export async function POST(request: NextRequest) {
   const json = await request.json()
-  const region = request.nextUrl.searchParams.get("region")
+  let region = request.nextUrl.searchParams.get("region") || "sweden"
   const { chatSettings, messages } = json as ChatAPIPayload
 
   try {
@@ -58,6 +58,12 @@ export async function POST(request: NextRequest) {
             break
           case "o1-preview":
             DEPLOYMENT_ID = profile.azure_openai_o1_preview_id || ""
+            break
+          case "o1":
+            DEPLOYMENT_ID = profile.azure_openai_o1_id || ""
+            break
+          case "o1-mini":
+            DEPLOYMENT_ID = profile.azure_openai_o1_mini_id || ""
             break
           default:
             return new Response(
@@ -114,12 +120,16 @@ export async function POST(request: NextRequest) {
     const azureOpenai = new OpenAI({
       apiKey: KEY,
       baseURL: `${ENDPOINT}/openai/deployments/${DEPLOYMENT_ID}`,
-      defaultQuery: { "api-version": "2023-12-01-preview" },
+      defaultQuery: { "api-version": "2024-12-01-preview" },
       defaultHeaders: { "api-key": KEY }
     })
-    if (chatSettings.model === "o1-preview") {
+    if (
+      chatSettings.model === "o1-preview" ||
+      chatSettings.model === "o1" ||
+      chatSettings.model === "o1-mini"
+    ) {
       const completion = await azureOpenai.chat.completions.create({
-        model: "o1-preview",
+        model: DEPLOYMENT_ID,
         messages: messages.filter(
           message => message.role != "system"
         ) as ChatCompletionCreateParamsBase["messages"]
