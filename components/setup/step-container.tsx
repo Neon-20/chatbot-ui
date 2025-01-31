@@ -43,8 +43,7 @@ export const StepContainer: FC<StepContainerProps> = ({
   }
   const handleNextButtonClick = () => {
     if (localStorage.getItem("region") === null) {
-      toast.error("Please select a region to proceed.")
-      return
+      localStorage.setItem("region", "sweden")
     }
     onShouldProceed(true)
   }
