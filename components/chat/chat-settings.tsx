@@ -65,7 +65,16 @@ export const ChatSettings: FC<ChatSettingsProps> = ({ disabled }) => {
     ...availableOpenRouterModels
   ]
 
-  const fullModel = allModels.find(llm => llm.modelId === chatSettings.model)
+  const fullModel = allModels.find(
+    llm => llm.modelId === chatSettings.model
+  ) || {
+    modelId: "gpt-4o-mini" as LLMID,
+    modelName: "GPT-4o Mini",
+    provider: "openai" as ModelProvider,
+    hostedId: "gpt-4o-mini",
+    platformLink: "",
+    imageInput: false
+  }
 
   return (
     <Popover open={disabled ? false : undefined}>
