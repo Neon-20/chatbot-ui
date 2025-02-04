@@ -15,6 +15,7 @@ export type OpenAILLMID =
   | "o1-preview"
   | "o1" // O1
   | "o1-mini" // O1 Mini
+  | "o3-mini" // O3 Mini
 
 // Google Models
 export type GoogleLLMID =
