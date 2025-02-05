@@ -93,6 +93,9 @@ export async function POST(request: NextRequest) {
           case "o1-mini":
             DEPLOYMENT_ID = profile.azure_openai_o1_mini_id || ""
             break
+          case "o3-mini":
+            DEPLOYMENT_ID = String(profile.azure_openai_o3_mini_id) || ""
+            break
           default:
             return new Response(
               JSON.stringify({ message: "Model not found" }),
@@ -126,7 +129,8 @@ export async function POST(request: NextRequest) {
     if (
       chatSettings.model === "o1-preview" ||
       chatSettings.model === "o1" ||
-      chatSettings.model === "o1-mini"
+      chatSettings.model === "o1-mini" ||
+      chatSettings.model === "o3-mini"
     ) {
       const completion = await azureOpenai.chat.completions.create({
         model: DEPLOYMENT_ID,

@@ -27,8 +27,8 @@ const o1: LLM = {
   pricing: {
     currency: "USD",
     unit: "1M tokens",
-    inputCost: 10,
-    outputCost: 40
+    inputCost: 15,
+    outputCost: 60
   }
 }
 
@@ -42,8 +42,23 @@ const o1Mini: LLM = {
   pricing: {
     currency: "USD",
     unit: "1M tokens",
-    inputCost: 0.6,
-    outputCost: 2.4
+    inputCost: 1.1,
+    outputCost: 4.4
+  }
+}
+
+const o3Mini: LLM = {
+  modelId: "o3-mini",
+  modelName: "o3 Mini",
+  provider: "openai",
+  hostedId: "o3-mini",
+  platformLink: OPENAI_PLATORM_LINK,
+  imageInput: false,
+  pricing: {
+    currency: "USD",
+    unit: "1M tokens",
+    inputCost: 1.1,
+    outputCost: 4.4
   }
 }
 
@@ -77,4 +92,11 @@ const GPT4oMini: LLM = {
   }
 }
 
-export const OPENAI_LLM_LIST: LLM[] = [GPT4oMini, GPT4o, o1Preview, o1, o1Mini]
+export const OPENAI_LLM_LIST: LLM[] = [
+  GPT4oMini,
+  GPT4o,
+  o1Preview,
+  o1,
+  o1Mini,
+  o3Mini
+]
