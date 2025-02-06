@@ -133,7 +133,12 @@ export const useSelectFileHandler = () => {
             : reader.readAsText(file)
         }
       } else {
-        throw new Error("Unsupported file type")
+        if (file.type === "application/zip") {
+          toast.error("Zip files are not supported.")
+          return
+        } else {
+          toast.error("Unsupported file type")
+        }
       }
 
       reader.onloadend = async function () {

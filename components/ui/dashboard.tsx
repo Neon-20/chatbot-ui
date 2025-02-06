@@ -12,6 +12,13 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { FC, useState } from "react"
 import { useSelectFileHandler } from "../chat/chat-hooks/use-select-file-handler"
 import { CommandK } from "../utility/command-k"
+import {
+  FileSpreadsheet,
+  ImageIcon,
+  MessageSquare,
+  PlusCircle
+} from "lucide-react"
+import { toast } from "sonner"
 
 export const SIDEBAR_WIDTH = 350
 
@@ -41,7 +48,11 @@ export const Dashboard: FC<DashboardProps> = ({ children }) => {
     const files = event.dataTransfer.files
     const file = files[0]
 
-    handleSelectDeviceFile(file)
+    if (file.type === "application/zip") {
+      toast.error("Zip files are not supported.")
+    } else {
+      handleSelectDeviceFile(file)
+    }
 
     setIsDragging(false)
   }
@@ -104,8 +115,16 @@ export const Dashboard: FC<DashboardProps> = ({ children }) => {
         onDragLeave={handleDragLeave}
       >
         {isDragging ? (
-          <div className="flex h-full items-center justify-center bg-black/50 text-2xl text-white">
-            drop file here
+          <div className="flex h-screen flex-col items-center justify-center gap-4">
+            <div className="flex items-center gap-2">
+              <MessageSquare className="size-8 text-blue-500" />
+              <ImageIcon className="size-8 text-blue-500" />
+              <FileSpreadsheet className="size-8 text-blue-500" />
+            </div>
+            <div className="text-xl font-medium">Add anything</div>
+            <p className="text-muted-foreground text-sm">
+              Drop any file here to add it to the conversation
+            </p>
           </div>
         ) : (
           children
