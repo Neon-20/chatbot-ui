@@ -25,6 +25,12 @@ import SuggestionCarousel from "./suggestion-carousel"
 import { getAppInsights } from "@/lib/appInsights"
 import TermsAndConditions from "../legal/terms-and-conditions"
 import PrivacyPolicy from "../legal/privacy-policy"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from "../ui/tooltip"
 
 interface ChatInputProps {}
 
@@ -224,11 +230,20 @@ export const ChatInput: FC<ChatInputProps> = ({}) => {
         </div>
 
         <>
-          <IconCirclePlus
-            className="absolute bottom-[12px] left-3 cursor-pointer p-1 hover:opacity-50"
-            size={32}
-            onClick={() => fileInputRef.current?.click()}
-          />
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger>
+                <IconCirclePlus
+                  className="absolute bottom-[12px] left-3 cursor-pointer p-1 hover:opacity-50"
+                  size={32}
+                  onClick={() => fileInputRef.current?.click()}
+                />
+              </TooltipTrigger>
+              <TooltipContent side="top" className="text-bold py-1">
+                <p>Upload Files for querying.</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
 
           {/* Hidden input to select files from device */}
           <Input
@@ -260,12 +275,21 @@ export const ChatInput: FC<ChatInputProps> = ({}) => {
           onCompositionEnd={() => setIsTyping(false)}
         />
 
-        <div className="absolute bottom-[14px] right-14 cursor-pointer hover:opacity-50">
-          <IconWriting
-            className="hover:bg-background animate-pulse rounded bg-transparent p-1"
-            size={30}
-            onClick={() => setIsPromptPickerOpen(!isPromptPickerOpen)}
-          />
+        <div className="absolute bottom-[8px] right-14 cursor-pointer">
+          <TooltipProvider delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger className="">
+                <IconWriting
+                  className="hover:bg-background animate-pulse rounded bg-transparent p-1"
+                  size={30}
+                  onClick={() => setIsPromptPickerOpen(!isPromptPickerOpen)}
+                />
+              </TooltipTrigger>
+              <TooltipContent className="text-bold">
+                <p>Open Prompt Picker</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
 
         <div className="absolute bottom-[14px] right-3 cursor-pointer hover:opacity-50">

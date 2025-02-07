@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
+import { WithTooltip } from "@/components/ui/with-tooltip"
 import { ChatbotUIContext } from "@/context/context"
 import useHotkey from "@/lib/hooks/use-hotkey"
 import { useTheme } from "next-themes"
@@ -60,26 +61,58 @@ export default function ChatPage() {
             </div>
             <div className="m-3 flex items-center space-x-2">
               {/* <Label className="hidden lg:block">Select a Region</Label> */}
-              <Select
-                value={region ?? undefined}
-                onValueChange={handleRegionChange}
-                open={profile?.roles == "user" ? false : undefined}
-              >
-                <SelectTrigger className="lg:w-[150px]">
-                  <SelectValue placeholder="Your Region" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="sweden" className="cursor-pointer">
-                    Sweden
-                  </SelectItem>
-                  <SelectItem value="uksouth" className="cursor-pointer">
-                    Uk South
-                  </SelectItem>
-                  <SelectItem value="switzerland" className="cursor-pointer">
-                    Switzerland
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+              {profile?.roles === "user" ? (
+                <Select
+                  value={region ?? undefined}
+                  onValueChange={handleRegionChange}
+                  open={false}
+                >
+                  <SelectTrigger className="lg:w-[150px]">
+                    <SelectValue placeholder="Your Region" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sweden" className="cursor-pointer">
+                      Sweden
+                    </SelectItem>
+                    <SelectItem value="uksouth" className="cursor-pointer">
+                      Uk South
+                    </SelectItem>
+                    <SelectItem value="switzerland" className="cursor-pointer">
+                      Switzerland
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              ) : (
+                <WithTooltip
+                  side="top"
+                  delayDuration={0}
+                  display={<div>Select your deployment region</div>}
+                  trigger={
+                    <Select
+                      value={region ?? undefined}
+                      onValueChange={handleRegionChange}
+                    >
+                      <SelectTrigger className="lg:w-[150px]">
+                        <SelectValue placeholder="Your Region" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="sweden" className="cursor-pointer">
+                          Sweden
+                        </SelectItem>
+                        <SelectItem value="uksouth" className="cursor-pointer">
+                          Uk South
+                        </SelectItem>
+                        <SelectItem
+                          value="switzerland"
+                          className="cursor-pointer"
+                        >
+                          Switzerland
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  }
+                />
+              )}
               <ChatSettings disabled={profile?.roles === "user"} />
             </div>
           </div>

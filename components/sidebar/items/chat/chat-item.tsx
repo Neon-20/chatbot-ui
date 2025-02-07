@@ -11,6 +11,12 @@ import { useParams, useRouter } from "next/navigation"
 import { FC, useContext, useRef } from "react"
 import { DeleteChat } from "./delete-chat"
 import { UpdateChat } from "./update-chat"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from "@/components/ui/tooltip"
 
 interface ChatItemProps {
   chat: Tables<"chats">
@@ -57,7 +63,7 @@ export const ChatItem: FC<ChatItemProps> = ({ chat }) => {
     <div
       ref={itemRef}
       className={cn(
-        "hover:bg-accent focus:bg-accent group flex w-full cursor-pointer items-center rounded p-2 hover:opacity-50 focus:outline-none",
+        "hover:bg-accent focus:bg-accent group flex w-full cursor-pointer items-center rounded p-2  focus:outline-none",
         isActive && "bg-accent"
       )}
       tabIndex={0}
@@ -90,9 +96,18 @@ export const ChatItem: FC<ChatItemProps> = ({ chat }) => {
         />
       )}
 
-      <div className="ml-3 flex-1 truncate text-sm font-semibold">
-        {chat.name}
-      </div>
+      <TooltipProvider>
+        <Tooltip delayDuration={100}>
+          <TooltipTrigger asChild>
+            <div className="ml-3 flex-1 truncate text-sm font-semibold">
+              {chat.name}
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{chat.name}</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
 
       <div
         onClick={e => {
