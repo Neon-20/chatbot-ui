@@ -121,9 +121,9 @@ export const Dashboard: FC<DashboardProps> = ({ children }) => {
               <ImageIcon className="size-8 text-blue-500" />
               <FileSpreadsheet className="size-8 text-blue-500" />
             </div>
-            <div className="text-xl font-medium">Add anything</div>
-            <p className="text-muted-foreground text-sm">
-              Drop any file here to add it to the conversation
+            <div className="text-xl font-medium">Add Your Documents</div>
+            <p className="text-bold t">
+              Drop any file here to include it in your chat!
             </p>
           </div>
         ) : (
