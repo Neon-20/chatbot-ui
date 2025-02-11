@@ -1,6 +1,7 @@
 "use client"
 
 import { ChatbotUISVG } from "@/components/icons/chatbotui-svg"
+import Logo from "@/components/icons/logo"
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
@@ -21,13 +22,9 @@ export default function HomePage() {
       >
         <CardHeader className="flex flex-col items-center space-y-2">
           <div className="flex flex-col items-center">
-            <Image
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/AID_Logo_Color_Transparent_300-9kVqv1p2VfsFnM9XkWRyuzkM8zoeby.png"
-              alt="AID Work CoPilot Logo"
-              width={120}
-              height={120}
-              className="size-auto"
-            />
+            <div className="size-auto">
+              <Logo width={120} height={120} />
+            </div>
             <span
               className={`mt-2 text-sm ${theme === "dark" ? "text-black" : "text-gray-500"}`}
             >
