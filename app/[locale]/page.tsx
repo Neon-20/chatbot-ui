@@ -1,15 +1,12 @@
 "use client"
 
-import { ChatbotUISVG } from "@/components/icons/chatbotui-svg"
 import Logo from "@/components/icons/logo"
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { people } from "@/lib/people"
-import { IconArrowRight } from "@tabler/icons-react"
 import { ArrowRight, CheckCircle } from "lucide-react"
 import { useTheme } from "next-themes"
-import Image from "next/image"
 import Link from "next/link"
 
 export default function HomePage() {
